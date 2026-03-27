@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="IT Student Portfolio. Building scalable web experiences with modern technologies.">
+    <meta name="author" content="Bashanta Pokharel">
+    <!-- Page Keywords (less critical nowadays, but some use it) -->
+    <meta name="keywords" content="BCA, IT Student, Web Developer, Portfolio, Laravel, React, PHP, Projects">
+
+    <!-- Open Graph for social sharing -->
+    <meta property="og:title" content="Bashanta Pokharel — IT Student & Developer">
+    <meta property="og:description" content="Building scalable web experiences with modern technologies.">
+    <meta property="og:image" content="path-to-your-image.png">
+    <meta property="og:url" content="https://yourportfolio.com">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Bashanta Pokharel — IT Student & Developer">
+    <meta name="twitter:description" content="BCA Student">
+    <meta name="twitter:image" content="path-to-your-image.png">
+    <title>Bashanta Pokharel — IT Student</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo"><i class="fa-solid fa-code"></i> Bashanta Pokharel</a>
+            <div class="nav-right">
+                <button class="nav-toggle" id="navToggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#about" class="nav-link"><i class="fa-solid fa-user"></i> About</a></li>
+                <li><a href="#experience" class="nav-link"><i class="fa-solid fa-briefcase"></i> Experience</a></li>
+                <li><a href="#projects" class="nav-link"><i class="fa-solid fa-laptop-code"></i> Projects</a></li>
+                <li><a href="#contact" class="nav-link"><i class="fa-solid fa-envelope"></i> Contact</a></li>
+                <li class="theme-toggle" id="themeToggle" title="Toggle theme">
+                    <span class="sun-icon"><i class="fa-solid fa-sun"></i></span>
+                    <span class="moon-icon"><i class="fa-solid fa-moon"></i></span>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div id="canvas-container"></div>
+        <div class="hero-content">
+            <div class="hero-text">
+                <span class="hero-badge"><i class="fa-solid fa-laptop-code"></i> BCA Student</span>
+                <h1 class="hero-title">Aspiring IT Professional & Developer</h1>
+                <p class="hero-subtitle">Engineering the Web of Tomorrow</p>
+                <p class="hero-description">I am an enthusiastic IT student specializing in full-stack development. I
+                    craft dynamic digital solutions using PHP and Python.</p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="cta-button primary"><i class="fa-solid fa-folder-open"></i> Portfolio</a>
+                    <a href="#contact" class="cta-button secondary"><i class="fa-regular fa-paper-plane"></i> Hire
+                        Me</a>
+                </div>
+            </div>
+            <div class="hero-image-wrapper">
+                <div class="hero-image">
+                    <img src="bashanta.jpg"
+                        alt="Student profile picture" class="profile-img">
+                </div>
+                <div class="blob-bg"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section about">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fa-solid fa-address-card"></i> About Me</h2>
+            <div class="about-content">
+                <p>Hello! I am an IT passionate student pursuing my Bachelor in Computer Applications (BCA). My journey
+                    in computing has shaped my belief in continuous learning. I focus on developing clean architectures
+                    and user-friendly interfaces, consistently pushing the boundaries of my skills through academic
+                    projects and self-taught explorations.</p>
+
+                <div class="about-grid">
+                    <div class="about-card">
+                        <div class="card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <h3>Education</h3>
+                        <ul>
+                            <li>BCA — Ratna Rajyalaxmi Campus, Tribhuvan University (Ongoing)</li>
+                            <li>+2 — Chamunda Higher Secondary School</li>
+                            <li>10th Grade — Bal Shiksha Sadan Pvt. Ltd.</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <div class="card-icon"><i class="fa-solid fa-code-compare"></i></div>
+                        <h3>Technical Skills</h3>
+                        <ul>
+                            <li><strong>Frontend:</strong> HTML, CSS, JavaScript, React</li>
+                            <li><strong>Backend:</strong> PHP, Python,Java, DotNet Technology</li>
+                            <li><strong>Database:</strong> SQL</li>
+                            <li><strong>Tools:</strong> Git, GitHub</li>
+                        </ul>
+                    </div>
+                    <div class="about-card">
+                        <div class="card-icon"><i class="fa-solid fa-lightbulb"></i></div>
+                        <h3>Interests</h3>
+                        <ul>
+                            <li>Systems Architecture</li>
+                            <li>Cloud Computing & DevOps</li>
+                            <li>Algorithmic Challenges</li>
+                            <li>Open Source Tech</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <!-- <section id="experience" class="section experience">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fa-solid fa-chart-line"></i> Experience</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-marker"></div>
+                    <div class="timeline-content">
+                        <h3><i class="fa-solid fa-code"></i> Java Backend Intern</h3>
+                        <p class="timeline-company">Tech Innovators Nepal</p>
+                        <p class="timeline-period">Jan 2024 — Present</p>
+                        <p class="timeline-description">Focused on building secure RESTful APIs using Java Spring Boot.
+                            Improved query execution times and optimized the backend algorithms for improved throughput.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Projects Section -->
+    <section id="projects" class="section projects">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fa-solid fa-diagram-project"></i> Academic & Personal Projects</h2>
+            <div class="projects-grid">
+                <a href="#" class="project-card">
+                    <div class="project-header">
+                        <h3><i class="fa-solid fa-user"></i> Personal Portfolio Website</h3>
+                        <span class="project-year">2026</span>
+                    </div>
+                    <p class="project-description">A personal portfolio website featuring a user-friendly.</p>
+                    <div class="project-tags">
+                        <span class="tag"><i class="fa-brands fa-html5"></i> HTML</span>
+                        <span class="tag"><i class="fa-brands fa-css3-alt"></i> CSS</span>
+                        <span class="tag"><i class="fa-brands fa-js"></i> JavaScript</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section contact">
+        <div class="section-container">
+            <h2 class="section-title"><i class="fa-regular fa-paper-plane"></i> Get in Touch</h2>
+            <p class="contact-subtitle">I'm currently looking for internships and collaborative projects to expand my
+                skills in real-world scenarios. My inbox is always open!</p>
+
+            <div class="contact-wrapper">
+                <form class="contact-form" id="contactForm">
+                    <div class="input-group">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="name" placeholder="Bashanta Pokharel" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="email" placeholder="Your email" required>
+                    </div>
+                    <div class="input-group textarea-group">
+                        <i class="fa-solid fa-message"></i>
+                        <textarea id="message" placeholder="Your message" rows="6" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn"><i class="fa-solid fa-paper-plane"></i> Send
+                        Message</button>
+                    <p id="formStatus" class="form-status"></p>
+                </form>
+
+                <div class="contact-info">
+                    <div class="info-item">
+                        <h4><i class="fa-solid fa-envelope"></i> Email</h4>
+                        <a href="mailto:Bashanta Pokharel.pariyar@example.com">Pbasanta340@gmail.com</a>
+                    </div>
+                    <div class="info-item">
+                        <h4><i class="fa-solid fa-phone"></i> Phone</h4>
+                        <a href="tel:+977-9800000000">+977 9847766603</a>
+                    </div>
+                    <div class="info-item">
+                        <h4><i class="fa-solid fa-location-dot"></i> Location</h4>
+                        <p>Kathmandu, Nepal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="social-links">
+                <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener"><i
+                        class="fa-brands fa-github fa-2x"></i></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener"><i
+                        class="fa-brands fa-linkedin fa-2x"></i></a>
+                <a href="https://twitter.com" target="_blank" rel="noopener"><i
+                        class="fa-brands fa-twitter fa-2x"></i></a>
+            </div>
+            <p>&copy; 2026 Bashanta Pokharel. Exploring tech, writing code.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
