@@ -1,0 +1,15 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#0F172A"/>
+  <circle cx="1010" cy="120" r="190" fill="#0D9488" fill-opacity=".22"/>
+  <circle cx="164" cy="494" r="230" fill="#2563EB" fill-opacity=".2"/>
+  <rect x="86" y="84" width="1028" height="462" rx="36" fill="#111827" stroke="#334155" stroke-width="2"/>
+  <text x="134" y="220" fill="#F59E0B" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="800">Backend Developer Portfolio</text>
+  <text x="134" y="310" fill="#F8FAFC" font-family="Poppins, Inter, Arial, sans-serif" font-size="78" font-weight="800">Bashanta Pokharel</text>
+  <text x="134" y="382" fill="#CBD5E1" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="500">6th Semester BCA Student - Kathmandu, Nepal</text>
+  <rect x="134" y="430" width="176" height="54" rx="27" fill="#2563EB"/>
+  <text x="222" y="466" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" text-anchor="middle">PHP</text>
+  <rect x="334" y="430" width="176" height="54" rx="27" fill="#0D9488"/>
+  <text x="422" y="466" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="800" text-anchor="middle">Python</text>
+  <rect x="534" y="430" width="176" height="54" rx="27" fill="#F59E0B"/>
+  <text x="622" y="466" fill="#111827" font-family="Inter, Arial, sans-serif" font-size="22" font-weight="900" text-anchor="middle">MySQL</text>
+</svg>
