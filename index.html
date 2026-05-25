@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portfolio of Bashanta Pokharel, a 6th semester BCA student from Kathmandu, Nepal, focused on backend development, PHP, Python, databases, and scalable web applications.">
+  <meta name="keywords" content="Bashanta Pokharel, Backend Developer, BCA Student, PHP Developer, Python Developer, MySQL, Nepal Developer, Full Stack Developer">
+  <meta name="author" content="Bashanta Pokharel">
+  <meta name="theme-color" content="#0F172A">
+  <meta property="og:title" content="Bashanta Pokharel | Backend Developer Portfolio">
+  <meta property="og:description" content="6th semester BCA student and aspiring backend/full stack developer from Kathmandu, Nepal.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://bashanta-pokharel.dev/assets/og-preview.svg">
+  <meta property="og:url" content="https://bashanta-pokharel.dev">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Bashanta Pokharel | Backend Developer Portfolio</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="page-loader" aria-hidden="true">
+    <div class="loader-mark">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header" id="top">
+    <nav class="nav-shell" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="Bashanta Pokharel home">
+        <span class="brand-mark">BP</span>
+        <span class="brand-text">Bashanta</span>
+      </a>
+
+      <button class="nav-toggle icon-button" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <div class="nav-links" id="site-menu">
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <button class="theme-toggle icon-button" type="button" aria-label="Switch color theme" title="Switch color theme">
+          <i class="fa-solid fa-moon" aria-hidden="true"></i>
+        </button>
+        <a class="btn btn-small" href="assets/BashantaCv.pdf" download>
+          <i class="fa-solid fa-download" aria-hidden="true"></i>
+          Resume
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero section" id="home" aria-labelledby="hero-title">
+      <div class="hero-grid container">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">
+            <span class="pulse-dot"></span>
+            6th Semester BCA Student - Kathmandu, Nepal
+          </p>
+          <h1 id="hero-title">Bashanta Pokharel</h1>
+          <p class="hero-role">
+            I'm a <span class="typing-text" aria-live="polite">Backend Developer</span>
+          </p>
+          <p class="hero-summary">
+            Aspiring backend and full stack developer who enjoys designing clean APIs,
+            building reliable PHP/Python applications, and turning database logic into
+            practical software.
+          </p>
+          <div class="hero-actions">
+            <a class="btn" href="#projects">
+              <i class="fa-solid fa-code" aria-hidden="true"></i>
+              View Projects
+            </a>
+            <a class="btn btn-ghost" href="#contact">
+              <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+              Contact Me
+            </a>
+          </div>
+          <div class="hero-meta" aria-label="Portfolio highlights">
+            <div>
+              <strong>5+</strong>
+              <span>Academic Projects</span>
+            </div>
+            <div>
+              <strong>PHP</strong>
+              <span>Main Backend Stack</span>
+            </div>
+            <div>
+              <strong id="visitor-count">01</strong>
+              <span>Local Visits</span>
+            </div>
+          </div>
+        </div>
+
+        <aside class="profile-panel reveal" aria-label="Profile summary">
+          <div class="profile-card">
+            <div class="profile-image-wrap">
+              <img src="assets/bashanta.jpg" alt="Illustrated profile picture for Bashanta Pokharel" class="profile-image" width="320" height="320">
+              <span class="availability" id="availability-label">Checking status</span>
+            </div>
+            <div class="profile-card-body">
+              <p class="profile-kicker">Currently Learning</p>
+              <div class="learning-tags" aria-label="Currently learning topics">
+                <span>Laravel</span>
+                <span>Docker</span>
+                <span>Redis</span>
+                <span>Microservices</span>
+              </div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section about-band" id="about" aria-labelledby="about-title">
+      <div class="container two-column">
+        <div class="section-copy reveal">
+          <p class="section-label">About Me</p>
+          <h2 id="about-title">A student developer building strong backend foundations.</h2>
+          <p>
+            I am a passionate BCA student with strong enthusiasm for backend development.
+            Currently in my 6th semester, I love solving complex problems and building
+            scalable applications. My journey in programming started with C and Java, and
+            now I specialize in PHP, Python, and database management.
+          </p>
+          <p>
+            I believe in writing clean, efficient, and maintainable code. I am still
+            learning every day, but I bring consistency, curiosity, and a practical mindset
+            to every project I work on.
+          </p>
+          <div class="quick-info">
+            <span><i class="fa-solid fa-location-dot" aria-hidden="true"></i>Kathmandu, Nepal</span>
+            <span><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i>BCA - 6th Semester</span>
+            <span><i class="fa-solid fa-briefcase" aria-hidden="true"></i>Backend / Full Stack</span>
+          </div>
+        </div>
+
+        <div class="terminal reveal" aria-label="Developer profile terminal">
+          <div class="terminal-top">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <div class="terminal-body">
+            <p><span class="term-prompt">$</span> whoami</p>
+            <p class="term-output">Bashanta Pokharel - Backend Developer in progress</p>
+            <p><span class="term-prompt">$</span> current_focus</p>
+            <p class="term-output">PHP, Python, MySQL, REST APIs, Laravel basics</p>
+            <p><span class="term-prompt">$</span> values</p>
+            <p class="term-output">Clean code, clear thinking, teamwork, steady growth</p>
+            <p><span class="term-prompt">$</span> status</p>
+            <p class="term-output cursor-line">Ready for internships, collaborations, and real-world backend challenges</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="skills" aria-labelledby="skills-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="section-label">Technical Skills</p>
+          <h2 id="skills-title">Backend-first skill set with full stack awareness.</h2>
+        </div>
+
+        <div class="skill-grid">
+          <article class="skill-card reveal">
+            <div class="skill-card-head">
+              <i class="fa-solid fa-server" aria-hidden="true"></i>
+              <h3>Backend Technologies</h3>
+            </div>
+            <ul>
+              <li>PHP (Procedural & OOP)</li>
+              <li>Python (Flask, Django basics)</li>
+              <li>Java (Core Java, JDBC)</li>
+              <li>Node.js (Express.js basics)</li>
+              <li>RESTful API Development</li>
+            </ul>
+          </article>
+
+          <article class="skill-card reveal">
+            <div class="skill-card-head">
+              <i class="fa-solid fa-database" aria-hidden="true"></i>
+              <h3>Databases</h3>
+            </div>
+            <ul>
+              <li>MySQL queries, joins, normalization</li>
+              <li>MongoDB basics</li>
+              <li>PostgreSQL basics</li>
+              <li>Stored procedures and subqueries</li>
+              <li>Schema design fundamentals</li>
+            </ul>
+          </article>
+
+          <article class="skill-card reveal">
+            <div class="skill-card-head">
+              <i class="fa-solid fa-window-restore" aria-hidden="true"></i>
+              <h3>Frontend Basics</h3>
+            </div>
+            <ul>
+              <li>HTML5, CSS3, JavaScript</li>
+              <li>jQuery and AJAX</li>
+              <li>Bootstrap</li>
+              <li>Tailwind CSS basics</li>
+              <li>Responsive UI implementation</li>
+            </ul>
+          </article>
+
+          <article class="skill-card reveal">
+            <div class="skill-card-head">
+              <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>
+              <h3>Tools</h3>
+            </div>
+            <ul>
+              <li>Git & GitHub</li>
+              <li>Postman API Testing</li>
+              <li>VS Code, IntelliJ IDEA</li>
+              <li>XAMPP/WAMP Server</li>
+              <li>Command Line Basics</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="progress-panel reveal" aria-label="Skill confidence overview">
+          <div class="progress-item">
+            <span>PHP & MySQL</span>
+            <div class="progress-track"><span style="--level: 88%"></span></div>
+          </div>
+          <div class="progress-item">
+            <span>Python / Flask</span>
+            <div class="progress-track"><span style="--level: 72%"></span></div>
+          </div>
+          <div class="progress-item">
+            <span>REST API Design</span>
+            <div class="progress-track"><span style="--level: 78%"></span></div>
+          </div>
+          <div class="progress-item">
+            <span>JavaScript & AJAX</span>
+            <div class="progress-track"><span style="--level: 68%"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section projects-band" id="projects" aria-labelledby="projects-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="section-label">Projects</p>
+          <h2 id="projects-title">Practical systems that show backend thinking.</h2>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card reveal">
+            <div class="project-icon"><i class="fa-solid fa-briefcase" aria-hidden="true"></i></div>
+            <h3>Job Portal System</h3>
+            <p>A full-featured job portal with company registration, job posting, job applications, admin panel, resume upload, filters, and email notifications.</p>
+            <div class="tech-stack">
+              <span>PHP</span><span>MySQL</span><span>jQuery</span><span>AJAX</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="demo-link"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>Live Demo</a>
+              <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-icon"><i class="fa-solid fa-user-graduate" aria-hidden="true"></i></div>
+            <h3>Student Management System</h3>
+            <p>CRUD application for student records with attendance tracking, fee management, result generation, and an MVC-inspired structure.</p>
+            <div class="tech-stack">
+              <span>PHP</span><span>MySQL</span><span>MVC</span><span>Bootstrap</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="demo-link"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>Live Demo</a>
+              <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-icon"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i></div>
+            <h3>REST API for E-commerce</h3>
+            <p>RESTful APIs for product management, user authentication, and order processing with JWT authentication and structured responses.</p>
+            <div class="tech-stack">
+              <span>Flask</span><span>Slim</span><span>JWT</span><span>REST API</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="demo-link"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>Live Demo</a>
+              <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-icon"><i class="fa-solid fa-book-open-reader" aria-hidden="true"></i></div>
+            <h3>Library Management System</h3>
+            <p>Database-focused project using joins, subqueries, stored procedures, book issuance, returns, and fine calculation logic.</p>
+            <div class="tech-stack">
+              <span>MySQL</span><span>SQL</span><span>Procedures</span><span>DBMS</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="demo-link"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>Live Demo</a>
+              <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-icon"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i></div>
+            <h3>Blog Platform</h3>
+            <p>Simple blog system with user roles, post creation, comments, search, and admin management using PHP and MySQL.</p>
+            <div class="tech-stack">
+              <span>PHP</span><span>MySQL</span><span>Roles</span><span>Search</span>
+            </div>
+            <div class="project-links">
+              <a href="#" class="demo-link"><i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i>Live Demo</a>
+              <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener"><i class="fa-brands fa-github" aria-hidden="true"></i>GitHub</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="education" aria-labelledby="education-title">
+      <div class="container split-layout">
+        <div class="reveal">
+          <p class="section-label">Education</p>
+          <h2 id="education-title">BCA student with a software engineering focus.</h2>
+          <div class="timeline">
+            <article class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div>
+                <h3>BCA (Bachelor of Computer Applications)</h3>
+                <p>6th Semester - Present</p>
+                <p class="muted">Ratna Rajya Laxmi Campus , Tribhuvan University</p>
+                <p>Relevant coursework: Data Structures, DBMS, Operating Systems, Web Technologies, Software Engineering.</p>
+              </div>
+            </article>
+            <article class="timeline-item">
+              <span class="timeline-dot"></span>
+              <div>
+                <h3>Current Academic Focus</h3>
+                <p>Backend development, database design, API testing, and deployment fundamentals.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+
+        <div class="credentials-grid reveal">
+          <article>
+            <i class="fa-solid fa-certificate" aria-hidden="true"></i>
+            <h3>Certifications & Courses</h3>
+            <ul>
+              <li>Complete PHP & MySQL Developer Course</li>
+              <li>Python for Everybody </li>
+              <li>Database Management Systems</li>
+              <li>UI/UX Design Fundamentals</li>
+              <li>Git & GitHub Mastery</li>
+              <li>Learning Laravel Framework</li>
+            </ul>
+          </article>
+          <article>
+            <i class="fa-solid fa-trophy" aria-hidden="true"></i>
+            <h3>Achievements</h3>
+            <ul>
+              <li>Participated in college  events</li>
+              <li>Active member of College Coding Club</li>
+              <li>Practice on LeetCode/HackerRank</li>
+              <li>Attended Modern Web Development workshop</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section github-band" aria-labelledby="github-title">
+      <div class="container">
+        <div class="github-card reveal">
+          <div>
+            <p class="section-label">GitHub Activity</p>
+            <h2 id="github-title">Consistent practice, visible progress.</h2>
+            <p>Explore my repositories and coding activity on GitHub.</p>
+          </div>
+          <a class="btn btn-ghost" href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener">
+            <i class="fa-brands fa-github" aria-hidden="true"></i>
+            GitHub Profile
+          </a>
+          <img class="github-graph" src="https://ghchart.rshah.org/2563EB/Bashanta-Pokharel" alt="GitHub contribution graph for Bashanta Pokharel" loading="lazy">
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="growth-title">
+      <div class="container soft-grid">
+        <div class="reveal">
+          <p class="section-label">Soft Skills</p>
+          <h2 id="growth-title">Professional habits I am building early.</h2>
+        </div>
+        <div class="soft-card reveal"><i class="fa-solid fa-lightbulb" aria-hidden="true"></i>Problem Solving & Analytical Thinking</div>
+        <div class="soft-card reveal"><i class="fa-solid fa-people-group" aria-hidden="true"></i>Team Collaboration & Communication</div>
+        <div class="soft-card reveal"><i class="fa-solid fa-clock" aria-hidden="true"></i>Time Management & Organization</div>
+        <div class="soft-card reveal"><i class="fa-solid fa-magnifying-glass-chart" aria-hidden="true"></i>Attention to Detail</div>
+        <div class="soft-card reveal"><i class="fa-solid fa-seedling" aria-hidden="true"></i>Quick Learner & Adaptable</div>
+      </div>
+    </section>
+
+    <section class="section testimonials-band" aria-labelledby="testimonials-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="section-label">Recommendations</p>
+          <h2 id="testimonials-title">Reliable, curious, and steady in team settings.</h2>
+        </div>
+        <div class="testimonial-grid">
+          <blockquote class="testimonial reveal">
+            <p>Bashanta shows patience while debugging and asks thoughtful questions when learning new backend concepts.</p>
+            <cite>Professor / Mentor</cite>
+          </blockquote>
+          <blockquote class="testimonial reveal">
+            <p>He is consistent with project work and contributes calmly during group assignments and code reviews.</p>
+            <cite>Project Teammate</cite>
+          </blockquote>
+          <blockquote class="testimonial reveal">
+            <p>His interest in databases and API design stands out, especially when projects require practical problem solving.</p>
+            <cite>Peer Developer</cite>
+          </blockquote>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="articles-title">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="section-label">Blog & Articles</p>
+          <h2 id="articles-title">Topics I enjoy writing and learning about.</h2>
+        </div>
+        <div class="article-grid">
+          <a class="article-card reveal" href="#" aria-label="Read article about PHP authentication">
+            <span>Backend</span>
+            <h3>How PHP Sessions Work in Authentication</h3>
+            <p>Notes on login flow, session security, and practical mistakes to avoid.</p>
+          </a>
+          <a class="article-card reveal" href="#" aria-label="Read article about SQL joins">
+            <span>Database</span>
+            <h3>Understanding SQL Joins with Student Records</h3>
+            <p>A student-friendly guide to inner joins, left joins, and real query patterns.</p>
+          </a>
+          <a class="article-card reveal" href="#" aria-label="Read article about REST API basics">
+            <span>API</span>
+            <h3>REST API Basics for College Projects</h3>
+            <p>How to structure endpoints, status codes, and JSON responses cleanly.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-band" id="contact" aria-labelledby="contact-title">
+      <div class="container contact-grid">
+        <div class="contact-copy reveal">
+          <p class="section-label">Contact</p>
+          <h2 id="contact-title">Let’s talk about internships, projects, or collaboration.</h2>
+          <p>
+            I am open to junior backend opportunities, internships, academic collaborations,
+            and freelance-friendly student projects.
+          </p>
+          <div class="contact-list">
+            <a href="mailto:bashanta.pokharel@example.com">
+              <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+              pbasanta340@example.com
+            </a>
+            <a href="https://maps.google.com/?q=Kathmandu,Nepal" target="_blank" rel="noopener">
+              <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+              Kathmandu, Nepal
+            </a>
+            <a href="assets/BashantaCv.pdf" download>
+              <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
+              Download Resume PDF
+            </a>
+          </div>
+          <div class="social-links" aria-label="Social links">
+            <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener" aria-label="GitHub">
+              <i class="fa-brands fa-github" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/bashanta-pokharel-594031241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <i class="fa-brands fa-linkedin" aria-hidden="true"></i>
+            </a>
+            <a href="https://x.com/BasantaSilence" target="_blank" rel="noopener" aria-label="Twitter">
+              <i class="fa-brands fa-twitter" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
+        <form class="contact-form reveal" id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="f188eb73-6554-4184-9d0a-092e75f376f8">
+          <input type="hidden" name="from_name" value="Bashanta Pokharel Portfolio">
+          <div class="form-row">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your full name" autocomplete="name" required>
+          </div>
+          <div class="form-row">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="form-row">
+            <label for="subject">Subject</label>
+            <input type="text" id="subject" name="subject" placeholder="Project or opportunity" required>
+          </div>
+          <div class="form-row">
+            <label for="message">Message</label>
+            <textarea id="message" name="message" rows="6" placeholder="Write your message..." required></textarea>
+          </div>
+          <input type="text" name="website" class="honeypot" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <button class="btn form-submit" type="submit">
+            <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+            Send Message
+          </button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <p>&copy; <span id="year"></span> Bashanta Pokharel. All rights reserved.</p>
+      <div class="footer-socials" aria-label="Footer social links">
+        <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener" aria-label="GitHub"><i class="fa-brands fa-github" aria-hidden="true"></i></a>
+        <a href="https://www.linkedin.com/in/bashanta-pokharel-594031241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin" aria-hidden="true"></i></a>
+        <a href="https://x.com/BasantaSilence" target="_blank" rel="noopener" aria-label="Twitter"><i class="fa-brands fa-twitter" aria-hidden="true"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <div class="cookie-consent" id="cookie-consent" role="dialog" aria-live="polite" aria-label="Cookie preference">
+    <p>This site uses local storage for theme, visit count, and cookie preference.</p>
+    <button class="btn btn-small" type="button" id="accept-cookies">OK</button>
+  </div>
+
+  <button class="back-to-top icon-button" type="button" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
