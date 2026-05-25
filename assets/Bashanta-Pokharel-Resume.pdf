@@ -1,0 +1,105 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 1971 >>
+stream
+BT
+/F1 24 Tf
+72 770 Td
+(Bashanta Pokharel) Tj
+/F1 12 Tf
+0 -26 Td
+(Backend Developer / Full Stack Developer | 6th Semester BCA Student) Tj
+/F1 12 Tf
+0 -18 Td
+(Kathmandu, Nepal | bashanta.pokharel@example.com) Tj
+/F1 12 Tf
+0 -18 Td
+(GitHub: github.com/Bashanta-Pokharel) Tj
+/F1 16 Tf
+0 -36 Td
+(Profile) Tj
+/F1 11 Tf
+0 -22 Td
+(Passionate BCA student focused on backend development, PHP, Python, REST APIs, and databases.) Tj
+/F1 11 Tf
+0 -16 Td
+(Interested in clean, maintainable code and scalable web applications.) Tj
+/F1 16 Tf
+0 -34 Td
+(Technical Skills) Tj
+/F1 11 Tf
+0 -22 Td
+(Backend: PHP, Python Flask, Core Java, Node.js basics, REST API development) Tj
+/F1 11 Tf
+0 -16 Td
+(Databases: MySQL, MongoDB basics, PostgreSQL basics, normalization, joins) Tj
+/F1 11 Tf
+0 -16 Td
+(Frontend: HTML5, CSS3, JavaScript, jQuery, AJAX, Bootstrap, Tailwind CSS) Tj
+/F1 11 Tf
+0 -16 Td
+(Tools: Git, GitHub, Postman, VS Code, IntelliJ IDEA, XAMPP/WAMP) Tj
+/F1 16 Tf
+0 -34 Td
+(Projects) Tj
+/F1 11 Tf
+0 -22 Td
+(Job Portal System - PHP, MySQL, jQuery, AJAX, authentication, resume upload, admin panel) Tj
+/F1 11 Tf
+0 -16 Td
+(Student Management System - CRUD, attendance, fee management, result generation) Tj
+/F1 11 Tf
+0 -16 Td
+(E-commerce REST API - product, user auth, order APIs with JWT authentication) Tj
+/F1 11 Tf
+0 -16 Td
+(Library Management System - SQL joins, subqueries, procedures, fine calculation) Tj
+/F1 11 Tf
+0 -16 Td
+(Blog Platform - roles, posts, comments, search, PHP and MySQL) Tj
+/F1 16 Tf
+0 -34 Td
+(Education) Tj
+/F1 11 Tf
+0 -22 Td
+(BCA \(Bachelor of Computer Applications\), 6th Semester - Present) Tj
+/F1 11 Tf
+0 -16 Td
+(Relevant coursework: Data Structures, DBMS, Operating Systems, Web Technologies, Software Engineering) Tj
+/F1 16 Tf
+0 -34 Td
+(Currently Learning) Tj
+/F1 11 Tf
+0 -22 Td
+(Laravel Framework, Docker Basics, Redis Caching, Microservices Architecture) Tj
+/F1 10 Tf
+0 -210 Td
+(Replace this placeholder PDF with the final resume before deployment.) Tj
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000311 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2334
+%%EOF
