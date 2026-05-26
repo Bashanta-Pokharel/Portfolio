@@ -429,13 +429,6 @@ p {
   font-size: 0.88rem;
 }
 
-.hero-meta strong img {
-  width: 92px;
-  height: 28px;
-  object-fit: contain;
-  object-position: left center;
-}
-
 .profile-panel {
   justify-self: end;
   width: min(100%, 430px);
