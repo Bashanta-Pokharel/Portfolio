@@ -429,6 +429,22 @@ p {
   font-size: 0.88rem;
 }
 
+.hit-counter {
+  width: auto;
+  height: 34px;
+  min-width: 92px;
+  object-fit: cover;
+  object-position: right center;
+}
+
+.hit-counter-wrap {
+  display: block;
+  width: 100px;
+  height: 34px;
+  margin-top: 0;
+  overflow: hidden;
+}
+
 .profile-panel {
   justify-self: end;
   width: min(100%, 430px);
