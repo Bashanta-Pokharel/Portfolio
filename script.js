@@ -108,6 +108,20 @@ const revealObserver = new IntersectionObserver((entries) => {
 // Local storage is used only for client-side personalization.
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
 
+async function setVisitorCount() {
+  if (!visitorCount) return;
+
+  try {
+    const response = await fetch("https://countapi.mileshilliard.com/api/v1/hit/bashanta_pokharel_portfolio_visits");
+    const data = await response.json();
+    visitorCount.textContent = Number(data.value || 0).toLocaleString();
+  } catch (error) {
+    visitorCount.textContent = "--";
+  }
+}
+
+setVisitorCount();
+
 window.addEventListener("scroll", () => {
   backToTop?.classList.toggle("is-visible", window.scrollY > 620);
 });
@@ -115,14 +129,6 @@ window.addEventListener("scroll", () => {
 backToTop?.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
-
-function setVisitorCount() {
-  const visits = Number(localStorage.getItem("portfolioVisits") || "0") + 1;
-  localStorage.setItem("portfolioVisits", String(visits));
-  visitorCount.textContent = String(visits).padStart(2, "0");
-}
-
-setVisitorCount();
 
 function setAvailability() {
   if (!availabilityLabel) return;
