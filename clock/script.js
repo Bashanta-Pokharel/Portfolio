@@ -3,7 +3,7 @@ hourHand = document.querySelector(".hour"),
 minuteHand = document.querySelector(".minute"),
 secondHand = document.querySelector(".second");
 
-const updateTime = () => {
+const updateTime = () => 
     let date = new Date(),
       secToDeg = (date.getSeconds() / 60) * 360,
       minToDeg = (date.getMinutes() / 60) * 360,
