@@ -1,0 +1,456 @@
+/* for heading and navbar footer */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Times New Roman", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: cornsilk;
+  color: black;
+  line-height: 1.6;
+}
+
+.headerlogin {
+  background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+
+  color: white;
+  padding: 30px 0;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+.header {
+  background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+  color: white;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 100;
+  height: 70px;
+}
+
+.header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 5px;
+  letter-spacing: 1.5px;
+}
+
+.header h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+a {
+  text-decoration: none;
+}
+
+.navbar {
+  background-color: #4b6cb7;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-item {
+  margin: 0 25px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.nav-item:hover {
+  background-color: #fbfbfc;
+  color: #1a73e8;
+}
+
+.footer {
+  background: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 30px 0;
+  margin-top: 40px;
+}
+/* login forms label fields button submit */
+.login-form {
+  width: 700px;
+  height: auto;
+  margin: 30px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #2c3e50;
+  font-size: 1.6rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s;
+}
+
+.form-input:focus {
+  border-color: #1a73e8;
+  outline: none;
+}
+input[type="checkbox"] {
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  margin-right: 6px;
+}
+.checkboxfont {
+  font-size: 1.5rem;
+} /* Error Messages */
+
+.error {
+  color: red;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+.btn {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 30px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 30px;
+  background-color: #1a73e8;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+}
+.btn:hover {
+  background-color: #0d62c9;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+}
+/* after login homepage login and others welcome container content part */
+
+.welcome-section {
+  max-width: 1200px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-section h2 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.welcome-section p {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto 30px;
+}
+
+/* job cards  buttons  */
+.jobs {
+  max-width: 1200px;
+  margin: 60px auto;
+  display: flex;
+  justify-content: flex-start; /* ⬅️ align cards to left */
+  flex-wrap: wrap;
+  gap: 30px; /* ⬅️ proper spacing */
+}
+
+.job-card {
+  flex: 0 0 calc(33.333% - 20px); /* 3 cards per row */
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-10px);
+}
+
+.job-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.job-card p {
+  color: #000000;
+}
+.job-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.job-card .btn {
+  display: inline-block;
+  height: 50px;
+  width: 300px;
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: lighter;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.job-card .btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+img {
+  height: 200px;
+  width: 300px;
+  border: 3px solid black;
+}
+/* responsive design */
+
+@media (max-width: 900px) {
+  .job-card {
+    flex: 0 0 calc(50% - 15px); /* 2 cards per row */
+  }
+}
+
+@media (max-width: 600px) {
+  .job-card {
+    flex: 0 0 100%; /* 1 card per row */
+  }
+
+  .nav-container {
+    flex-wrap: wrap;
+  }
+
+  .nav-item {
+    margin: 5px;
+    font-size: 1rem;
+  }
+}
+.filter-container {
+  padding: 10px;
+  border-radius: 5px;
+  margin: 20px auto;
+  max-width: 900px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+}
+
+.filter-container label {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.filter-container select {
+  font-size: 1.2rem;
+  padding: 5px 10px;
+  border-radius: 3px;
+  border: 1px solid #ccc;
+}
+
+.filter-container input[type="submit"] {
+  padding: 8px 16px;
+  font-size: 1.2rem;
+  background-color: #1a73e8;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+/* after login layout */
+.main-content {
+  flex: 1;
+  margin-left: 250px;
+  margin-top: 70px;
+  padding: 30px;
+}
+
+.sidebar {
+  width: 250px;
+  background: white;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  height: 100%;
+  top: 70px;
+  left: 0;
+  overflow-y: auto;
+  z-index: 90;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 20px 0;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links a {
+  display: block;
+  color: black;
+  text-decoration: none;
+  padding: 15px 25px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.nav-links a:hover {
+  background-color: #f1f5f9;
+  color: #4b6cb7;
+  border-left: 4px solid #000000;
+  border-right: 4px solid black;
+}
+
+.nav-links a.active {
+  background-color: #4b6cb7;
+  color: white;
+  border-left: 4px solid #182848;
+}
+
+.content {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  min-height: 400px;
+  padding: 30px;
+}
+
+.content h1 {
+  color: #2d3748;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e2e8f0;
+}
+.headername {
+  font-size: 30px;
+  font-weight: bold;
+  padding-left: 20px; /* move 20px to the right */
+}
+.loginbuttons button {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+  transition: all 0.3s ease;
+  font-size: x-large;
+}
+
+.loginbuttons button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+.welcome {
+  background-color: #ebf5ff;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.welcome span {
+  color: #2b6cb0;
+  font-weight: 500;
+}
+/* admin tavles  */
+table {
+  border-collapse: collapse;
+  width: 95%;
+  margin: 20px auto;
+}
+th,
+td {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: center;
+}
+th {
+  background: #1a73e8;
+  color: white;
+}
+.action-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-size: 14px;
+  margin: 2px;
+}
+
+.edit-btn {
+  background-color: #007bff; /* Blue */
+}
+
+.delete-btn {
+  background-color: #dc3545; /* Red */
+}
+
+.action-btn:hover {
+  opacity: 0.85;
+}
+.card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.card-count {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+}
+.notify-red {
+  border-left: 6px solid #e53935;
+  background: #fff5f5;
+}
+
+.notify-red .card-title {
+  color: #b71c1c;
+}
+
+.notify-red .card-count {
+  color: #e53935;
+}

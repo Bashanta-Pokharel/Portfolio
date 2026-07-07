@@ -1,0 +1,294 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Times New Roman", Tahoma, Geneva, Verdana, sans-serif;
+
+}
+
+body {
+  background-color: cornsilk;
+  color: black;
+  line-height: 1.6;
+}
+
+.header {
+  background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+
+  color: white;
+  padding: 30px 0;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+  font-size: 2.8rem;
+  margin-bottom: 5px;
+  letter-spacing: 1.5px;
+}
+
+.header h2 {
+  font-size: 1.8rem;
+  font-weight: 400;
+  opacity: 0.9;
+}
+
+.navbar {
+  background-color: #4b6cb7;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px 0;
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+}
+
+.nav-item {
+  margin: 0 25px;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.nav-item:hover {
+  background-color: #ededed;
+  color: #1a73e8;
+}
+
+.welcome-section {
+  max-width: 1200px;
+  margin: 60px auto;
+  text-align: center;
+  padding: 60px 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-section h2 {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 20px;
+}
+
+.welcome-section p {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 800px;
+  margin: 0 auto 30px;
+}
+
+  .btn {
+    display: inline-block;
+    width: 100%;               
+    padding: 12px 30px;      
+    font-size: 1.4rem;        
+    font-weight: 600;
+    border: none;
+    border-radius: 30px;       
+    background-color: #1a73e8;
+    color: white;
+    text-decoration: none;     
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 10px rgba(26, 115, 232, 0.3);
+}
+
+.btn:hover {
+    background-color: #0d62c9;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(26, 115, 232, 0.4);
+}
+
+.jobs {
+  max-width: 1200px;
+  margin: 60px auto;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.job-card {
+  flex-basis: 30%;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  transition: transform 0.3s ease;
+}
+
+.job-card:hover {
+  transform: translateY(-10px);
+}
+
+.job-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  color: #2c3e50;
+}
+
+.job-card p {
+  color: #000000;
+}
+.job-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+/* Apply button style */
+.job-card .btn {
+  display: inline-block;
+  height: 50px;
+  width: 300px;
+  margin-top: 15px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight:lighter;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.job-card .btn:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+
+.footer {
+  background: #2c3e50;
+  color: white;
+  text-align: center;
+  padding: 30px 0;
+  margin-top: 40px;
+}
+
+@media (max-width: 900px) {
+  .feature-card {
+    flex-basis: 45%;
+  }
+}
+
+@media (max-width: 600px) {
+  .feature-card {
+    flex-basis: 100%;
+  }
+
+  .nav-container {
+    flex-wrap: wrap;
+  }
+
+  .nav-item {
+    margin: 5px;
+    font-size: 1rem;
+  }
+}
+a {
+  text-decoration: none;
+}
+/* for the part of password */
+.login-form {
+    width: 700px;
+    height: auto;
+    margin: 30px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #2c3e50;
+    font-size: 1.6rem;
+    
+}
+
+
+.form-input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.3s;
+}
+
+.form-input:focus {
+    border-color: #1a73e8;
+    outline: none;
+}
+
+
+.error {
+    color: red;
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+img{
+    height: 200px;
+    width: 300px;
+    border: 3px solid black;
+}
+
+input[type="checkbox"] {
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+     margin-right: 6px; 
+}
+.checkboxfont{
+  font-size: 1.5rem;
+  
+  
+}
+.filter-container {
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    justify-content:right; 
+}
+
+.filter-container label {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.filter-container select {
+    font-size: 1.2rem;
+    padding: 5px 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+.filter-container input[type="submit"] {
+    padding: 8px 16px;
+    font-size: 1.2rem;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
