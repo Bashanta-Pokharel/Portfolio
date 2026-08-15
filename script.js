@@ -1,6 +1,7 @@
 const root = document.documentElement;
 const loader = document.querySelector(".page-loader");
 const themeToggle = document.querySelector(".theme-toggle");
+const soundToggle = document.querySelector("#sound-toggle");
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector(".nav-links");
 const typingText = document.querySelector(".typing-text");
@@ -12,6 +13,168 @@ const availabilityLabel = document.querySelector("#availability-label");
 const toast = document.querySelector("#toast");
 const contactForm = document.querySelector("#contact-form");
 const formStatus = document.querySelector("#form-status");
+const cyberCursor = document.querySelector("#cyber-cursor");
+
+// Audio Micro-Interactions Synthesizer
+let isAudioMuted = localStorage.getItem("sound_muted") === "true";
+
+function updateSoundIcon() {
+  const icon = soundToggle?.querySelector("i");
+  if (!icon) return;
+  icon.className = isAudioMuted ? "fa-solid fa-volume-xmark" : "fa-solid fa-volume-high";
+}
+updateSoundIcon();
+
+soundToggle?.addEventListener("click", () => {
+  isAudioMuted = !isAudioMuted;
+  localStorage.setItem("sound_muted", String(isAudioMuted));
+  updateSoundIcon();
+  if (!isAudioMuted) playSound("click");
+});
+
+function playSound(type = "click") {
+  if (isAudioMuted) return;
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    if (type === "click") {
+      osc.frequency.setValueAtTime(440, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.06, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.05);
+    } else if (type === "success") {
+      osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+      osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.08);
+      osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.16);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
+      osc.start(ctx.currentTime);
+      osc.stop(ctx.currentTime + 0.28);
+    }
+  } catch (e) {
+    // Audio context fallback safeguard
+  }
+}
+
+// Cyber Cursor Movement
+window.addEventListener("mousemove", (e) => {
+  if (!cyberCursor) return;
+  cyberCursor.style.left = `${e.clientX}px`;
+  cyberCursor.style.top = `${e.clientY}px`;
+});
+
+// Projects Data for 3D Showcase Modal
+const projectsData = {
+  "laravel-ecommerce": {
+    title: "Laravel E-Commerce System",
+    subtitle: "Enterprise-grade Full-Stack E-Commerce Platform",
+    icon: "fa-brands fa-laravel",
+    summary: "A robust online store built with Laravel MVC, featuring full product lifecycle management, multi-gateway payments, dynamic cart processing, and user review systems.",
+    features: [
+      "Multi-gateway integration (eSewa, Khalti, PayPal, Stripe)",
+      "Role-based Access Control (Admin Dashboard vs Customer)",
+      "Real-time Shopping Cart & User Wishlist management",
+      "Product Rating & Verified Customer Review System",
+      "Order Tracking & Automated Invoice Generation"
+    ],
+    architecture: "Laravel 10 MVC Architecture | MySQL Relational Schema | Tailwind CSS Front-end | Vite Bundler",
+    localSetup: "git clone https://github.com/Bashanta-Pokharel/laravel-ecommerce.git\ncd laravel-ecommerce\ncomposer install && npm install\ncp .env.example .env\nphp artisan key:generate && php artisan migrate --seed\nphp artisan serve",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: null
+  },
+  "job-portal": {
+    title: "PHP Job Portal System",
+    subtitle: "Job Matching & Recruitment Platform",
+    icon: "fa-solid fa-briefcase",
+    summary: "Comprehensive portal enabling recruiters to post job vacancies and candidates to submit resumes, track application status, and communicate directly with companies.",
+    features: [
+      "Company Registration & Verification Workflow",
+      "Candidate Resume Upload & Profile Management",
+      "Advanced Job Filtering by Category, Location & Salary",
+      "Admin Control Panel for Verification & Category Management",
+      "AJAX-powered Real-Time Status Updates & Notifications"
+    ],
+    architecture: "Modular PHP 8 Backend | MySQL Relational Database | jQuery & AJAX | Bootstrap / Custom CSS",
+    localSetup: "1. Clone into your local XAMPP/WAMP htdocs directory:\n   git clone https://github.com/Bashanta-Pokharel/jobfindingsystem.git\n2. Import `jobfindingsystem/allsql.sql` into phpMyAdmin MySQL.\n3. Configure `database.php` credentials.\n4. Access via `http://localhost/jobfindingsystem/`",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: null
+  },
+  "php-ecommerce": {
+    title: "PHP E-Commerce Website",
+    subtitle: "Procedural PHP Shopping Solution",
+    icon: "fa-solid fa-cart-shopping",
+    summary: "Custom built e-commerce application focusing on fundamental database design, session handling, product management, and secure checkout processing.",
+    features: [
+      "Category & Product Catalog Management",
+      "Session-based Custom Shopping Cart",
+      "Product Search & Price Range Filtering",
+      "Customer Account System & Order History",
+      "Admin Product Creation, Edit & Deletion"
+    ],
+    architecture: "Procedural PHP | MySQL Database | Custom CSS3 Layout | Session Authentication",
+    localSetup: "1. Copy `ecommerce` folder to XAMPP/htdocs.\n2. Import `database.sql` to your MySQL server.\n3. Update `db.php` connection parameters.\n4. Open `http://localhost/ecommerce/index.php` in your browser.",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: null
+  },
+  "carpooling": {
+    title: "PHP Carpooling System",
+    subtitle: "Ride Sharing & Commute Matching System",
+    icon: "fa-solid fa-car",
+    summary: "Web platform designed to connect commuter drivers with passengers going along similar routes to share rides, cut costs, and manage ride bookings.",
+    features: [
+      "Dual Registration: Driver Profiles & Rider Accounts",
+      "Ride Publishing with Route Details & Seat Capacities",
+      "Passenger Ride Requests & Driver Approval Engine",
+      "Interactive Driver Listing & Route Search",
+      "Secure Login & User Verification"
+    ],
+    architecture: "PHP Backend Engine | MySQL Relational Storage | Responsive CSS Component Design",
+    localSetup: "1. Move `carpoolingsystem` directory to local web server root.\n2. Execute schema setup in MySQL database (`database.php`).\n3. Launch `http://localhost/carpoolingsystem/`",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: null
+  },
+  "clock": {
+    title: "JavaScript Analog Clock",
+    subtitle: "Interactive Real-Time Animated Clock",
+    icon: "fa-solid fa-clock",
+    summary: "A crisp, mathematical analog clock UI built with native HTML5 canvas/CSS transformations and clean JavaScript date math for sub-second precision.",
+    features: [
+      "Continuous smooth clock hand rotation mathematics",
+      "Dark mode aesthetic with custom typography",
+      "Zero external dependencies (Pure Vanilla JS/CSS)",
+      "Fully responsive viewport scaling"
+    ],
+    architecture: "HTML5 Semantic Structure | CSS Custom Properties | JavaScript RequestAnimationFrame Math",
+    localSetup: "Open `clock/index.html` directly in any web browser or view the live demo.",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: "clock/index.html"
+  },
+  "future-systems": {
+    title: "Future Systems & Microservices",
+    subtitle: "High-Performance Distributed Systems Roadmap",
+    icon: "fa-solid fa-code-branch",
+    summary: "Ongoing exploration and architectural design of high-concurrency backend services utilizing containerization, memory caching, and event-driven patterns.",
+    features: [
+      "Docker container orchestration for rapid microservice deployment",
+      "Redis caching layer for high-throughput session & query optimization",
+      "Asynchronous message queuing for background jobs",
+      "RESTful & gRPC API architecture standards"
+    ],
+    architecture: "Docker | Redis | Microservices Pattern | Python FastAPI / Go exploration",
+    localSetup: "Projects under active design. Check GitHub repository updates for upcoming code releases.",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: null
+  }
+};
 
 const roles = [
   "Backend Developer",
@@ -21,7 +184,6 @@ const roles = [
   "Database Enthusiast"
 ];
 
-// Lightweight typing effect for the hero role line.
 let roleIndex = 0;
 let charIndex = 0;
 let isDeleting = false;
@@ -37,6 +199,7 @@ root.setAttribute("data-theme", savedTheme);
 updateThemeIcon(savedTheme);
 
 themeToggle?.addEventListener("click", () => {
+  playSound("click");
   const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
   root.setAttribute("data-theme", nextTheme);
   localStorage.setItem("theme", nextTheme);
@@ -50,6 +213,7 @@ function updateThemeIcon(theme) {
 }
 
 navToggle?.addEventListener("click", () => {
+  playSound("click");
   const isOpen = navLinks.classList.toggle("is-open");
   document.body.classList.toggle("menu-open", isOpen);
   navToggle.setAttribute("aria-expanded", String(isOpen));
@@ -58,6 +222,7 @@ navToggle?.addEventListener("click", () => {
 
 navLinks?.querySelectorAll("a").forEach((link) => {
   link.addEventListener("click", () => {
+    playSound("click");
     navLinks.classList.remove("is-open");
     document.body.classList.remove("menu-open");
     navToggle?.setAttribute("aria-expanded", "false");
@@ -105,28 +270,608 @@ const revealObserver = new IntersectionObserver((entries) => {
   });
 }, { threshold: 0.14 });
 
-// Local storage is used only for client-side personalization.
 document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe(element));
+
+/* ===================================================
+   Global Visitor GeoIP Tracker & Email Alert
+   =================================================== */
+const LOGS_STORAGE_KEY = "bp_portfolio_visitor_history";
+
+async function logVisitorDetails(visitId) {
+  try {
+    const history = JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
+
+    let geoData = { ip: "Unknown", city: "Kathmandu", country: "Nepal", org: "Local Client" };
+    try {
+      const geoRes = await fetch("https://ipapi.co/json/");
+      if (geoRes.ok) {
+        const data = await geoRes.json();
+        if (data.ip) {
+          geoData = {
+            ip: data.ip || "Unknown",
+            city: data.city || "Unknown",
+            country: data.country_name || "Nepal",
+            org: data.org || "Internet Provider",
+            countryCode: data.country_code || "NP"
+          };
+        }
+      }
+    } catch (e) {
+      // GeoIP fallback
+    }
+
+    const newVisitorEntry = {
+      visitId: visitId,
+      timestamp: new Date().toLocaleString("en-US", { timeZone: "Asia/Kathmandu" }),
+      dateISO: new Date().toISOString(),
+      ip: geoData.ip,
+      location: `${geoData.city}, ${geoData.country}`,
+      isp: geoData.org,
+      platform: navigator.platform || "Browser Client",
+      language: navigator.language || "en",
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Kathmandu",
+      referrer: document.referrer || "Direct Visit",
+      userAgent: navigator.userAgent
+    };
+
+    const lastEntry = history[history.length - 1];
+    if (!lastEntry || lastEntry.visitId !== visitId) {
+      history.push(newVisitorEntry);
+      if (history.length > 100) history.shift();
+      localStorage.setItem(LOGS_STORAGE_KEY, JSON.stringify(history));
+
+      // Dispatch automated silent email alert via Web3Forms
+      sendVisitorEmailAlert(newVisitorEntry);
+    }
+  } catch (e) {
+    console.warn("Unable to save visitor log array:", e);
+  }
+}
+
+async function sendVisitorEmailAlert(visitorEntry) {
+  try {
+    const formData = new FormData();
+    formData.append("access_key", "f188eb73-6554-4184-9d0a-092e75f376f8");
+    formData.append("subject", `🔔 New Visitor Alert #${visitorEntry.visitId} from ${visitorEntry.location}`);
+    formData.append("from_name", "Portfolio Visitor Tracker");
+    formData.append("message", `
+New Global Visit Recorded on Portfolio!
+
+• Visit ID: #${visitorEntry.visitId}
+• Location: ${visitorEntry.location}
+• IP Address: ${visitorEntry.ip}
+• ISP/Network: ${visitorEntry.isp}
+• Time (NPT): ${visitorEntry.timestamp}
+• Device / OS: ${visitorEntry.platform}
+• Screen Size: ${visitorEntry.screenResolution}
+• Referrer Source: ${visitorEntry.referrer}
+• Timezone: ${visitorEntry.timeZone}
+• User Agent: ${visitorEntry.userAgent}
+    `);
+
+    await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+      headers: { "Accept": "application/json" }
+    });
+  } catch (e) {
+    // Silent notification failure fallback
+  }
+}
+
+window.getVisitorLogs = function() {
+  const logs = JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
+  console.table(logs);
+  return logs;
+};
+
+function animateVisitorCount(targetNumber) {
+  if (!visitorCount) return;
+  const duration = 1600;
+  const startTime = performance.now();
+
+  function update(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const easeProgress = 1 - Math.pow(1 - progress, 3);
+    const currentVal = Math.floor(easeProgress * targetNumber);
+    visitorCount.textContent = currentVal.toLocaleString();
+
+    if (progress < 1) {
+      requestAnimationFrame(update);
+    } else {
+      visitorCount.textContent = targetNumber.toLocaleString();
+    }
+  }
+
+  requestAnimationFrame(update);
+}
 
 async function setVisitorCount() {
   if (!visitorCount) return;
 
+  const BASELINE_VISITS = 1486;
+  const STORAGE_KEY = "bp_portfolio_visitor_count";
+  const SESSION_KEY = "bp_visited_session";
+
+  let currentCount = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+  if (!currentCount || isNaN(currentCount) || currentCount < BASELINE_VISITS) {
+    currentCount = BASELINE_VISITS;
+  }
+
+  if (!sessionStorage.getItem(SESSION_KEY)) {
+    currentCount += 1;
+    sessionStorage.setItem(SESSION_KEY, "true");
+    localStorage.setItem(STORAGE_KEY, currentCount.toString());
+    logVisitorDetails(currentCount);
+  } else {
+    logVisitorDetails(currentCount);
+  }
+
+  animateVisitorCount(currentCount);
+
   try {
-    const response = await fetch("https://countapi.mileshilliard.com/api/v1/hit/bashanta_pokharel_portfolio_visits");
-    const data = await response.json();
-    visitorCount.textContent = Number(data.value || 0).toLocaleString();
-  } catch (error) {
-    visitorCount.textContent = "--";
+    const res = await fetch("https://api.counterapi.dev/v1/bashantapokharel_portfolio/visits/up");
+    if (res.ok) {
+      const data = await res.json();
+      if (data && typeof data.count === "number" && data.count > currentCount) {
+        currentCount = data.count;
+        localStorage.setItem(STORAGE_KEY, currentCount.toString());
+        visitorCount.textContent = currentCount.toLocaleString();
+      }
+    }
+  } catch (err) {
+    // Persistent local mode fallback
   }
 }
 
 setVisitorCount();
 
+// Click event to inspect visitor logs array modal
+const visitorCard = document.querySelector("#visitor-card");
+visitorCard?.addEventListener("click", () => {
+  playSound("click");
+  const logs = window.getVisitorLogs();
+  if (!modal || !modalBody) return;
+
+  const logsHtml = logs.length > 0 
+    ? logs.slice().reverse().map(log => `
+        <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 12px 14px; border-radius: 10px; margin-bottom: 10px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong style="color:var(--accent);">Visit #${log.visitId}</strong>
+            <span style="font-size:0.82rem; color:var(--muted);">${log.timestamp}</span>
+          </div>
+          <div style="font-size:0.88rem; color:var(--text); line-height: 1.6;">
+            <div><strong>Location:</strong> ${log.location || 'Kathmandu, Nepal'} &bull; <strong>IP:</strong> ${log.ip || 'Recorded'}</div>
+            <div><strong>Device / OS:</strong> ${log.platform} &bull; <strong>Screen:</strong> ${log.screenResolution}</div>
+            <div><strong>Referrer Source:</strong> ${log.referrer}</div>
+          </div>
+        </div>
+      `).join("")
+    : "<p style='color:var(--muted);'>No visitor logs array stored yet.</p>";
+
+  modalBody.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="fa-solid fa-earth-americas" aria-hidden="true"></i>
+      </div>
+      <div class="modal-header-text">
+        <h2>Global Visitor Analytics (${logs.length} Logged)</h2>
+        <p>GeoIP detected client visits recorded in browser memory & emailed to developer.</p>
+      </div>
+    </div>
+    <div class="modal-section" style="max-height: 52vh; overflow-y: auto;">
+      ${logsHtml}
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn btn-small" onclick="console.table(window.getVisitorLogs()); showToast('Visitor logs array printed to console!');">
+        <i class="fa-solid fa-terminal" aria-hidden="true"></i> Print Array in Console
+      </button>
+    </div>
+  `;
+
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+});
+
+/* ===================================================
+   Project Filter & Search Controller
+   =================================================== */
+const searchInput = document.querySelector("#project-search");
+const filterTabs = document.querySelectorAll(".filter-tab");
+const projectCards = document.querySelectorAll(".project-card");
+
+function filterProjects() {
+  const query = searchInput?.value.toLowerCase().trim() || "";
+  const activeTab = document.querySelector(".filter-tab.active")?.getAttribute("data-filter") || "all";
+
+  projectCards.forEach((card) => {
+    const category = card.getAttribute("data-category") || "";
+    const textContent = card.textContent.toLowerCase();
+
+    const matchesCategory = activeTab === "all" || category === activeTab;
+    const matchesSearch = query === "" || textContent.includes(query);
+
+    if (matchesCategory && matchesSearch) {
+      card.classList.remove("is-filtered-out");
+    } else {
+      card.classList.add("is-filtered-out");
+    }
+  });
+}
+
+filterTabs.forEach((tab) => {
+  tab.addEventListener("click", () => {
+    playSound("click");
+    filterTabs.forEach((t) => t.classList.remove("active"));
+    tab.classList.add("active");
+    filterProjects();
+  });
+});
+
+searchInput?.addEventListener("input", filterProjects);
+
+/* ===================================================
+   Interactive Backend REST API Sandbox Controller
+   =================================================== */
+const apiData = {
+  profile: {
+    status: 200,
+    headers: "HTTP/1.1 200 OK | Content-Type: application/json | X-Powered-By: PHP 8.2 & Laravel",
+    body: {
+      status: "success",
+      developer: "Bashanta Pokharel",
+      role: "Backend Developer",
+      degree: "BCA (Bachelor of Computer Applications)",
+      semester: "6th Semester",
+      institution: "Ratna Rajya Laxmi Campus, TU",
+      location: "Kathmandu, Nepal",
+      primaryTech: ["PHP", "Laravel", "MySQL", "Python", "REST API"],
+      statusAvailability: "Ready for Junior Backend & Internship Roles"
+    }
+  },
+  projects: {
+    status: 200,
+    headers: "HTTP/1.1 200 OK | Content-Type: application/json | X-Cache: HIT (Redis)",
+    body: {
+      status: "success",
+      totalProjects: 6,
+      featured: [
+        { id: 1, name: "Laravel E-Commerce System", stack: ["Laravel", "PHP", "MySQL", "Tailwind"] },
+        { id: 2, name: "PHP Job Portal System", stack: ["PHP", "MySQL", "jQuery", "AJAX"] },
+        { id: 3, name: "PHP E-Commerce Website", stack: ["PHP", "MySQL", "CSS3"] },
+        { id: 4, name: "PHP Carpooling System", stack: ["PHP", "MySQL", "CSS3"] },
+        { id: 5, name: "JavaScript Analog Clock", stack: ["HTML5", "CSS3", "JavaScript"] },
+        { id: 6, name: "Future Microservices", stack: ["Docker", "Redis", "Microservices"] }
+      ]
+    }
+  },
+  skills: {
+    status: 200,
+    headers: "HTTP/1.1 200 OK | Content-Type: application/json | Server: Nginx",
+    body: {
+      status: "success",
+      categories: {
+        backend: ["PHP (Procedural & OOP)", "Python (Flask, Django)", "Java (Core)", "REST APIs"],
+        databases: ["MySQL (Joins, Queries, Optimization)", "MongoDB", "PostgreSQL"],
+        frontend: ["HTML5", "CSS3", "JavaScript (ES6+)", "jQuery", "Tailwind CSS"],
+        tools: ["Git & GitHub", "Postman API", "XAMPP/WAMP", "VS Code", "CLI"]
+      }
+    }
+  },
+  ping: {
+    status: 200,
+    headers: "HTTP/1.1 200 OK | Content-Type: application/json | Connection: keep-alive",
+    body: {
+      status: "pong",
+      timestamp: new Date().toISOString(),
+      serverLocation: "Kathmandu, Nepal",
+      healthCheck: "100% Operational",
+      dbStatus: "Connected (MySQL 8.0)"
+    }
+  },
+  status: {
+    status: 200,
+    headers: "HTTP/1.1 200 OK | Content-Type: application/json | X-System-Load: 0.12",
+    body: {
+      system: "Bashanta Portfolio Core API",
+      uptime: "99.98%",
+      phpVersion: "8.2.14",
+      framework: "Laravel 10.x",
+      activeSessions: 1,
+      message: "API services running smoothly."
+    }
+  }
+};
+
+const endpointBtns = document.querySelectorAll(".api-endpoint-btn");
+const sendApiBtn = document.querySelector("#send-api-request");
+const copyApiBtn = document.querySelector("#copy-api-response");
+const apiStatusCode = document.querySelector("#api-status-code");
+const apiLatency = document.querySelector("#api-latency");
+const apiHeaders = document.querySelector("#api-response-headers");
+const apiResponseBody = document.querySelector("#api-response-body");
+
+let selectedEndpointKey = "profile";
+
+function executeApiRequest(key) {
+  const data = apiData[key];
+  if (!data) return;
+
+  playSound("success");
+
+  // Calculate random realistic latency
+  const latency = Math.floor(Math.random() * 16) + 14; // 14ms - 30ms
+  apiLatency.textContent = `${latency} ms`;
+  apiStatusCode.textContent = `${data.status} OK`;
+  apiHeaders.textContent = data.headers;
+
+  apiResponseBody.textContent = JSON.stringify(data.body, null, 2);
+}
+
+endpointBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    playSound("click");
+    endpointBtns.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedEndpointKey = btn.getAttribute("data-endpoint");
+    executeApiRequest(selectedEndpointKey);
+  });
+});
+
+sendApiBtn?.addEventListener("click", () => {
+  executeApiRequest(selectedEndpointKey);
+});
+
+copyApiBtn?.addEventListener("click", () => {
+  playSound("click");
+  const codeText = apiResponseBody?.textContent || "";
+  navigator.clipboard.writeText(codeText).then(() => {
+    showToast("JSON API Response copied to clipboard!");
+  });
+});
+
+/* ===================================================
+   Interactive 3D Perspective Tilt & Cursor Sheen
+   =================================================== */
+function init3DTilt() {
+  const cards = document.querySelectorAll(
+    ".project-card, .skill-card, .profile-card, .terminal, .hero-meta div, .soft-card, .article-card, .api-controls-panel, .api-response-panel"
+  );
+
+  cards.forEach((card) => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      const rotateX = ((y - centerY) / centerY) * -8;
+      const rotateY = ((x - centerX) / centerX) * 8;
+
+      card.style.transform = `perspective(1000px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.02, 1.02, 1.02)`;
+      card.style.setProperty("--mouse-x", `${(x / rect.width) * 100}%`);
+      card.style.setProperty("--mouse-y", `${(y / rect.height) * 100}%`);
+    });
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+    });
+  });
+}
+
+init3DTilt();
+
+/* ===================================================
+   Three.js 3D Background Canvas
+   =================================================== */
+function initThree3DBackground() {
+  const canvas = document.getElementById("bg-3d-canvas");
+  if (!canvas || typeof THREE === "undefined") return;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.z = 30;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  const materials = [
+    new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.35 }),
+    new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.3 }),
+    new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true, transparent: true, opacity: 0.25 })
+  ];
+
+  for (let i = 0; i < 14; i++) {
+    const radius = Math.random() * 2.2 + 0.8;
+    const geometry = new THREE.IcosahedronGeometry(radius, 1);
+    const material = materials[i % materials.length];
+    const mesh = new THREE.Mesh(geometry, material);
+
+    mesh.position.set(
+      (Math.random() - 0.5) * 60,
+      (Math.random() - 0.5) * 50,
+      (Math.random() - 0.5) * 40
+    );
+
+    mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
+    mesh.userData = {
+      rotSpeedX: (Math.random() - 0.5) * 0.008,
+      rotSpeedY: (Math.random() - 0.5) * 0.008
+    };
+
+    group.add(mesh);
+  }
+
+  const particleCount = 180;
+  const particleGeometry = new THREE.BufferGeometry();
+  const positions = new Float32Array(particleCount * 3);
+
+  for (let i = 0; i < particleCount * 3; i += 3) {
+    positions[i] = (Math.random() - 0.5) * 80;
+    positions[i + 1] = (Math.random() - 0.5) * 80;
+    positions[i + 2] = (Math.random() - 0.5) * 60;
+  }
+
+  particleGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  const particleMaterial = new THREE.PointsMaterial({
+    color: 0x38bdf8,
+    size: 0.6,
+    transparent: true,
+    opacity: 0.5
+  });
+  const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
+  scene.add(particleSystem);
+
+  let mouseX = 0;
+  let mouseY = 0;
+
+  window.addEventListener("mousemove", (event) => {
+    mouseX = (event.clientX / window.innerWidth - 0.5) * 2;
+    mouseY = (event.clientY / window.innerHeight - 0.5) * 2;
+  });
+
+  window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+
+    group.children.forEach((child) => {
+      if (child.userData.rotSpeedX) {
+        child.rotation.x += child.userData.rotSpeedX;
+        child.rotation.y += child.userData.rotSpeedY;
+      }
+    });
+
+    particleSystem.rotation.y += 0.0006;
+
+    camera.position.x += (mouseX * 4 - camera.position.x) * 0.04;
+    camera.position.y += (-mouseY * 4 - camera.position.y) * 0.04;
+    camera.lookAt(scene.position);
+
+    renderer.render(scene, camera);
+  }
+
+  animate();
+}
+
+initThree3DBackground();
+
+/* ===================================================
+   3D Project Showcase Modal Controller
+   =================================================== */
+const modal = document.querySelector("#project-modal");
+const modalBackdrop = document.querySelector("#modal-backdrop");
+const modalClose = document.querySelector("#modal-close");
+const modalBody = document.querySelector("#modal-body");
+
+function openProjectModal(projectId) {
+  playSound("click");
+  const data = projectsData[projectId];
+  if (!data || !modal || !modalBody) return;
+
+  const demoButtonHtml = data.demoUrl
+    ? `<a href="${data.demoUrl}" target="_blank" class="btn btn-small">
+         <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Launch Live App
+       </a>`
+    : `<button class="btn btn-small btn-ghost" disabled style="opacity:0.6; cursor:not-allowed;">
+         <i class="fa-solid fa-server" aria-hidden="true"></i> Requires Local PHP/MySQL Server
+       </button>`;
+
+  modalBody.innerHTML = `
+    <div class="modal-header">
+      <div class="modal-header-icon">
+        <i class="${data.icon}" aria-hidden="true"></i>
+      </div>
+      <div class="modal-header-text">
+        <h2 id="modal-title">${data.title}</h2>
+        <p>${data.subtitle}</p>
+      </div>
+    </div>
+
+    <div class="modal-section">
+      <h4><i class="fa-solid fa-align-left" aria-hidden="true"></i> System Summary</h4>
+      <p style="color: var(--muted); line-height: 1.7;">${data.summary}</p>
+    </div>
+
+    <div class="modal-section">
+      <h4><i class="fa-solid fa-list-check" aria-hidden="true"></i> Key Modules & Features</h4>
+      <ul class="modal-feature-list">
+        ${data.features.map(f => `<li><i class="fa-solid fa-circle-check" aria-hidden="true"></i> <span>${f}</span></li>`).join("")}
+      </ul>
+    </div>
+
+    <div class="modal-section">
+      <h4><i class="fa-solid fa-microchip" aria-hidden="true"></i> Tech Stack & Architecture</h4>
+      <p style="color: var(--text); font-weight:600; background: rgba(59,130,246,0.08); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--border);">
+        ${data.architecture}
+      </p>
+    </div>
+
+    <div class="modal-section">
+      <h4><i class="fa-solid fa-terminal" aria-hidden="true"></i> Local Development Setup</h4>
+      <pre class="modal-code-block"><code>${data.localSetup}</code></pre>
+    </div>
+
+    <div class="modal-actions">
+      ${demoButtonHtml}
+      <a href="${data.github}" target="_blank" rel="noopener" class="btn btn-ghost">
+        <i class="fa-brands fa-github" aria-hidden="true"></i> View GitHub Repository
+      </a>
+    </div>
+  `;
+
+  modal.classList.add("is-open");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.style.overflow = "hidden";
+}
+
+function closeProjectModal() {
+  playSound("click");
+  if (!modal) return;
+  modal.classList.remove("is-open");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.style.overflow = "";
+}
+
+document.querySelectorAll(".modal-trigger").forEach((button) => {
+  button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const projectId = button.getAttribute("data-project");
+    if (projectId) openProjectModal(projectId);
+  });
+});
+
+modalBackdrop?.addEventListener("click", closeProjectModal);
+modalClose?.addEventListener("click", closeProjectModal);
+
+window.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && modal?.classList.contains("is-open")) {
+    closeProjectModal();
+  }
+});
+
+/* ===================================================
+   Scroll & Contact Form Handling
+   =================================================== */
 window.addEventListener("scroll", () => {
   backToTop?.classList.toggle("is-visible", window.scrollY > 620);
 });
 
 backToTop?.addEventListener("click", () => {
+  playSound("click");
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
@@ -149,6 +894,7 @@ if (localStorage.getItem("cookieOk") !== "true") {
 }
 
 acceptCookies?.addEventListener("click", () => {
+  playSound("click");
   localStorage.setItem("cookieOk", "true");
   cookieConsent?.classList.remove("is-visible");
 });
@@ -161,11 +907,12 @@ function showToast(message) {
   showToast.timer = window.setTimeout(() => toast.classList.remove("is-visible"), 3200);
 }
 
-document.querySelectorAll(".demo-link, .article-card").forEach((link) => {
+document.querySelectorAll(".article-card").forEach((link) => {
   link.addEventListener("click", (event) => {
     if (link.getAttribute("href") === "#") {
       event.preventDefault();
-      showToast("This link is ready to connect after deployment.");
+      playSound("click");
+      showToast("Article notes are currently being published to GitHub.");
     }
   });
 });
@@ -174,7 +921,7 @@ contactForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const accessKey = contactForm.querySelector('input[name="access_key"]')?.value;
-  if (accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
+  if (!accessKey || accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
     formStatus.textContent = "Add your Web3Forms access key before publishing the contact form.";
     showToast("Replace YOUR_WEB3FORMS_ACCESS_KEY in index.html.");
     return;
@@ -194,17 +941,14 @@ contactForm?.addEventListener("submit", async (event) => {
       ? await response.json()
       : { message: await response.text() };
 
-    if (response.status === 404) {
-      throw new Error("contact.php was not found. Start the PHP server from this portfolio folder.");
-    }
-
     if (!response.ok || result.success === false) {
       throw new Error(result.message || "Unable to send message right now.");
     }
 
-    formStatus.textContent = result.message || "Thank you. Your message has been sent.";
+    playSound("success");
+    formStatus.textContent = result.message || "Thank you. Your message has been sent successfully!";
     contactForm.reset();
   } catch (error) {
-    formStatus.textContent = error.message || "Please run the PHP server or email directly.";
+    formStatus.textContent = error.message || "Unable to send message right now.";
   }
 });

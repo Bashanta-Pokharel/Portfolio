@@ -1210,3 +1210,570 @@ p {
     bottom: 84px;
   }
 }
+
+/* ==========================================
+   3D Canvas & Interactive 3D Aesthetics
+   ========================================== */
+#bg-3d-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.65;
+  transition: opacity 0.4s ease;
+}
+
+[data-theme="light"] #bg-3d-canvas {
+  opacity: 0.25;
+}
+
+/* 3D Perspective Containers & Tilt Effects */
+.hero-meta div,
+.profile-card,
+.skill-card,
+.progress-panel,
+.project-card,
+.credentials-grid article,
+.github-card,
+.soft-card,
+.testimonial,
+.article-card,
+.contact-form,
+.terminal {
+  transform-style: preserve-3d;
+  perspective: 1000px;
+  transition: transform 0.2s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Mouse Sheen Spotlight on Cards */
+.hero-meta div::after,
+.profile-card::after,
+.skill-card::after,
+.project-card::after,
+.soft-card::after,
+.article-card::after,
+.terminal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.12), transparent 80%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.hero-meta div:hover::after,
+.profile-card:hover::after,
+.skill-card:hover::after,
+.project-card:hover::after,
+.soft-card:hover::after,
+.article-card:hover::after,
+.terminal:hover::after {
+  opacity: 1;
+}
+
+/* Elevate internal elements on hover for 3D depth */
+.project-card:hover,
+.skill-card:hover,
+.profile-card:hover,
+.terminal:hover,
+.soft-card:hover {
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.42), 0 0 25px rgba(59, 130, 246, 0.2);
+}
+
+.project-icon,
+.skill-card-head i,
+.profile-image-wrap,
+.tech-stack span,
+.btn {
+  transform: translateZ(24px);
+  transition: transform 0.2s ease;
+}
+
+.project-card h3,
+.skill-card h3,
+.project-card p {
+  transform: translateZ(16px);
+  transition: transform 0.2s ease;
+}
+
+/* Buttons & Ghost Links */
+.btn-ghost-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.btn-ghost-icon:hover {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.5);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+/* Profile 3D Aura Ring */
+.profile-image-wrap {
+  box-shadow: 0 0 30px rgba(37, 99, 235, 0.25);
+  border: 2px solid rgba(59, 130, 246, 0.3);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.profile-card:hover .profile-image-wrap {
+  border-color: rgba(6, 182, 212, 0.7);
+  box-shadow: 0 0 45px rgba(6, 182, 212, 0.4);
+}
+
+/* ==========================================
+   3D Glassmorphism Project Showcase Modal
+   ========================================== */
+.project-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 15, 30, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.modal-card {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 780px);
+  max-height: 88vh;
+  overflow-y: auto;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.96), rgba(17, 24, 39, 0.94));
+  border: 1px solid rgba(59, 130, 246, 0.35);
+  border-radius: 20px;
+  padding: 36px;
+  box-shadow: 0 35px 100px rgba(0, 0, 0, 0.7), 0 0 50px rgba(59, 130, 246, 0.22);
+  transform: scale(0.88) translateY(24px);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.25);
+  color: var(--text);
+}
+
+.project-modal.is-open .modal-card {
+  transform: scale(1) translateY(0);
+}
+
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--surface-strong);
+  color: var(--text);
+  font-size: 1.1rem;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 5;
+}
+
+.modal-close:hover {
+  background: rgba(244, 63, 94, 0.22);
+  border-color: rgba(244, 63, 94, 0.5);
+  color: #f43f5e;
+  transform: rotate(90deg) scale(1.08);
+}
+
+/* Modal Content Layout */
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 20px;
+}
+
+.modal-header-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.25), rgba(13, 148, 136, 0.25));
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  display: grid;
+  place-items: center;
+  font-size: 1.8rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.modal-header-text h2 {
+  font-size: 1.6rem;
+  margin-bottom: 4px;
+}
+
+.modal-header-text p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.modal-section {
+  margin-bottom: 24px;
+}
+
+.modal-section h4 {
+  font-size: 1.05rem;
+  font-family: var(--font-heading);
+  color: var(--accent);
+  margin: 0 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+.modal-feature-list li {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.modal-feature-list li i {
+  color: var(--teal);
+  margin-top: 3px;
+}
+
+.modal-code-block {
+  background: rgba(10, 15, 26, 0.9);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  font-family: monospace;
+  font-size: 0.88rem;
+  color: #38bdf8;
+  overflow-x: auto;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* ==========================================
+   Project Controls (Search & Filter Tabs)
+   ========================================== */
+.project-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 36px;
+}
+
+.project-search-wrap {
+  position: relative;
+  max-width: 520px;
+}
+
+.project-search-wrap .search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.project-search-input {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(8px);
+}
+
+.project-search-input:focus {
+  border-color: rgba(59, 130, 246, 0.65);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.22);
+}
+
+.project-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-tab {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.filter-tab:hover,
+.filter-tab.active {
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.3), rgba(13, 148, 136, 0.3));
+  border-color: rgba(59, 130, 246, 0.55);
+  color: var(--text);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.2);
+}
+
+/* Hidden project card animation state */
+.project-card.is-filtered-out {
+  display: none !important;
+}
+
+/* ==========================================
+   Interactive Backend REST API Sandbox
+   ========================================== */
+.api-sandbox-band {
+  background: linear-gradient(180deg, transparent, rgba(15, 23, 42, 0.4), transparent);
+}
+
+.api-sandbox-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 320px) minmax(0, 1fr);
+  gap: 28px;
+  margin-top: 32px;
+}
+
+@media (max-width: 900px) {
+  .api-sandbox-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.api-controls-panel {
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--surface);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.api-controls-panel h3 {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--accent);
+}
+
+.api-endpoint-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.api-endpoint-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--text);
+  font-family: monospace;
+  font-size: 0.88rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-align: left;
+}
+
+.api-endpoint-btn:hover,
+.api-endpoint-btn.active {
+  background: rgba(59, 130, 246, 0.14);
+  border-color: rgba(59, 130, 246, 0.45);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+}
+
+.http-method {
+  font-weight: 800;
+  font-size: 0.75rem;
+  padding: 3px 7px;
+  border-radius: 5px;
+}
+
+.http-method.get {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.35);
+}
+
+.http-method.post {
+  background: rgba(245, 158, 11, 0.2);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+.endpoint-path {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.api-request-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.api-response-panel {
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  background: rgba(10, 15, 26, 0.95);
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+}
+
+.api-response-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid var(--border);
+}
+
+.api-bar-dots {
+  display: flex;
+  gap: 7px;
+}
+
+.api-bar-dots span {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #ef4444;
+}
+
+.api-bar-dots span:nth-child(2) { background: #f59e0b; }
+.api-bar-dots span:nth-child(3) { background: #10b981; }
+
+.api-status-badges {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.status-badge.200 {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+  border: 1px solid rgba(34, 197, 94, 0.4);
+}
+
+.latency-badge {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-family: monospace;
+}
+
+.api-response-headers {
+  padding: 10px 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border-bottom: 1px solid var(--border);
+  font-family: monospace;
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.api-response-code {
+  margin: 0;
+  padding: 20px 18px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  color: #38bdf8;
+  line-height: 1.6;
+  overflow-x: auto;
+  min-height: 220px;
+}
+
+/* Cyber Cursor Glow Follower */
+.cyber-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.14) 0%, rgba(59, 130, 246, 0.05) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.3s ease;
+  opacity: 0.8;
+}
+
+[data-theme="light"] .cyber-cursor {
+  opacity: 0.3;
+}
+
+

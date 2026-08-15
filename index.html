@@ -41,8 +41,10 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
     <link rel="stylesheet" href="style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   </head>
   <body>
+    <canvas id="bg-3d-canvas" aria-hidden="true"></canvas>
     <div class="page-loader" aria-hidden="true">
       <div class="loader-mark">
         <span></span>
@@ -74,11 +76,21 @@
           <a href="#about">About</a>
           <a href="#skills">Skills</a>
           <a href="#projects">Projects</a>
+          <a href="#api-sandbox">API Sandbox</a>
           <a href="#education">Education</a>
           <a href="#contact">Contact</a>
         </div>
 
         <div class="nav-actions">
+          <button
+            class="sound-toggle icon-button"
+            id="sound-toggle"
+            type="button"
+            aria-label="Toggle Sound Effects"
+            title="Toggle Sound Effects"
+          >
+            <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
+          </button>
           <button
             class="theme-toggle icon-button"
             type="button"
@@ -134,7 +146,7 @@
                 <strong>PHP</strong>
                 <span>Main Backend Stack</span>
               </div>
-              <div>
+              <div id="visitor-card" style="cursor: pointer;" title="Click to view visitor logs array">
                 <strong id="visitor-count">--</strong>
                 <span>Total Visits</span>
               </div>
@@ -355,8 +367,22 @@
             </h2>
           </div>
 
+          <div class="project-controls reveal">
+            <div class="project-search-wrap">
+              <i class="fa-solid fa-magnifying-glass search-icon" aria-hidden="true"></i>
+              <input type="text" id="project-search" placeholder="Search projects by stack, name, or feature..." class="project-search-input" aria-label="Search projects">
+            </div>
+            <div class="project-filter-tabs" role="tablist" aria-label="Filter projects by technology stack">
+              <button type="button" class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All Projects</button>
+              <button type="button" class="filter-tab" data-filter="laravel" role="tab" aria-selected="false">Laravel</button>
+              <button type="button" class="filter-tab" data-filter="php" role="tab" aria-selected="false">PHP & MySQL</button>
+              <button type="button" class="filter-tab" data-filter="javascript" role="tab" aria-selected="false">JavaScript</button>
+              <button type="button" class="filter-tab" data-filter="future" role="tab" aria-selected="false">Cloud & Redis</button>
+            </div>
+          </div>
+
           <div class="project-grid">
-            <article class="project-card reveal">
+            <article class="project-card reveal" data-project="laravel-ecommerce" data-category="laravel">
               <div class="project-icon">
                 <i class="fa-brands fa-laravel" aria-hidden="true"></i>
               </div>
@@ -368,31 +394,19 @@
                 PayPal, Stripe).
               </p>
               <div class="tech-stack">
-                <span>Laravel</span><span>PHP</span><span>MySQL</span
-                ><span>Tailwind CSS</span><span>Vite</span>
+                <span>Laravel</span><span>PHP</span><span>MySQL</span><span>Tailwind CSS</span><span>Vite</span>
               </div>
               <div class="project-links">
-                <a
-                  href="laravel-ecommerce/public/"
-                  target="_blank"
-                  class="demo-link"
-                  ><i
-                    class="fa-solid fa-arrow-up-right-from-square"
-                    aria-hidden="true"
-                  ></i
-                  >Live Demo</a
-                >
-                <a
-                  href="https://github.com/Bashanta-Pokharel"
-                  target="_blank"
-                  rel="noopener"
-                  ><i class="fa-brands fa-github" aria-hidden="true"></i
-                  >GitHub</a
-                >
+                <button type="button" class="btn btn-small modal-trigger" data-project="laravel-ecommerce">
+                  <i class="fa-solid fa-layer-group" aria-hidden="true"></i> Details & Architecture
+                </button>
+                <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener" class="btn-ghost-icon" title="View Source on GitHub">
+                  <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub
+                </a>
               </div>
             </article>
 
-            <article class="project-card reveal">
+            <article class="project-card reveal" data-project="job-portal" data-category="php">
               <div class="project-icon">
                 <i class="fa-solid fa-briefcase" aria-hidden="true"></i>
               </div>
@@ -403,31 +417,19 @@
                 and email notifications.
               </p>
               <div class="tech-stack">
-                <span>PHP</span><span>MySQL</span><span>jQuery</span
-                ><span>AJAX</span>
+                <span>PHP</span><span>MySQL</span><span>jQuery</span><span>AJAX</span>
               </div>
               <div class="project-links">
-                <a
-                  href="jobfindingsystem/index.php"
-                  target="_blank"
-                  class="demo-link"
-                  ><i
-                    class="fa-solid fa-arrow-up-right-from-square"
-                    aria-hidden="true"
-                  ></i
-                  >Live Demo</a
-                >
-                <a
-                  href="https://github.com/Bashanta-Pokharel"
-                  target="_blank"
-                  rel="noopener"
-                  ><i class="fa-brands fa-github" aria-hidden="true"></i
-                  >GitHub</a
-                >
+                <button type="button" class="btn btn-small modal-trigger" data-project="job-portal">
+                  <i class="fa-solid fa-layer-group" aria-hidden="true"></i> Details & Architecture
+                </button>
+                <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener" class="btn-ghost-icon" title="View Source on GitHub">
+                  <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub
+                </a>
               </div>
             </article>
 
-            <article class="project-card reveal">
+            <article class="project-card reveal" data-project="php-ecommerce" data-category="php">
               <div class="project-icon">
                 <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i>
               </div>
@@ -441,24 +443,16 @@
                 <span>PHP</span><span>MySQL</span><span>CSS</span>
               </div>
               <div class="project-links">
-                <a href="ecommerce/index.php" target="_blank" class="demo-link"
-                  ><i
-                    class="fa-solid fa-arrow-up-right-from-square"
-                    aria-hidden="true"
-                  ></i
-                  >Live Demo</a
-                >
-                <a
-                  href="https://github.com/Bashanta-Pokharel"
-                  target="_blank"
-                  rel="noopener"
-                  ><i class="fa-brands fa-github" aria-hidden="true"></i
-                  >GitHub</a
-                >
+                <button type="button" class="btn btn-small modal-trigger" data-project="php-ecommerce">
+                  <i class="fa-solid fa-layer-group" aria-hidden="true"></i> Details & Architecture
+                </button>
+                <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener" class="btn-ghost-icon" title="View Source on GitHub">
+                  <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub
+                </a>
               </div>
             </article>
 
-            <article class="project-card reveal">
+            <article class="project-card reveal" data-project="carpooling" data-category="php">
               <div class="project-icon">
                 <i class="fa-solid fa-car" aria-hidden="true"></i>
               </div>
@@ -472,27 +466,16 @@
                 <span>PHP</span><span>MySQL</span><span>CSS</span>
               </div>
               <div class="project-links">
-                <a
-                  href="carpoolingsystem/index.php"
-                  target="_blank"
-                  class="demo-link"
-                  ><i
-                    class="fa-solid fa-arrow-up-right-from-square"
-                    aria-hidden="true"
-                  ></i
-                  >Live Demo</a
-                >
-                <a
-                  href="https://github.com/Bashanta-Pokharel"
-                  target="_blank"
-                  rel="noopener"
-                  ><i class="fa-brands fa-github" aria-hidden="true"></i
-                  >GitHub</a
-                >
+                <button type="button" class="btn btn-small modal-trigger" data-project="carpooling">
+                  <i class="fa-solid fa-layer-group" aria-hidden="true"></i> Details & Architecture
+                </button>
+                <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener" class="btn-ghost-icon" title="View Source on GitHub">
+                  <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub
+                </a>
               </div>
             </article>
 
-            <article class="project-card reveal">
+            <article class="project-card reveal" data-project="clock" data-category="javascript">
               <div class="project-icon">
                 <i class="fa-solid fa-clock" aria-hidden="true"></i>
               </div>
@@ -506,28 +489,20 @@
                 <span>HTML5</span><span>CSS3</span><span>JavaScript</span>
               </div>
               <div class="project-links">
-                <a href="clock/index.html" target="_blank" class="demo-link"
-                  ><i
-                    class="fa-solid fa-arrow-up-right-from-square"
-                    aria-hidden="true"
-                  ></i
-                  >Live Demo</a
-                >
-                <a
-                  href="https://github.com/Bashanta-Pokharel"
-                  target="_blank"
-                  rel="noopener"
-                  ><i class="fa-brands fa-github" aria-hidden="true"></i
-                  >GitHub</a
-                >
+                <a href="clock/index.html" target="_blank" class="demo-link btn btn-small">
+                  <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i> Live Demo
+                </a>
+                <button type="button" class="btn-ghost-icon modal-trigger" data-project="clock" title="View System Details">
+                  <i class="fa-solid fa-circle-info" aria-hidden="true"></i> Info
+                </button>
               </div>
             </article>
 
-            <article class="project-card reveal">
+            <article class="project-card reveal" data-project="future-systems" data-category="future">
               <div class="project-icon">
                 <i class="fa-solid fa-code-branch" aria-hidden="true"></i>
               </div>
-              <h3>Future Systems</h3>
+              <h3>Future Backend Systems</h3>
               <p>
                 Designing and planning new scalable backend systems, including
                 integration of Redis for caching, Docker containers, and
@@ -537,19 +512,88 @@
                 <span>Docker</span><span>Redis</span><span>Microservices</span>
               </div>
               <div class="project-links">
-                <a href="#" class="demo-link"
-                  ><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i
-                  >Coming Soon</a
-                >
-                <a
-                  href="https://github.com/Bashanta-Pokharel"
-                  target="_blank"
-                  rel="noopener"
-                  ><i class="fa-brands fa-github" aria-hidden="true"></i
-                  >GitHub</a
-                >
+                <button type="button" class="btn btn-small modal-trigger" data-project="future-systems">
+                  <i class="fa-solid fa-rocket" aria-hidden="true"></i> Architecture Roadmap
+                </button>
+                <a href="https://github.com/Bashanta-Pokharel" target="_blank" rel="noopener" class="btn-ghost-icon" title="View GitHub Roadmap">
+                  <i class="fa-brands fa-github" aria-hidden="true"></i> GitHub
+                </a>
               </div>
             </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Backend REST API Sandbox Section -->
+      <section class="section api-sandbox-band" id="api-sandbox" aria-labelledby="api-sandbox-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="section-label">Interactive Backend API Sandbox</p>
+            <h2 id="api-sandbox-title">Test live REST API endpoints in real-time.</h2>
+            <p class="section-subtitle">Click any HTTP endpoint below to simulate live API requests, inspect status codes, response headers, and formatted JSON output.</p>
+          </div>
+
+          <div class="api-sandbox-grid reveal">
+            <div class="api-controls-panel">
+              <h3><i class="fa-solid fa-terminal" aria-hidden="true"></i> API Endpoints</h3>
+              <div class="api-endpoint-list">
+                <button type="button" class="api-endpoint-btn active" data-endpoint="profile">
+                  <span class="http-method get">GET</span>
+                  <span class="endpoint-path">/api/v1/profile</span>
+                </button>
+                <button type="button" class="api-endpoint-btn" data-endpoint="projects">
+                  <span class="http-method get">GET</span>
+                  <span class="endpoint-path">/api/v1/projects</span>
+                </button>
+                <button type="button" class="api-endpoint-btn" data-endpoint="skills">
+                  <span class="http-method get">GET</span>
+                  <span class="endpoint-path">/api/v1/skills</span>
+                </button>
+                <button type="button" class="api-endpoint-btn" data-endpoint="ping">
+                  <span class="http-method post">POST</span>
+                  <span class="endpoint-path">/api/v1/ping</span>
+                </button>
+                <button type="button" class="api-endpoint-btn" data-endpoint="status">
+                  <span class="http-method get">GET</span>
+                  <span class="endpoint-path">/api/v1/status</span>
+                </button>
+              </div>
+              
+              <div class="api-request-actions">
+                <button type="button" class="btn btn-small" id="send-api-request">
+                  <i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Execute Request
+                </button>
+                <button type="button" class="btn-ghost-icon" id="copy-api-response" title="Copy JSON Response">
+                  <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy JSON
+                </button>
+              </div>
+            </div>
+
+            <div class="api-response-panel">
+              <div class="api-response-bar">
+                <div class="api-bar-dots">
+                  <span></span><span></span><span></span>
+                </div>
+                <div class="api-status-badges">
+                  <span class="status-badge 200" id="api-status-code">200 OK</span>
+                  <span class="latency-badge" id="api-latency">18 ms</span>
+                </div>
+              </div>
+
+              <div class="api-response-headers" id="api-response-headers">
+                HTTP/1.1 200 OK | Content-Type: application/json | X-Powered-By: PHP 8.2 & Laravel
+              </div>
+
+              <pre class="api-response-code" id="api-response-body"><code>{
+  "status": "success",
+  "developer": "Bashanta Pokharel",
+  "role": "Backend Developer",
+  "location": "Kathmandu, Nepal",
+  "education": "BCA 6th Semester",
+  "primaryStack": ["PHP", "Laravel", "MySQL", "Python", "REST API"],
+  "availableFor": "Internships & Junior Backend Roles"
+}</code></pre>
+            </div>
           </div>
         </div>
       </section>
@@ -946,14 +990,20 @@
       </button>
     </div>
 
-    <button
-      class="back-to-top icon-button"
-      type="button"
-      aria-label="Back to top"
-    >
-      <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
-    </button>
+    <!-- 3D Glassmorphism Project Showcase Modal -->
+    <div class="project-modal" id="project-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <div class="modal-backdrop" id="modal-backdrop"></div>
+      <div class="modal-card">
+        <button class="modal-close" id="modal-close" type="button" aria-label="Close project modal">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+        <div class="modal-body" id="modal-body">
+          <!-- Dynamic 3D Project Details Content Injected by script.js -->
+        </div>
+      </div>
+    </div>
 
+    <div class="cyber-cursor" id="cyber-cursor" aria-hidden="true"></div>
     <script src="script.js" defer></script>
   </body>
 </html>
