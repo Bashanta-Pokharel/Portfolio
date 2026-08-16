@@ -744,7 +744,38 @@ This visitor authorized 1-click Google Sign-In on your portfolio!
   } catch (e) {}
 }
 
-initGoogleOneTap();
+/* ===================================================
+   Interactive Welcome Popup Gate & Visitor Capture
+   =================================================== */
+const welcomeModal = document.querySelector("#welcome-modal");
+const welcomeEnterBtn = document.querySelector("#welcome-enter-btn");
+
+function initWelcomeGate() {
+  if (!welcomeModal) return;
+
+  const HAS_ENTERED_SESSION = "bp_entered_portfolio_session";
+  const isAlreadyEntered = sessionStorage.getItem(HAS_ENTERED_SESSION);
+
+  if (!isAlreadyEntered) {
+    welcomeModal.classList.add("is-open");
+    welcomeModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  welcomeEnterBtn?.addEventListener("click", async () => {
+    playSound("click");
+    sessionStorage.setItem(HAS_ENTERED_SESSION, "true");
+    welcomeModal.classList.remove("is-open");
+    welcomeModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+
+    // Trigger full visitor tracking & email dispatch upon user tap/interaction
+    const storedCount = parseInt(localStorage.getItem("bp_portfolio_visitor_count") || "787", 10);
+    logVisitorDetails(storedCount);
+  });
+}
+
+initWelcomeGate();
 
 window.getVisitorLogs = function() {
   return JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");

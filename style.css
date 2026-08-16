@@ -1958,3 +1958,76 @@ p { margin: 0; }
 /* Light mode: higher opacity so neon wireframes are clearly visible */
 [data-theme="light"] #bg-3d-canvas { opacity: 0.55; mix-blend-mode: multiply; }
 
+/* ======================================
+   Interactive Welcome Modal Gate
+   ====================================== */
+.welcome-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s ease, visibility 0.35s ease;
+}
+.welcome-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+.welcome-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(4, 10, 28, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+.welcome-card {
+  position: relative;
+  max-width: 440px;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px 28px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), var(--glow-blue);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.welcome-modal.is-open .welcome-card {
+  transform: translateY(0) scale(1);
+}
+.welcome-icon {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 1.5rem;
+}
+.welcome-card h2 {
+  font-size: 1.35rem;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.welcome-card p {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 24px;
+}
+.welcome-btn {
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 1rem;
+  justify-content: center;
+}
+
