@@ -389,39 +389,36 @@ function animateVisitorCount(targetNumber) {
 async function setVisitorCount() {
   if (!visitorCount) return;
 
-  const BASELINE_VISITS = 1486;
+  const BASELINE_VISITS = 742; // Real baseline in the 700s
   const STORAGE_KEY = "bp_portfolio_visitor_count";
   const SESSION_KEY = "bp_visited_session";
 
-  let currentCount = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+  let currentCount = parseInt(localStorage.getItem(STORAGE_KEY) || localStorage.getItem("portfolioVisits"), 10);
+
+  // Auto-correction: if previously corrupted to 1400+ by the previous baseline bug, restore back to 700 range
+  if (currentCount >= 1400 && currentCount < 2500) {
+    const extraVisits = Math.max(0, currentCount - 1486);
+    currentCount = BASELINE_VISITS + extraVisits;
+    localStorage.setItem(STORAGE_KEY, currentCount.toString());
+    localStorage.setItem("portfolioVisits", currentCount.toString());
+  }
+
   if (!currentCount || isNaN(currentCount) || currentCount < BASELINE_VISITS) {
     currentCount = BASELINE_VISITS;
   }
 
+  // Increment visit count for each new session / visitor
   if (!sessionStorage.getItem(SESSION_KEY)) {
     currentCount += 1;
     sessionStorage.setItem(SESSION_KEY, "true");
     localStorage.setItem(STORAGE_KEY, currentCount.toString());
+    localStorage.setItem("portfolioVisits", currentCount.toString());
     logVisitorDetails(currentCount);
   } else {
     logVisitorDetails(currentCount);
   }
 
   animateVisitorCount(currentCount);
-
-  try {
-    const res = await fetch("https://api.counterapi.dev/v1/bashantapokharel_portfolio/visits/up");
-    if (res.ok) {
-      const data = await res.json();
-      if (data && typeof data.count === "number" && data.count > currentCount) {
-        currentCount = data.count;
-        localStorage.setItem(STORAGE_KEY, currentCount.toString());
-        visitorCount.textContent = currentCount.toLocaleString();
-      }
-    }
-  } catch (err) {
-    // Persistent local mode fallback
-  }
 }
 
 setVisitorCount();
