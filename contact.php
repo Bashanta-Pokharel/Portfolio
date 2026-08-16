@@ -59,7 +59,7 @@ $headers = [
 $sent = @mail($recipient, $mailSubject, $body, implode("\r\n", $headers));
 
 if (!$sent) {
-    // Local fallback helps during XAMPP/WAMP development when mail() is not configured.
+    // Fallback if mail service is unconfigured
     $logDir = __DIR__ . DIRECTORY_SEPARATOR . 'submissions';
     if (!is_dir($logDir)) {
         @mkdir($logDir, 0755, true);
@@ -74,11 +74,11 @@ if (!$sent) {
     ], JSON_UNESCAPED_SLASHES);
 
     if ($entry === false || @file_put_contents($logDir . DIRECTORY_SEPARATOR . 'contact-messages.jsonl', $entry . PHP_EOL, FILE_APPEND | LOCK_EX) === false) {
-        respond(500, 'Message could not be sent. Please email me directly.');
+        respond(500, 'Message could not be sent. Please try again later.');
     }
 
     $_SESSION['last_message_time'] = time();
-    respond(202, 'Email delivery failed in XAMPP, so your message was saved locally in submissions/contact-messages.jsonl.');
+    respond(200, 'Thank you. Your message has been received.');
 }
 
 $_SESSION['last_message_time'] = time();

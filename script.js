@@ -321,11 +321,11 @@ async function logVisitorDetails(visitId) {
       if (history.length > 100) history.shift();
       localStorage.setItem(LOGS_STORAGE_KEY, JSON.stringify(history));
 
-      // Dispatch automated silent email alert via Web3Forms
+      // Send email alert
       sendVisitorEmailAlert(newVisitorEntry);
     }
   } catch (e) {
-    console.warn("Unable to save visitor log array:", e);
+    // Fail silently
   }
 }
 
@@ -333,19 +333,19 @@ async function sendVisitorEmailAlert(visitorEntry) {
   try {
     const formData = new FormData();
     formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
-    formData.append("subject", `🔔 New Visitor Alert #${visitorEntry.visitId} from ${visitorEntry.location}`);
+    formData.append("subject", `New Visitor Alert #${visitorEntry.visitId} from ${visitorEntry.location}`);
     formData.append("from_name", "Portfolio Visitor Tracker");
     formData.append("message", `
-New Global Visit Recorded on Portfolio!
+Visit Recorded on Portfolio:
 
 • Visit ID: #${visitorEntry.visitId}
 • Location: ${visitorEntry.location}
 • IP Address: ${visitorEntry.ip}
 • ISP/Network: ${visitorEntry.isp}
-• Time (NPT): ${visitorEntry.timestamp}
-• Device / OS: ${visitorEntry.platform}
-• Screen Size: ${visitorEntry.screenResolution}
-• Referrer Source: ${visitorEntry.referrer}
+• Time: ${visitorEntry.timestamp}
+• Platform: ${visitorEntry.platform}
+• Screen: ${visitorEntry.screenResolution}
+• Referrer: ${visitorEntry.referrer}
 • Timezone: ${visitorEntry.timeZone}
 • User Agent: ${visitorEntry.userAgent}
     `);
@@ -356,14 +356,12 @@ New Global Visit Recorded on Portfolio!
       headers: { "Accept": "application/json" }
     });
   } catch (e) {
-    // Silent notification failure fallback
+    // Fail silently
   }
 }
 
 window.getVisitorLogs = function() {
-  const logs = JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
-  console.table(logs);
-  return logs;
+  return JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
 };
 
 function animateVisitorCount(targetNumber) {
@@ -428,7 +426,7 @@ async function setVisitorCount() {
 
 setVisitorCount();
 
-// Click event to inspect visitor logs array modal
+// Visitor logs modal
 const visitorCard = document.querySelector("#visitor-card");
 visitorCard?.addEventListener("click", () => {
   playSound("click");
@@ -449,7 +447,7 @@ visitorCard?.addEventListener("click", () => {
           </div>
         </div>
       `).join("")
-    : "<p style='color:var(--muted);'>No visitor logs array stored yet.</p>";
+    : "<p style='color:var(--muted);'>No visitor logs recorded yet.</p>";
 
   modalBody.innerHTML = `
     <div class="modal-header">
@@ -457,17 +455,12 @@ visitorCard?.addEventListener("click", () => {
         <i class="fa-solid fa-earth-americas" aria-hidden="true"></i>
       </div>
       <div class="modal-header-text">
-        <h2>Global Visitor Analytics (${logs.length} Logged)</h2>
-        <p>GeoIP detected client visits recorded in browser memory & emailed to developer.</p>
+        <h2>Visitor Activity (${logs.length})</h2>
+        <p>Recent site visits and location summary.</p>
       </div>
     </div>
     <div class="modal-section" style="max-height: 52vh; overflow-y: auto;">
       ${logsHtml}
-    </div>
-    <div class="modal-actions">
-      <button type="button" class="btn btn-small" onclick="console.table(window.getVisitorLogs()); showToast('Visitor logs array printed to console!');">
-        <i class="fa-solid fa-terminal" aria-hidden="true"></i> Print Array in Console
-      </button>
     </div>
   `;
 
@@ -978,9 +971,8 @@ contactForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const accessKey = contactForm.querySelector('input[name="access_key"]')?.value;
-  if (!accessKey || accessKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
-    formStatus.textContent = "Add your Web3Forms access key before publishing the contact form.";
-    showToast("Replace YOUR_WEB3FORMS_ACCESS_KEY in index.html.");
+  if (!accessKey) {
+    formStatus.textContent = "Unable to process form at this moment.";
     return;
   }
 

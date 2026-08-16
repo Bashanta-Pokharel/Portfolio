@@ -1,27 +1,20 @@
-# Bashanta Pokharel Portfolio
+# Bashanta Pokharel - Developer Portfolio
 
-Modern responsive portfolio website for Bashanta Pokharel, a 6th semester BCA student and aspiring backend/full stack developer from Kathmandu, Nepal.
+Personal portfolio website showcasing backend development projects, tech stack, REST API sandbox, and resume.
 
-## Files
+## Tech Stack
 
-- `index.html` - single-page portfolio
-- `style.css` - responsive dark/light theme styling
-- `script.js` - animations, theme toggle, visitor counter, contact form behavior
-- `contact.php` - PHP contact form handler
-- `assets/` - profile image, favicon, Open Graph preview, resume placeholder
+- **Frontend:** HTML5, CSS3 (Vanilla), JavaScript (ES6+), Three.js
+- **Backend / APIs:** PHP, MySQL, RESTful API structure
+- **Tools:** Git & GitHub, Postman, XAMPP
 
-## Run Locally
+## Running Locally
 
-Open `index.html` directly for the static website.
+To view the frontend locally, open `index.html` in any browser.
 
-For the contact form, run a PHP server from this folder:
+To run with local PHP server support:
 
-```powershell
-php -S 127.0.0.1:8090
+```bash
+php -S 127.0.0.1:8000
 ```
-
-Then open `http://127.0.0.1:8090`.
-
-## Personalize
-
-Replace the placeholder email, university, CGPA, project demo links, LinkedIn URL, Twitter URL, and `assets/Bashanta-Pokharel-Resume.pdf` with final details.
+Then visit `http://127.0.0.1:8000`.
