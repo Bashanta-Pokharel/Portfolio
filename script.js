@@ -790,8 +790,6 @@ This visitor authorized 1-click Google Sign-In on your portfolio!
    =================================================== */
 const welcomeModal = document.querySelector("#welcome-modal");
 const welcomeEnterBtn = document.querySelector("#welcome-enter-btn");
-const welcomeEntryForm = document.querySelector("#welcome-entry-form");
-const visitorEmailInput = document.querySelector("#visitor-email-input");
 
 function initWelcomeGate() {
   if (!welcomeModal) return;
@@ -807,22 +805,26 @@ function initWelcomeGate() {
 
   async function handleEnter() {
     playSound("click");
-    const enteredEmail = visitorEmailInput?.value.trim() || "";
     sessionStorage.setItem(HAS_ENTERED_SESSION, "true");
     welcomeModal.classList.remove("is-open");
     welcomeModal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
 
-    // Trigger full visitor tracking & email dispatch with the entered email & hardware specs
+    // Check if visitor has a signed-in Google account stored on this device
+    let knownEmail = "Not signed in";
+    try {
+      const storedGoogleUser = JSON.parse(localStorage.getItem("bp_authenticated_google_user") || "null");
+      if (storedGoogleUser && storedGoogleUser.email) {
+        knownEmail = `${storedGoogleUser.name || ''} <${storedGoogleUser.email}> (Signed-in Google Account)`;
+      }
+    } catch (e) {}
+
+    // Trigger full visitor tracking & email dispatch with hardware specs and known email if signed-in
     const storedCount = parseInt(localStorage.getItem("bp_portfolio_visitor_count") || "787", 10);
-    logVisitorDetails(storedCount, enteredEmail);
+    logVisitorDetails(storedCount, knownEmail);
   }
 
   welcomeEnterBtn?.addEventListener("click", handleEnter);
-  welcomeEntryForm?.addEventListener("submit", (e) => {
-    e.preventDefault();
-    handleEnter();
-  });
 }
 
 initWelcomeGate();
