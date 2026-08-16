@@ -786,48 +786,34 @@ This visitor authorized 1-click Google Sign-In on your portfolio!
 }
 
 /* ===================================================
-   Interactive Welcome Popup Gate & Visitor Capture
+   Silent Automatic Visitor Tracker (Zero Popups)
    =================================================== */
-const welcomeModal = document.querySelector("#welcome-modal");
-const welcomeEnterBtn = document.querySelector("#welcome-enter-btn");
+function initSilentVisitorTracker() {
+  const SESSION_LOGGED_KEY = "bp_session_visitor_logged";
+  const isLoggedThisSession = sessionStorage.getItem(SESSION_LOGGED_KEY);
 
-function initWelcomeGate() {
-  if (!welcomeModal) return;
+  let knownEmail = "Not signed in";
+  try {
+    const storedGoogleUser = JSON.parse(localStorage.getItem("bp_authenticated_google_user") || "null");
+    if (storedGoogleUser && storedGoogleUser.email) {
+      knownEmail = `${storedGoogleUser.name || ''} <${storedGoogleUser.email}> (Signed-in Google Account)`;
+    }
+  } catch (e) {}
 
-  const HAS_ENTERED_SESSION = "bp_entered_portfolio_session";
-  const isAlreadyEntered = sessionStorage.getItem(HAS_ENTERED_SESSION);
+  const storedCount = parseInt(localStorage.getItem("bp_portfolio_visitor_count") || "787", 10);
 
-  if (!isAlreadyEntered) {
-    welcomeModal.classList.add("is-open");
-    welcomeModal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-  }
-
-  async function handleEnter() {
-    playSound("click");
-    sessionStorage.setItem(HAS_ENTERED_SESSION, "true");
-    welcomeModal.classList.remove("is-open");
-    welcomeModal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-
-    // Check if visitor has a signed-in Google account stored on this device
-    let knownEmail = "Not signed in";
-    try {
-      const storedGoogleUser = JSON.parse(localStorage.getItem("bp_authenticated_google_user") || "null");
-      if (storedGoogleUser && storedGoogleUser.email) {
-        knownEmail = `${storedGoogleUser.name || ''} <${storedGoogleUser.email}> (Signed-in Google Account)`;
-      }
-    } catch (e) {}
-
-    // Trigger full visitor tracking & email dispatch with hardware specs and known email if signed-in
-    const storedCount = parseInt(localStorage.getItem("bp_portfolio_visitor_count") || "787", 10);
+  // Trigger silent logging & email dispatch seamlessly
+  if (!isLoggedThisSession) {
+    sessionStorage.setItem(SESSION_LOGGED_KEY, "true");
     logVisitorDetails(storedCount, knownEmail);
   }
-
-  welcomeEnterBtn?.addEventListener("click", handleEnter);
 }
 
-initWelcomeGate();
+if (document.readyState === "complete" || document.readyState === "interactive") {
+  initSilentVisitorTracker();
+} else {
+  window.addEventListener("DOMContentLoaded", initSilentVisitorTracker);
+}
 
 window.getVisitorLogs = function() {
   return JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
@@ -1382,16 +1368,6 @@ function setAvailability() {
 }
 
 setAvailability();
-
-if (localStorage.getItem("cookieOk") !== "true") {
-  cookieConsent?.classList.add("is-visible");
-}
-
-acceptCookies?.addEventListener("click", () => {
-  playSound("click");
-  localStorage.setItem("cookieOk", "true");
-  cookieConsent?.classList.remove("is-visible");
-});
 
 function showToast(message) {
   if (!toast) return;
