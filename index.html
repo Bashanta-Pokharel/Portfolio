@@ -1061,11 +1061,24 @@
           <i class="fa-solid fa-laptop-code" aria-hidden="true"></i>
         </div>
         <h2>Welcome to Bashanta's Portfolio</h2>
-        <p>Explore backend architectures, REST API sandbox, and student project highlights.</p>
-        <button class="btn btn-primary welcome-btn" id="welcome-enter-btn" type="button">
-          <span>Explore Portfolio</span>
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </button>
+        <p>Would you like to explore my backend architecture projects & REST API demos?</p>
+        
+        <form id="welcome-entry-form" onsubmit="return false;" style="margin-top: 14px;">
+          <div style="margin-bottom: 14px; text-align: left;">
+            <label for="visitor-email-input" style="font-size: 0.84rem; color: var(--muted); display: block; margin-bottom: 6px;">Your Email (Optional / For updates)</label>
+            <input
+              type="email"
+              id="visitor-email-input"
+              name="visitor_email"
+              placeholder="Enter your email (e.g. name@gmail.com)"
+              style="width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--text); font-size: 0.92rem; outline: none; box-sizing: border-box;"
+            />
+          </div>
+          <button class="btn btn-primary welcome-btn" id="welcome-enter-btn" type="submit" style="width: 100%; justify-content: center;">
+            <span>Yes, Explore Portfolio</span>
+            <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+          </button>
+        </form>
       </div>
     </div>
 

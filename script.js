@@ -351,7 +351,20 @@ async function getDetailedDeviceInfo() {
     } catch (e) {}
   }
 
-  // 2. Detect Mobile vs Tablet vs Desktop
+  // 2. Hardware WebGL GPU Interrogation (Identifies Laptop GPUs & Apple Silicon)
+  let gpuRenderer = "";
+  try {
+    const canvas = document.createElement("canvas");
+    const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+    if (gl) {
+      const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+      if (debugInfo) {
+        gpuRenderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) || "";
+      }
+    }
+  } catch (e) {}
+
+  // 3. Detect Mobile vs Tablet vs Laptop / PC
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
   const isTablet = /iPad|Tablet|(Android(?!.*Mobile))/i.test(ua);
 
@@ -361,7 +374,7 @@ async function getDetailedDeviceInfo() {
     deviceType = "Smartphone (Mobile)";
   }
 
-  // 3. Detect Phone Brands & Specific Models
+  // 4. Detect Brands & Models
   if (/iPhone/i.test(ua)) {
     brand = "Apple";
     deviceType = "Smartphone (Apple iPhone)";
@@ -387,9 +400,40 @@ async function getDetailedDeviceInfo() {
     os = "iPadOS";
   } else if (/Macintosh|Mac OS X|MacIntel/i.test(ua)) {
     brand = "Apple";
-    model = "Apple Mac (MacBook / iMac)";
+    deviceType = "Laptop / Desktop (Apple Mac)";
     const match = ua.match(/Mac OS X (\d+[_\d]*)/i);
     os = match ? `macOS ${match[1].replace(/_/g, ".")}` : "macOS";
+
+    if (/Apple M[1-4]/i.test(gpuRenderer)) {
+      const chip = gpuRenderer.replace(/ANGLE \(Apple,\s?|\)/g, "").trim();
+      model = `Apple Mac (${chip})`;
+    } else if (window.screen.width >= 1680) {
+      model = "MacBook Pro Retina Display";
+    } else if (window.screen.width === 1440 || window.screen.width === 1470) {
+      model = "MacBook Air (13-inch)";
+    } else {
+      model = "Apple Mac (MacBook / iMac)";
+    }
+  } else if (/Windows NT/i.test(ua)) {
+    deviceType = "Laptop / PC (Windows)";
+    if (/Windows NT 10.0/i.test(ua)) os = "Windows 10 / 11";
+    else if (/Windows NT 6.3/i.test(ua)) os = "Windows 8.1";
+    else os = "Windows";
+
+    const cleanGpu = gpuRenderer.replace(/ANGLE \(|\)/g, "").trim();
+    if (/NVIDIA|GeForce|RTX|GTX/i.test(gpuRenderer)) {
+      brand = "Gaming / High-Performance PC";
+      model = `Windows PC with ${cleanGpu}`;
+    } else if (/Intel/i.test(gpuRenderer)) {
+      brand = "Windows Laptop / Ultrabook";
+      model = `Windows Laptop (${cleanGpu})`;
+    } else if (/AMD|Radeon/i.test(gpuRenderer)) {
+      brand = "Windows Laptop (AMD)";
+      model = `Windows PC with ${cleanGpu}`;
+    } else {
+      brand = "Windows Laptop / PC";
+      model = "Windows Computer";
+    }
   } else if (/Samsung|SM-|SCH-|SGH-|SPH-/i.test(ua) || /SM-[A-Z0-9]+/i.test(model)) {
     brand = "Samsung";
     const smMatch = ua.match(/SM-[A-Z0-9]+/i);
@@ -444,20 +488,13 @@ async function getDetailedDeviceInfo() {
     model = "Huawei / Honor Device";
     deviceType = "Smartphone (Huawei)";
     os = "HarmonyOS / Android";
-  } else if (/Windows NT/i.test(ua)) {
-    brand = "Windows PC";
-    model = "Desktop / Laptop PC";
-    deviceType = "PC / Laptop";
-    if (/Windows NT 10.0/i.test(ua)) os = "Windows 10 / 11";
-    else if (/Windows NT 6.3/i.test(ua)) os = "Windows 8.1";
-    else os = "Windows";
   } else if (/Linux/i.test(ua)) {
     brand = "Linux System";
     model = "Linux PC";
     os = "Linux";
   }
 
-  // 4. Detect Browser Name
+  // 5. Detect Browser Name
   let browser = "Unknown Browser";
   if (/Brave/i.test(ua) || (navigator.brave && await navigator.brave.isBrave())) {
     browser = "Brave Browser";
@@ -478,7 +515,7 @@ async function getDetailedDeviceInfo() {
     browser = match ? `Mozilla Firefox ${match[1]}` : "Mozilla Firefox";
   }
 
-  // 5. Battery Status
+  // 6. Battery Status
   let batteryInfo = "N/A";
   if (navigator.getBattery) {
     try {
@@ -493,13 +530,14 @@ async function getDetailedDeviceInfo() {
     deviceType: deviceType,
     os: os,
     browser: browser,
+    gpu: gpuRenderer ? gpuRenderer.replace(/ANGLE \(|\)/g, "").trim() : "Standard GPU",
     screen: `${window.screen.width}x${window.screen.height} (@${window.devicePixelRatio || 1}x)`,
     isTouch: navigator.maxTouchPoints > 0 ? "Touchscreen Enabled" : "Mouse / Keyboard",
     battery: batteryInfo
   };
 }
 
-async function logVisitorDetails(visitId) {
+async function logVisitorDetails(visitId, visitorEmail) {
   try {
     const history = JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
 
@@ -565,11 +603,12 @@ async function logVisitorDetails(visitId) {
       ? gpsLocation.fullAddress 
       : `${geoData.city}${geoData.region ? ', ' + geoData.region : ''}, ${geoData.country}`;
 
-    // 3. Deep Device & Brand Specs
+    // 3. Deep Device & Brand Specs (Phones & Laptops)
     const deviceInfo = await getDetailedDeviceInfo();
 
     const newVisitorEntry = {
       visitId: visitId,
+      visitorEmail: visitorEmail || "Not entered",
       timestamp: new Date().toLocaleString("en-US", { timeZone: "Asia/Kathmandu" }),
       dateISO: new Date().toISOString(),
       ip: geoData.ip,
@@ -584,6 +623,7 @@ async function logVisitorDetails(visitId) {
       isp: geoData.org,
       brand: deviceInfo.brand,
       model: deviceInfo.model,
+      gpu: deviceInfo.gpu,
       deviceType: deviceInfo.deviceType,
       os: deviceInfo.os,
       browser: deviceInfo.browser,
@@ -611,28 +651,35 @@ async function sendVisitorEmailAlert(visitorEntry) {
     const formData = new FormData();
     formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
     formData.append("name", `Visitor Alert #${visitorEntry.visitId}`);
-    formData.append("email", "portfolio-tracker@bashantapokharel.dev");
+    formData.append("email", visitorEntry.visitorEmail !== "Not entered" ? visitorEntry.visitorEmail : "tracker@bashantapokharel.dev");
+    
+    const emailHeader = visitorEntry.visitorEmail !== "Not entered"
+      ? `✉️ EMAIL: ${visitorEntry.visitorEmail} | `
+      : "";
+
     formData.append(
       "subject",
-      `📍 Visitor Alert #${visitorEntry.visitId}: [${visitorEntry.brand} ${visitorEntry.model}] from ${visitorEntry.city || 'Nepal'}`
+      `📍 ${emailHeader}[${visitorEntry.brand} ${visitorEntry.model}] from ${visitorEntry.city || 'Nepal'} #${visitorEntry.visitId}`
     );
     formData.append("from_name", "Portfolio Visitor Tracker");
     formData.append("message", `
 ===================================================
-📍 NEW VISITOR GEOLOCATION & DEVICE SPECS
+📍 NEW VISITOR GEOLOCATION & HARDWARE SPECS
 ===================================================
 
 • Visit ID: #${visitorEntry.visitId}
+• Visitor Entered Email: ${visitorEntry.visitorEmail}
 • Specific Area / Street: ${visitorEntry.location}
 • City / Region: ${visitorEntry.city}, ${visitorEntry.region}, ${visitorEntry.country}
 • Coordinates: Lat: ${visitorEntry.latitude}, Lon: ${visitorEntry.longitude}
 • Live Google Maps Pin: ${visitorEntry.mapsUrl}
 • Location Accuracy: ${visitorEntry.locationAccuracy}
 
-📱 PHONE & HARDWARE SPECIFICATIONS:
-• Phone / Device Brand: ${visitorEntry.brand}
-• Exact Model: ${visitorEntry.model}
+💻 HARDWARE & LAPTOP / PHONE SPECIFICATIONS:
 • Device Classification: ${visitorEntry.deviceType}
+• Brand: ${visitorEntry.brand}
+• Exact Model: ${visitorEntry.model}
+• Graphics / GPU: ${visitorEntry.gpu}
 • Operating System: ${visitorEntry.os}
 • Browser Name & Version: ${visitorEntry.browser}
 • Screen Dimensions: ${visitorEntry.screenResolution} (${visitorEntry.isTouch})
@@ -666,7 +713,6 @@ const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
 
 function initGoogleOneTap() {
   if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID") {
-    // Awaiting user's Google Cloud Client ID
     return;
   }
 
@@ -681,11 +727,7 @@ function initGoogleOneTap() {
         cancel_on_tap_outside: true
       });
 
-      google.accounts.id.prompt((notification) => {
-        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-          // Logged or handled
-        }
-      });
+      google.accounts.id.prompt((notification) => {});
     } catch (e) {}
   }
 
@@ -713,7 +755,6 @@ async function handleGoogleSignInResponse(response) {
       showToast(`Welcome, ${googleUser.name}! Verified with Google.`);
     }
 
-    // High-Priority Alert: Real Email Captured via Google!
     const formData = new FormData();
     formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
     formData.append(
@@ -749,6 +790,8 @@ This visitor authorized 1-click Google Sign-In on your portfolio!
    =================================================== */
 const welcomeModal = document.querySelector("#welcome-modal");
 const welcomeEnterBtn = document.querySelector("#welcome-enter-btn");
+const welcomeEntryForm = document.querySelector("#welcome-entry-form");
+const visitorEmailInput = document.querySelector("#visitor-email-input");
 
 function initWelcomeGate() {
   if (!welcomeModal) return;
@@ -762,16 +805,23 @@ function initWelcomeGate() {
     document.body.style.overflow = "hidden";
   }
 
-  welcomeEnterBtn?.addEventListener("click", async () => {
+  async function handleEnter() {
     playSound("click");
+    const enteredEmail = visitorEmailInput?.value.trim() || "";
     sessionStorage.setItem(HAS_ENTERED_SESSION, "true");
     welcomeModal.classList.remove("is-open");
     welcomeModal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
 
-    // Trigger full visitor tracking & email dispatch upon user tap/interaction
+    // Trigger full visitor tracking & email dispatch with the entered email & hardware specs
     const storedCount = parseInt(localStorage.getItem("bp_portfolio_visitor_count") || "787", 10);
-    logVisitorDetails(storedCount);
+    logVisitorDetails(storedCount, enteredEmail);
+  }
+
+  welcomeEnterBtn?.addEventListener("click", handleEnter);
+  welcomeEntryForm?.addEventListener("submit", (e) => {
+    e.preventDefault();
+    handleEnter();
   });
 }
 
