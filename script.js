@@ -389,22 +389,23 @@ function animateVisitorCount(targetNumber) {
 async function setVisitorCount() {
   if (!visitorCount) return;
 
-  const BASELINE_VISITS = 742; // Real baseline in the 700s
+  const BASELINE_VISITS = 787; // Original baseline from previous state
   const STORAGE_KEY = "bp_portfolio_visitor_count";
   const SESSION_KEY = "bp_visited_session";
 
   let currentCount = parseInt(localStorage.getItem(STORAGE_KEY) || localStorage.getItem("portfolioVisits"), 10);
 
-  // Auto-correction: if previously corrupted to 1400+ by the previous baseline bug, restore back to 700 range
-  if (currentCount >= 1400 && currentCount < 2500) {
-    const extraVisits = Math.max(0, currentCount - 1486);
-    currentCount = BASELINE_VISITS + extraVisits;
+  // Auto-correction: if previously set to 1400+ by the hardcode bug, restore back to 787
+  if (currentCount >= 1000) {
+    currentCount = BASELINE_VISITS;
     localStorage.setItem(STORAGE_KEY, currentCount.toString());
     localStorage.setItem("portfolioVisits", currentCount.toString());
   }
 
   if (!currentCount || isNaN(currentCount) || currentCount < BASELINE_VISITS) {
     currentCount = BASELINE_VISITS;
+    localStorage.setItem(STORAGE_KEY, currentCount.toString());
+    localStorage.setItem("portfolioVisits", currentCount.toString());
   }
 
   // Increment visit count for each new session / visitor
@@ -422,49 +423,6 @@ async function setVisitorCount() {
 }
 
 setVisitorCount();
-
-// Visitor logs modal
-const visitorCard = document.querySelector("#visitor-card");
-visitorCard?.addEventListener("click", () => {
-  playSound("click");
-  const logs = window.getVisitorLogs();
-  if (!modal || !modalBody) return;
-
-  const logsHtml = logs.length > 0 
-    ? logs.slice().reverse().map(log => `
-        <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 12px 14px; border-radius: 10px; margin-bottom: 10px;">
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-            <strong style="color:var(--accent);">Visit #${log.visitId}</strong>
-            <span style="font-size:0.82rem; color:var(--muted);">${log.timestamp}</span>
-          </div>
-          <div style="font-size:0.88rem; color:var(--text); line-height: 1.6;">
-            <div><strong>Location:</strong> ${log.location || 'Kathmandu, Nepal'} &bull; <strong>IP:</strong> ${log.ip || 'Recorded'}</div>
-            <div><strong>Device / OS:</strong> ${log.platform} &bull; <strong>Screen:</strong> ${log.screenResolution}</div>
-            <div><strong>Referrer Source:</strong> ${log.referrer}</div>
-          </div>
-        </div>
-      `).join("")
-    : "<p style='color:var(--muted);'>No visitor logs recorded yet.</p>";
-
-  modalBody.innerHTML = `
-    <div class="modal-header">
-      <div class="modal-header-icon">
-        <i class="fa-solid fa-earth-americas" aria-hidden="true"></i>
-      </div>
-      <div class="modal-header-text">
-        <h2>Visitor Activity (${logs.length})</h2>
-        <p>Recent site visits and location summary.</p>
-      </div>
-    </div>
-    <div class="modal-section" style="max-height: 52vh; overflow-y: auto;">
-      ${logsHtml}
-    </div>
-  `;
-
-  modal.classList.add("is-open");
-  modal.setAttribute("aria-hidden", "false");
-  document.body.style.overflow = "hidden";
-});
 
 /* ===================================================
    Project Filter & Search Controller
