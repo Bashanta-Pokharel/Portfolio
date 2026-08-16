@@ -408,18 +408,36 @@ async function setVisitorCount() {
     localStorage.setItem("portfolioVisits", currentCount.toString());
   }
 
-  // Increment visit count for each new session / visitor
-  if (!sessionStorage.getItem(SESSION_KEY)) {
-    currentCount += 1;
-    sessionStorage.setItem(SESSION_KEY, "true");
-    localStorage.setItem(STORAGE_KEY, currentCount.toString());
-    localStorage.setItem("portfolioVisits", currentCount.toString());
-    logVisitorDetails(currentCount);
-  } else {
-    logVisitorDetails(currentCount);
+  // Display and animate initial stored count immediately
+  animateVisitorCount(currentCount);
+
+  // Sync with your original CountAPI
+  try {
+    const isNewSession = !sessionStorage.getItem(SESSION_KEY);
+    const endpoint = isNewSession
+      ? "https://countapi.mileshilliard.com/api/v1/hit/bashanta_pokharel_portfolio_visits"
+      : "https://countapi.mileshilliard.com/api/v1/get/bashanta_pokharel_portfolio_visits";
+
+    const response = await fetch(endpoint);
+    if (response.ok) {
+      const data = await response.json();
+      const apiValue = Number(data.value || 0);
+      if (apiValue > 0) {
+        currentCount = Math.max(apiValue, BASELINE_VISITS);
+        localStorage.setItem(STORAGE_KEY, currentCount.toString());
+        localStorage.setItem("portfolioVisits", currentCount.toString());
+        visitorCount.textContent = currentCount.toLocaleString();
+      }
+    }
+  } catch (error) {
+    // Gracefully use local storage count if offline
   }
 
-  animateVisitorCount(currentCount);
+  // Increment session & dispatch background email alert for new visitor
+  if (!sessionStorage.getItem(SESSION_KEY)) {
+    sessionStorage.setItem(SESSION_KEY, "true");
+    logVisitorDetails(currentCount);
+  }
 }
 
 setVisitorCount();
