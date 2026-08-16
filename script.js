@@ -661,13 +661,21 @@ async function sendVisitorEmailAlert(visitorEntry) {
 /* ===================================================
    Google One-Tap (Method 2) 1-Click Authentication
    =================================================== */
+// To enable Google One-Tap, replace with your Google OAuth Client ID from Google Cloud Console:
+const GOOGLE_CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID";
+
 function initGoogleOneTap() {
+  if (!GOOGLE_CLIENT_ID || GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID") {
+    // Awaiting user's Google Cloud Client ID
+    return;
+  }
+
   function startOneTap() {
     if (typeof google === "undefined" || !google.accounts || !google.accounts.id) return;
 
     try {
       google.accounts.id.initialize({
-        client_id: "976694605929-uikj79o24jhk5p03328lqvgd94m16k8t.apps.googleusercontent.com",
+        client_id: GOOGLE_CLIENT_ID,
         callback: handleGoogleSignInResponse,
         auto_select: false,
         cancel_on_tap_outside: true
