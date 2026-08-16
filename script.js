@@ -332,7 +332,7 @@ async function logVisitorDetails(visitId) {
 async function sendVisitorEmailAlert(visitorEntry) {
   try {
     const formData = new FormData();
-    formData.append("access_key", "f188eb73-6554-4184-9d0a-092e75f376f8");
+    formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
     formData.append("subject", `🔔 New Visitor Alert #${visitorEntry.visitId} from ${visitorEntry.location}`);
     formData.append("from_name", "Portfolio Visitor Tracker");
     formData.append("message", `
@@ -684,52 +684,82 @@ function initThree3DBackground() {
   const group = new THREE.Group();
   scene.add(group);
 
-  const materials = [
-    new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true, transparent: true, opacity: 0.35 }),
-    new THREE.MeshBasicMaterial({ color: 0x06b6d4, wireframe: true, transparent: true, opacity: 0.3 }),
-    new THREE.MeshBasicMaterial({ color: 0x8b5cf6, wireframe: true, transparent: true, opacity: 0.25 })
-  ];
+  /* ── Theme-aware color sets ── */
+  const DARK_COLORS  = [0x4f8eff, 0x00d4ff, 0xa855f7, 0x10b981];
+  const LIGHT_COLORS = [0x1a3fc4, 0x0096c7, 0x7b2be0, 0x0d7a5f]; // deep saturated
+
+  function isLight() { return document.documentElement.dataset.theme === "light"; }
+
+  function makeMaterials(colors, opacities) {
+    return colors.map((c, i) =>
+      new THREE.MeshBasicMaterial({ color: c, wireframe: true, transparent: true, opacity: opacities[i] })
+    );
+  }
+
+  let materials = makeMaterials(DARK_COLORS, [0.32, 0.26, 0.22, 0.20]);
 
   for (let i = 0; i < 14; i++) {
     const radius = Math.random() * 2.2 + 0.8;
     const geometry = new THREE.IcosahedronGeometry(radius, 1);
-    const material = materials[i % materials.length];
-    const mesh = new THREE.Mesh(geometry, material);
-
+    const mesh = new THREE.Mesh(geometry, materials[i % materials.length]);
     mesh.position.set(
       (Math.random() - 0.5) * 60,
       (Math.random() - 0.5) * 50,
       (Math.random() - 0.5) * 40
     );
-
     mesh.rotation.set(Math.random() * Math.PI, Math.random() * Math.PI, 0);
     mesh.userData = {
       rotSpeedX: (Math.random() - 0.5) * 0.008,
       rotSpeedY: (Math.random() - 0.5) * 0.008
     };
-
     group.add(mesh);
   }
 
-  const particleCount = 180;
+  /* Particles */
+  const particleCount = 200;
   const particleGeometry = new THREE.BufferGeometry();
   const positions = new Float32Array(particleCount * 3);
-
   for (let i = 0; i < particleCount * 3; i += 3) {
-    positions[i] = (Math.random() - 0.5) * 80;
+    positions[i]     = (Math.random() - 0.5) * 80;
     positions[i + 1] = (Math.random() - 0.5) * 80;
     positions[i + 2] = (Math.random() - 0.5) * 60;
   }
-
   particleGeometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  const particleMaterial = new THREE.PointsMaterial({
-    color: 0x38bdf8,
-    size: 0.6,
-    transparent: true,
-    opacity: 0.5
-  });
+  const particleMaterial = new THREE.PointsMaterial({ color: 0x00d4ff, size: 0.6, transparent: true, opacity: 0.5 });
   const particleSystem = new THREE.Points(particleGeometry, particleMaterial);
   scene.add(particleSystem);
+
+  const pos2 = new Float32Array(100 * 3);
+  for (let i = 0; i < 100 * 3; i += 3) {
+    pos2[i] = (Math.random() - 0.5) * 80;
+    pos2[i + 1] = (Math.random() - 0.5) * 80;
+    pos2[i + 2] = (Math.random() - 0.5) * 60;
+  }
+  const geo2 = new THREE.BufferGeometry();
+  geo2.setAttribute("position", new THREE.BufferAttribute(pos2, 3));
+  const mat2 = new THREE.PointsMaterial({ color: 0xa855f7, size: 0.4, transparent: true, opacity: 0.4 });
+  const particles2 = new THREE.Points(geo2, mat2);
+  scene.add(particles2);
+
+  /* ── Live theme switching: update all material colors ── */
+  function applyThemeColors() {
+    const light    = isLight();
+    const colors   = light ? LIGHT_COLORS : DARK_COLORS;
+    const opacities= light ? [0.55, 0.48, 0.42, 0.38] : [0.32, 0.26, 0.22, 0.20];
+    group.children.forEach((mesh, i) => {
+      mesh.material.color.setHex(colors[i % colors.length]);
+      mesh.material.opacity = opacities[i % opacities.length];
+    });
+    particleMaterial.color.setHex(light ? 0x0066cc : 0x00d4ff);
+    particleMaterial.opacity = light ? 0.7 : 0.5;
+    mat2.color.setHex(light ? 0x6600cc : 0xa855f7);
+    mat2.opacity = light ? 0.6 : 0.4;
+  }
+
+  /* Watch for theme changes */
+  const themeObserver = new MutationObserver(applyThemeColors);
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+  applyThemeColors(); // apply on load
 
   let mouseX = 0;
   let mouseY = 0;
@@ -755,10 +785,11 @@ function initThree3DBackground() {
       }
     });
 
-    particleSystem.rotation.y += 0.0006;
+    particleSystem.rotation.y += 0.0005;
+    particles2.rotation.y -= 0.0004;
 
-    camera.position.x += (mouseX * 4 - camera.position.x) * 0.04;
-    camera.position.y += (-mouseY * 4 - camera.position.y) * 0.04;
+    camera.position.x += (mouseX * 3.5 - camera.position.x) * 0.035;
+    camera.position.y += (-mouseY * 3.5 - camera.position.y) * 0.035;
     camera.lookAt(scene.position);
 
     renderer.render(scene, camera);
@@ -768,6 +799,29 @@ function initThree3DBackground() {
 }
 
 initThree3DBackground();
+
+/* ===================================================
+   3D Circular Skill Rings – SVG Stroke Animation
+   =================================================== */
+function initSkillRings() {
+  const CIRCUMFERENCE = 2 * Math.PI * 42; // r=42, so C ≈ 263.9
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      const ring = entry.target;
+      const pct = parseFloat(ring.getAttribute("data-pct")) || 0;
+      const offset = CIRCUMFERENCE * (1 - pct / 100);
+      ring.style.setProperty("--dash-offset", offset);
+      ring.classList.add("animated");
+      observer.unobserve(ring);
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll(".skill-ring").forEach((r) => observer.observe(r));
+}
+
+initSkillRings();
 
 /* ===================================================
    3D Project Showcase Modal Controller
@@ -884,7 +938,10 @@ function setAvailability() {
   }).format(new Date()));
   const isAvailable = hour >= 9 && hour < 21;
   availabilityLabel.textContent = isAvailable ? "Available today" : "Replies soon";
-  availabilityLabel.style.borderColor = isAvailable ? "rgba(34, 197, 94, 0.38)" : "rgba(245, 158, 11, 0.42)";
+  availabilityLabel.style.borderColor = isAvailable
+    ? "rgba(16, 185, 129, 0.45)"
+    : "rgba(245, 158, 11, 0.45)";
+  availabilityLabel.style.color = isAvailable ? "var(--emerald, #10b981)" : "var(--amber, #f59e0b)";
 }
 
 setAvailability();

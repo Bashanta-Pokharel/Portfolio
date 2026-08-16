@@ -33,7 +33,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
     <link
@@ -45,11 +45,17 @@
   </head>
   <body>
     <canvas id="bg-3d-canvas" aria-hidden="true"></canvas>
+
+
+
     <div class="page-loader" aria-hidden="true">
       <div class="loader-mark">
-        <span></span>
-        <span></span>
-        <span></span>
+        <div class="loader-mark-rings">
+          <div class="loader-ring"></div>
+          <div class="loader-ring"></div>
+          <div class="loader-ring"></div>
+        </div>
+        <span>Loading...</span>
       </div>
     </div>
 
@@ -115,7 +121,7 @@
               <span class="pulse-dot"></span>
               6th Semester BCA Student - Kathmandu, Nepal
             </p>
-            <h1 id="hero-title">Bashanta Pokharel</h1>
+            <h1 id="hero-title"><span class="hero-name-glow">Bashanta Pokharel</span></h1>
             <p class="hero-role">
               I'm a
               <span class="typing-text" aria-live="polite"
@@ -256,11 +262,56 @@
         <div class="container">
           <div class="section-heading reveal">
             <p class="section-label">Technical Skills</p>
-            <h2 id="skills-title">
-              Backend-first skill set with full stack awareness.
-            </h2>
+            <h2 id="skills-title">Backend-first skill set with full stack awareness.</h2>
           </div>
 
+          <!-- 3D Circular Skill Rings -->
+          <div class="skill-rings-grid reveal">
+            <div class="skill-ring-item">
+              <div class="skill-ring" data-pct="88" data-color="#4f8eff">
+                <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="42"/><circle class="ring-fill" cx="50" cy="50" r="42" style="stroke:#4f8eff;"/></svg>
+                <div class="ring-label"><i class="fa-brands fa-php"></i><span>88%</span></div>
+              </div>
+              <p>PHP & MySQL</p>
+            </div>
+            <div class="skill-ring-item">
+              <div class="skill-ring" data-pct="78" data-color="#a855f7">
+                <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="42"/><circle class="ring-fill" cx="50" cy="50" r="42" style="stroke:#a855f7;"/></svg>
+                <div class="ring-label"><i class="fa-solid fa-plug"></i><span>78%</span></div>
+              </div>
+              <p>REST APIs</p>
+            </div>
+            <div class="skill-ring-item">
+              <div class="skill-ring" data-pct="72" data-color="#10b981">
+                <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="42"/><circle class="ring-fill" cx="50" cy="50" r="42" style="stroke:#10b981;"/></svg>
+                <div class="ring-label"><i class="fa-brands fa-python"></i><span>72%</span></div>
+              </div>
+              <p>Python / Flask</p>
+            </div>
+            <div class="skill-ring-item">
+              <div class="skill-ring" data-pct="68" data-color="#00d4ff">
+                <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="42"/><circle class="ring-fill" cx="50" cy="50" r="42" style="stroke:#00d4ff;"/></svg>
+                <div class="ring-label"><i class="fa-brands fa-js"></i><span>68%</span></div>
+              </div>
+              <p>JavaScript</p>
+            </div>
+            <div class="skill-ring-item">
+              <div class="skill-ring" data-pct="75" data-color="#f59e0b">
+                <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="42"/><circle class="ring-fill" cx="50" cy="50" r="42" style="stroke:#f59e0b;"/></svg>
+                <div class="ring-label"><i class="fa-solid fa-database"></i><span>75%</span></div>
+              </div>
+              <p>Databases</p>
+            </div>
+            <div class="skill-ring-item">
+              <div class="skill-ring" data-pct="55" data-color="#f43f5e">
+                <svg viewBox="0 0 100 100"><circle class="ring-bg" cx="50" cy="50" r="42"/><circle class="ring-fill" cx="50" cy="50" r="42" style="stroke:#f43f5e;"/></svg>
+                <div class="ring-label"><i class="fa-brands fa-laravel"></i><span>55%</span></div>
+              </div>
+              <p>Laravel</p>
+            </div>
+          </div>
+
+          <!-- Skill Cards Grid -->
           <div class="skill-grid">
             <article class="skill-card reveal">
               <div class="skill-card-head">
@@ -268,7 +319,7 @@
                 <h3>Backend Technologies</h3>
               </div>
               <ul>
-                <li>PHP (Procedural & OOP)</li>
+                <li>PHP (Procedural &amp; OOP)</li>
                 <li>Python (Flask, Django basics)</li>
                 <li>Java (Core Java, JDBC)</li>
                 <li>Node.js (Express.js basics)</li>
@@ -313,7 +364,7 @@
                 <h3>Tools</h3>
               </div>
               <ul>
-                <li>Git & GitHub</li>
+                <li>Git &amp; GitHub</li>
                 <li>Postman API Testing</li>
                 <li>VS Code, IntelliJ IDEA</li>
                 <li>XAMPP/WAMP Server</li>
@@ -818,9 +869,9 @@
               collaborations, and freelance-friendly student projects.
             </p>
             <div class="contact-list">
-              <a href="mailto:pbasanta340@example.com">
+              <a href="mailto:bashantapokharel5@gmail.com">
                 <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-                pbasanta340@example.com
+                bashantapokharel5@gmail.com
               </a>
               <a
                 href="https://maps.google.com/?q=Kathmandu,Nepal"
@@ -872,7 +923,7 @@
             <input
               type="hidden"
               name="access_key"
-              value="f188eb73-6554-4184-9d0a-092e75f376f8"
+              value="fb13d3c2-66f4-42e2-bdd8-1caea1205753"
             />
             <input
               type="hidden"

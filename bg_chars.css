@@ -1,0 +1,606 @@
+/* ================================================================
+   bg_chars.css  —  One Piece Background Crew
+   Luffy · Nami · Robin (Clutch pose) · Zoro (3 swords)
+   Big characters roaming behind page content
+   ================================================================ */
+
+/* ── Give main content higher stacking so chars appear behind ── */
+#main { position: relative; z-index: 2; }
+.site-header { z-index: 999 !important; }
+
+/* ================================================================
+   SHARED BASE
+   ================================================================ */
+.bg-char {
+  position: fixed;
+  z-index: 1;                 /* behind glassmorphism content    */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;       /* purely decorative               */
+  user-select: none;
+  opacity: 0.82;
+  will-change: left, top;
+  filter: drop-shadow(0 16px 32px rgba(0,0,0,0.55));
+  transition: none;
+}
+
+/* Facing */
+.bg-char.facing-left  { transform: scaleX(-1); }
+.bg-char.facing-right { transform: scaleX(1);  }
+
+/* Idle state — freeze limb animations */
+.bg-char.state-idle .bg-leg,
+.bg-char.state-sleep .bg-leg,
+.bg-char.state-pose  .bg-leg,
+.bg-char.state-idle  .bg-arm,
+.bg-char.state-sleep .bg-arm,
+.bg-char.state-pose  .bg-arm { animation-play-state: paused; }
+
+/* ── Speech bubble ── */
+.bg-bubble {
+  position: absolute;
+  top: -56px; left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,255,255,0.96);
+  color: #111;
+  font-size: 0.7rem;
+  font-weight: 700;
+  font-family: 'Space Grotesk', sans-serif;
+  padding: 7px 13px;
+  border-radius: 12px;
+  white-space: nowrap;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.3);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+}
+.bg-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px; left: 50%;
+  transform: translateX(-50%);
+  border: 8px solid transparent;
+  border-top-color: rgba(255,255,255,0.96);
+  border-bottom: none;
+}
+.bg-char.show-bubble .bg-bubble { opacity: 1; }
+
+/* ── Ground shadow ── */
+.bg-shadow {
+  width: 48px; height: 10px;
+  background: rgba(0,0,0,0.28);
+  border-radius: 50%;
+  filter: blur(4px);
+  margin-top: 2px;
+}
+
+/* ── Shared body rows ── */
+.bg-hat    { position: relative; }
+.bg-head   {
+  position: relative;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  overflow: visible;
+  margin: 0 auto;
+}
+.bg-hair {
+  position: absolute;
+  top: -4px; left: 0; right: 0;
+  height: 14px;
+  border-radius: 55% 55% 0 0;
+  z-index: 2;
+}
+.bg-eye {
+  position: absolute;
+  top: 13px;
+  width: 7px; height: 7px;
+  background: #111;
+  border-radius: 50%;
+  z-index: 3;
+}
+.bg-eye.l { left: 7px; }
+.bg-eye.r { right: 7px; }
+.bg-nose {
+  position: absolute;
+  top: 21px; left: 50%;
+  transform: translateX(-50%);
+  width: 5px; height: 4px;
+  background: rgba(0,0,0,0.18);
+  border-radius: 50%;
+  z-index: 3;
+}
+.bg-mouth {
+  position: absolute;
+  bottom: 7px; left: 7px; right: 7px;
+  height: 8px;
+  border-bottom: 3px solid rgba(0,0,0,0.35);
+  border-radius: 0 0 50% 50%;
+  z-index: 3;
+}
+.bg-body-row {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 2px;
+}
+.bg-torso {
+  position: relative;
+  width: 36px; height: 34px;
+  border-radius: 5px;
+  flex-shrink: 0;
+}
+.bg-arm {
+  width: 13px; height: 32px;
+  border-radius: 6px;
+  transform-origin: top center;
+  flex-shrink: 0;
+  animation: bgArmWalk 0.55s ease-in-out infinite alternate;
+}
+.bg-arm.l { animation-direction: alternate; }
+.bg-arm.r { animation-direction: alternate-reverse; }
+@keyframes bgArmWalk {
+  from { transform: rotate(-22deg); }
+  to   { transform: rotate(22deg); }
+}
+.bg-pants, .bg-skirt {
+  width: 42px; height: 20px;
+  border-radius: 0 0 6px 6px;
+  margin: 0 auto;
+}
+.bg-legs-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 1px;
+}
+.bg-leg {
+  width: 14px; height: 30px;
+  border-radius: 5px;
+  transform-origin: top center;
+}
+.bg-leg.l { animation: bgLegL 0.45s ease-in-out infinite alternate; }
+.bg-leg.r { animation: bgLegR 0.45s ease-in-out infinite alternate; }
+@keyframes bgLegL {
+  from { transform: rotate(-24deg); }
+  to   { transform: rotate(24deg) translateY(-3px); }
+}
+@keyframes bgLegR {
+  from { transform: rotate(24deg) translateY(-3px); }
+  to   { transform: rotate(-24deg); }
+}
+.bg-feet-row {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+}
+.bg-foot {
+  width: 18px; height: 9px;
+  border-radius: 0 0 5px 5px;
+}
+
+/* ── Idle wave arm ── */
+@keyframes bgWaveArm {
+  0%   { transform: rotate(-20deg); }
+  30%  { transform: rotate(-80deg); }
+  60%  { transform: rotate(-50deg); }
+  80%  { transform: rotate(-85deg); }
+  100% { transform: rotate(-60deg); }
+}
+.bg-char.state-wave .bg-arm.r { animation: bgWaveArm 0.6s ease-in-out infinite alternate; }
+.bg-char.state-wave .bg-arm.l { animation-play-state: paused; transform: rotate(5deg); }
+
+/* ── Idle stretch both arms up ── */
+@keyframes bgStretchUp {
+  from { transform: rotate(-80deg); }
+  to   { transform: rotate(-90deg); }
+}
+.bg-char.state-stretch .bg-arm.l,
+.bg-char.state-stretch .bg-arm.r { animation: bgStretchUp 0.8s ease-in-out infinite alternate; }
+
+/* ── Body bob (subtle up-down while walking) ── */
+@keyframes bgBodyBob {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-3px); }
+}
+.bg-body-row  { animation: bgBodyBob 0.45s ease-in-out infinite alternate; }
+.bg-char.state-idle .bg-body-row,
+.bg-char.state-sleep .bg-body-row,
+.bg-char.state-pose  .bg-body-row { animation-play-state: paused; }
+
+/* ================================================================
+   LUFFY
+   ================================================================ */
+/* Hat */
+.luffy-hat-crown {
+  position: absolute;
+  left: 50%; top: -20px;
+  transform: translateX(-50%);
+  width: 38px; height: 20px;
+  background: #f0c030;
+  border-radius: 55% 55% 0 0;
+  border: 2.5px solid #b88e10;
+}
+.luffy-hat-brim {
+  width: 66px; height: 11px;
+  background: #f0c030;
+  border-radius: 5px;
+  border: 2.5px solid #b88e10;
+  margin: 0 auto;
+}
+.luffy-hat-band {
+  position: absolute;
+  left: 50%; top: -5px;
+  transform: translateX(-50%);
+  width: 40px; height: 5px;
+  background: #e03030;
+  z-index: 2;
+}
+.bg-hat { width: 66px; height: 11px; margin-bottom: 1px; }
+
+/* Head */
+.luffy-bg-head { background: #f5c48a; border: 2.5px solid #c08050; overflow: hidden; }
+.luffy-bg-hair { background: #181010; }
+.luffy-bg-scar {
+  position: absolute;
+  top: 20px; left: 7px;
+  width: 8px; height: 7px;
+  border-left: 2.5px solid #c04040;
+  border-right: 2.5px solid #c04040;
+  border-radius: 50%;
+  transform: rotate(-12deg);
+  z-index: 3;
+}
+.luffy-bg-mouth { border-bottom-color: #904020; border-bottom-width: 3.5px; }
+
+/* Body */
+.luffy-bg-torso { background: #e03030; border: 2.5px solid #a01010; }
+.luffy-chest-strip {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 7px; height: 100%;
+  background: #f5c48a;
+}
+.luffy-bg-arm { background: #f5c48a; border: 2px solid #c08050; }
+.luffy-bg-pants { background: #2a46d8; border: 2px solid #1428a0; }
+.luffy-bg-leg   { background: #f5c48a; border: 2px solid #c08050; }
+.luffy-bg-foot  { background: #7a5020; border: 1px solid #4a2808; }
+
+/* ================================================================
+   NAMI
+   ================================================================ */
+.nami-bg-head {
+  background: #f8d090;
+  border: 2.5px solid #c8905a;
+  overflow: hidden;
+}
+.nami-bg-hair {
+  background: #e87820;
+  height: 16px;
+  border-radius: 40% 65% 0 0;
+}
+.nami-bg-hair-side {
+  position: absolute;
+  right: -6px; top: 4px;
+  width: 10px; height: 22px;
+  background: #e87820;
+  border-radius: 0 50% 50% 0;
+  z-index: 1;
+}
+.nami-bg-mouth { border-bottom-color: #a06040; }
+.nami-bg-torso {
+  background: #f080a0;
+  border: 2.5px solid #c05070;
+}
+.nami-torso-stripe {
+  position: absolute;
+  bottom: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 24px; height: 7px;
+  background: #f0d060;
+  border-radius: 2px;
+}
+.nami-bg-arm  { background: #f8d090; border: 2px solid #c8905a; }
+.nami-bg-skirt {
+  background: linear-gradient(180deg, #f0d060, #d8b840);
+  border: 2px solid #b09020;
+  width: 44px;
+  height: 14px;
+  border-radius: 0 0 8px 8px;
+}
+.nami-bg-leg  { background: #f8d090; border: 2px solid #c8905a; }
+.nami-bg-foot { background: #603820; border: 1px solid #3a1808; }
+
+/* Nami walks a little more gracefully */
+#bg-nami .bg-leg.l { animation-duration: 0.52s; }
+#bg-nami .bg-leg.r { animation-duration: 0.52s; }
+#bg-nami .bg-arm   { animation-duration: 0.52s; }
+
+/* ================================================================
+   ROBIN  —  Nico Robin with Clutch hands pose
+   ================================================================ */
+.robin-bg-head {
+  background: #e8c090;
+  border: 2.5px solid #b89060;
+  overflow: visible;
+}
+.robin-bg-hair {
+  background: #1a1040;
+  height: 15px;
+  border-radius: 50% 50% 0 0;
+}
+.robin-bg-hair-long {
+  position: absolute;
+  right: -6px; top: 6px;
+  width: 9px; height: 30px;
+  background: #1a1040;
+  border-radius: 0 0 5px 5px;
+  z-index: 1;
+}
+.robin-bg-glasses {
+  position: absolute;
+  top: 14px; left: 4px; right: 4px;
+  height: 7px;
+  border: 2px solid rgba(60,40,100,0.75);
+  border-radius: 4px;
+  background: rgba(180,160,255,0.14);
+  z-index: 4;
+}
+.robin-bg-mouth {
+  border-bottom: 2px solid #906040;
+  border-radius: 0 0 50% 50%;
+  height: 4px;
+}
+.robin-bg-torso {
+  background: #6030a0;
+  border: 2.5px solid #401870;
+}
+.robin-collar {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 14px; height: 8px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 0 0 8px 8px;
+}
+.robin-bg-arm  { background: #e8c090; border: 2px solid #b89060; }
+.robin-bg-skirt {
+  background: linear-gradient(180deg, #6030a0, #3a1278);
+  border: 2px solid #401870;
+  width: 40px; height: 18px;
+  border-radius: 0 0 6px 6px;
+}
+.robin-bg-leg  { background: #e8c090; border: 2px solid #b89060; height: 34px; }
+.robin-bg-foot { background: #201428; border: 1px solid #100a18; }
+
+/* Robin is tall and elegant */
+#bg-robin .bg-leg.l { animation-duration: 0.6s; }
+#bg-robin .bg-leg.r { animation-duration: 0.6s; }
+#bg-robin .bg-arm   { animation-duration: 0.6s; }
+
+/* ── Clutch Hands  (Nico Robin's Tres Fleurs pose) ── */
+.robin-clutch-hands {
+  position: absolute;
+  top: 40px; left: 50%;
+  transform: translateX(-50%);
+  width: 110px; height: 60px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.bg-char.state-clutch .robin-clutch-hands { opacity: 1; }
+.bg-char.state-clutch .bg-arm { animation-play-state: paused; }
+.bg-char.state-clutch .bg-arm.l { transform: rotate(-70deg); }
+.bg-char.state-clutch .bg-arm.r { transform: rotate(70deg); }
+
+/* Individual floating hands fanning out */
+.robin-clutch-hand {
+  position: absolute;
+  width: 14px; height: 18px;
+  background: #e8c090;
+  border: 2px solid #b89060;
+  border-radius: 40% 40% 50% 50%;
+  animation: clutchPulse 1.2s ease-in-out infinite alternate;
+}
+@keyframes clutchPulse {
+  from { transform: scale(1) rotate(var(--r, 0deg)); }
+  to   { transform: scale(1.08) rotate(calc(var(--r, 0deg) + 5deg)); }
+}
+/* Fan the hands evenly around an arc */
+.robin-clutch-hand.h1 { left:  0px;  top: 25px; --r: -60deg; }
+.robin-clutch-hand.h2 { left: 10px;  top:  5px; --r: -35deg; }
+.robin-clutch-hand.h3 { left: 35px;  top: -5px; --r: -10deg; }
+.robin-clutch-hand.h4 { left: 60px;  top: -5px; --r:  10deg; }
+.robin-clutch-hand.h5 { left: 85px;  top:  5px; --r:  35deg; }
+.robin-clutch-hand.h6 { left: 95px;  top: 25px; --r:  60deg; }
+/* Flower petals behind each hand */
+.robin-clutch-hand::before {
+  content: '';
+  position: absolute;
+  top: -8px; left: 50%;
+  transform: translateX(-50%);
+  width: 10px; height: 10px;
+  background: rgba(255,180,200,0.7);
+  border-radius: 50%;
+}
+
+/* ================================================================
+   ZORO  —  3 Swords + Santoryu pose
+   ================================================================ */
+.zoro-bg-head {
+  background: #f0c080;
+  border: 2.5px solid #c09050;
+  overflow: visible;
+}
+.zoro-bg-hair {
+  background: #2a8030;      /* green */
+  height: 18px;
+  border-radius: 30% 30% 0 0;
+  z-index: 2;
+}
+/* Mohawk spikes */
+.zoro-bg-hair::after {
+  content: '';
+  position: absolute;
+  top: -8px; left: 50%;
+  transform: translateX(-50%);
+  width: 14px; height: 10px;
+  background: #2a8030;
+  clip-path: polygon(20% 100%, 50% 0%, 80% 100%);
+}
+.zoro-bg-bandana {
+  position: absolute;
+  top: 4px; left: 2px; right: 2px;
+  height: 7px;
+  background: #111;
+  border-radius: 2px;
+  z-index: 3;
+}
+/* Zoro's distinctive left eye scar */
+.zoro-bg-scar {
+  position: absolute;
+  top: 12px; left: 7px;
+  width: 3px; height: 20px;
+  background: #c04040;
+  border-radius: 2px;
+  transform: rotate(5deg);
+  z-index: 4;
+}
+/* Eyes */
+.zoro-bg-eye {
+  top: 14px;
+  width: 7px; height: 5px;
+  background: #1a1010;
+  border-radius: 2px;  /* slightly squinting */
+}
+/* Sleep eyes (Zoro napping) */
+.bg-char.state-sleep .zoro-bg-eye {
+  height: 2px;
+  background: #333;
+  top: 17px;
+}
+.zoro-bg-mouth {
+  border-bottom: 2.5px solid #604020;
+  border-radius: 0;           /* straight serious mouth */
+  height: 2px;
+  bottom: 9px;
+}
+
+/* Torso — broader, sleeveless */
+.zoro-bg-torso {
+  background: #e8e8e0;        /* white shirt */
+  border: 2.5px solid #b0b0a0;
+  width: 40px; height: 36px;
+  position: relative;
+  border-radius: 5px;
+}
+
+/* Belt / waistband */
+.zoro-bg-torso::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 6px;
+  background: #2a2010;
+  border-radius: 0 0 4px 4px;
+}
+
+/* THREE SWORDS on left hip */
+.zoro-swords {
+  position: absolute;
+  left: -22px; top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.zoro-sword {
+  width: 5px; height: 30px;
+  border-radius: 2px 2px 1px 1px;
+  position: relative;
+}
+/* Sword sheaths */
+.zoro-sword.s1 { background: linear-gradient(180deg, #c0a020, #8a7010); transform: rotate(8deg); }
+.zoro-sword.s2 { background: linear-gradient(180deg, #606060, #303030); transform: rotate(4deg); }
+/* Guard on each sword */
+.zoro-sword::before {
+  content: '';
+  position: absolute;
+  top: 4px; left: -3px;
+  width: 11px; height: 5px;
+  background: #404040;
+  border-radius: 2px;
+}
+/* MOUTH SWORD (3rd — Zoro's Santoryu) */
+.zoro-mouth-sword {
+  position: absolute;
+  bottom: 5px; right: -20px;
+  width: 4px; height: 28px;
+  background: linear-gradient(180deg, #e0e0e0, #808060);
+  border-radius: 2px 2px 0 0;
+  transform: rotate(30deg);
+  transform-origin: bottom center;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+/* Show mouth sword in Santoryu pose */
+.bg-char.state-pose .zoro-mouth-sword { opacity: 1; }
+.bg-char.state-pose .zoro-mouth-sword::before {
+  content: '';
+  position: absolute;
+  top: 2px; left: -3px;
+  width: 10px; height: 4px;
+  background: #606040;
+  border-radius: 2px;
+}
+
+/* ZZZ bubble (sleep) */
+.zoro-zzz {
+  position: absolute;
+  top: -22px; left: 30px;
+  font-size: 0.7rem;
+  font-weight: 900;
+  color: rgba(200,220,255,0.9);
+  letter-spacing: 1px;
+  opacity: 0;
+  pointer-events: none;
+  animation: zzzFloat 1.8s ease-in-out infinite;
+}
+@keyframes zzzFloat {
+  0%   { transform: translateY(0)  scale(0.7); opacity: 0; }
+  30%  { opacity: 1; }
+  100% { transform: translateY(-18px) scale(1); opacity: 0; }
+}
+.bg-char.state-sleep .zoro-zzz { opacity: 1; }
+
+/* Santoryu pose — arms out with swords */
+@keyframes bgSantoryu {
+  0%   { transform: rotate(-40deg) translateX(-4px); }
+  50%  { transform: rotate(-50deg) translateX(-6px); }
+  100% { transform: rotate(-35deg) translateX(-3px); }
+}
+@keyframes bgSantoryuR {
+  0%   { transform: rotate(40deg) translateX(4px); }
+  50%  { transform: rotate(50deg) translateX(6px); }
+  100% { transform: rotate(35deg) translateX(3px); }
+}
+.bg-char.state-pose .bg-arm.l { animation: bgSantoryu 1.4s ease-in-out infinite alternate; }
+.bg-char.state-pose .bg-arm.r { animation: bgSantoryuR 1.4s ease-in-out infinite alternate; }
+
+.zoro-bg-arm  { background: #e8c080; border: 2px solid #c09050; width: 15px; }
+.zoro-bg-pants { background: #1a2030; border: 2px solid #0e1420; width: 44px; }
+.zoro-bg-leg  { background: #1a2030; border: 2px solid #0e1420; height: 32px; }
+.zoro-bg-foot { background: #382810; border: 1px solid #201408; }
+
+/* Zoro walks slower (more deliberate) */
+#bg-zoro .bg-leg.l { animation-duration: 0.62s; }
+#bg-zoro .bg-leg.r { animation-duration: 0.62s; }
+#bg-zoro .bg-arm   { animation-duration: 0.62s; }
+
+/* ================================================================
+   LIGHT MODE  — make characters slightly more visible
+   ================================================================ */
+[data-theme="light"] .bg-char { opacity: 0.7; }
+
+/* bg_chars.css complete */

@@ -46,11 +46,11 @@ $safeName = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
 $safeSubject = htmlspecialchars($subject, ENT_QUOTES, 'UTF-8');
 $safeMessage = htmlspecialchars($message, ENT_QUOTES, 'UTF-8');
 
-$recipient = 'ggrgdgdge26@gmail.com';
+$recipient = 'bashantapokharel5@gmail.com';
 $mailSubject = "Portfolio Contact: {$subject}";
 $body = "Name: {$safeName}\nEmail: {$email}\nSubject: {$safeSubject}\n\nMessage:\n{$safeMessage}\n";
 $headers = [
-    'From: Bashanta Portfolio <ggrgdgdge26@gmail.com>',
+    'From: Bashanta Portfolio <bashantapokharel5@gmail.com>',
     "Reply-To: {$email}",
     'Content-Type: text/plain; charset=UTF-8',
     'X-Mailer: PHP/' . phpversion(),
