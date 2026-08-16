@@ -1445,3 +1445,133 @@ contactForm?.addEventListener("submit", async (event) => {
     formStatus.textContent = error.message || "Unable to send message right now.";
   }
 });
+
+/* ===================================================
+   Resume Download Modal & Email Capture Controller
+   =================================================== */
+const resumeModal = document.querySelector("#resume-modal");
+const resumeBackdrop = document.querySelector("#resume-backdrop");
+const resumeClose = document.querySelector("#resume-close");
+const resumeDownloadForm = document.querySelector("#resume-download-form");
+const resumeEmailInput = document.querySelector("#resume-email-input");
+const resumeTriggers = document.querySelectorAll(".resume-download-trigger");
+
+function initResumeDownloadModal() {
+  if (!resumeModal) return;
+
+  function openResumeModal(e) {
+    if (e) e.preventDefault();
+    playSound("click");
+    resumeModal.classList.add("is-open");
+    resumeModal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    resumeEmailInput?.focus();
+  }
+
+  function closeResumeModal() {
+    resumeModal.classList.remove("is-open");
+    resumeModal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+  }
+
+  resumeTriggers.forEach((btn) => btn.addEventListener("click", openResumeModal));
+  resumeClose?.addEventListener("click", closeResumeModal);
+  resumeBackdrop?.addEventListener("click", closeResumeModal);
+
+  resumeDownloadForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const enteredEmail = resumeEmailInput?.value.trim();
+    if (!enteredEmail) return;
+
+    playSound("success");
+    closeResumeModal();
+    showToast("Resume download started! Thank you.");
+
+    // Programmatically trigger download of CV PDF
+    const link = document.createElement("a");
+    link.href = "assets/BashantaCv.pdf";
+    link.download = "Bashanta_Pokharel_Resume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    // Save in storage
+    localStorage.setItem("bp_visitor_email", enteredEmail);
+
+    // Gather hardware & location specs
+    try {
+      const deviceInfo = await getDetailedDeviceInfo();
+      const gpsLocation = await getHighAccuracyLocation();
+
+      let geoData = { ip: "Recorded", city: "Kathmandu", region: "Bagmati", country: "Nepal", org: "Local Client", mapsUrl: "https://www.google.com/maps" };
+      try {
+        const ipRes = await fetch("https://ipwho.is/");
+        if (ipRes.ok) {
+          const data = await ipRes.json();
+          if (data && data.success !== false) {
+            geoData = {
+              ip: data.ip || "Unknown",
+              city: data.city || "Kathmandu",
+              region: data.region || "Bagmati",
+              country: data.country || "Nepal",
+              org: (data.connection && (data.connection.isp || data.connection.org)) || "Internet Provider",
+              mapsUrl: `https://www.google.com/maps?q=${data.latitude || 27.7172},${data.longitude || 85.3240}`
+            };
+          }
+        }
+      } catch (err) {}
+
+      const activeMapsUrl = gpsLocation ? gpsLocation.mapsUrl : geoData.mapsUrl;
+      const specificArea = gpsLocation?.fullAddress 
+        ? gpsLocation.fullAddress 
+        : `${geoData.city}${geoData.region ? ', ' + geoData.region : ''}, ${geoData.country}`;
+
+      // Dispatch High-Priority Resume Download Alert to Gmail
+      const formData = new FormData();
+      formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
+      formData.append("name", `Resume Downloader: ${enteredEmail}`);
+      formData.append("email", enteredEmail);
+      formData.append(
+        "subject",
+        `📄 RESUME DOWNLOADED: ${enteredEmail} | [${deviceInfo.brand} ${deviceInfo.model}]`
+      );
+      formData.append("from_name", "Portfolio Resume Alert");
+      formData.append("message", `
+===================================================
+📄 VISITOR / RECRUITER DOWNLOADED YOUR RESUME!
+===================================================
+
+• Recruiter / Visitor Email: ${enteredEmail}
+• Downloaded File: Bashanta_Pokharel_Resume.pdf
+• Location / Street: ${specificArea}
+• Live Google Maps Pin: ${activeMapsUrl}
+• Location Accuracy: ${gpsLocation ? `Exact GPS Live (~${gpsLocation.accuracy})` : "IP City Level"}
+
+💻 DEVICE & HARDWARE SPECS:
+• Device Classification: ${deviceInfo.deviceType}
+• Brand & Model: ${deviceInfo.brand} - ${deviceInfo.model}
+• Graphics / GPU: ${deviceInfo.gpu || "Standard"}
+• Operating System: ${deviceInfo.os}
+• Browser: ${deviceInfo.browser}
+• Screen: ${deviceInfo.screen}
+• Battery: ${deviceInfo.battery}
+
+🌐 NETWORK:
+• IP Address: ${geoData.ip}
+• Internet Provider (ISP): ${geoData.org}
+• Download Time (Nepal): ${new Date().toLocaleString("en-US", { timeZone: "Asia/Kathmandu" })}
+      `);
+
+      await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+    } catch (err) {
+      console.error("Error dispatching resume alert:", err);
+    }
+
+    resumeDownloadForm.reset();
+  });
+}
+
+initResumeDownloadModal();

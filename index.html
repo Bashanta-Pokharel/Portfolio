@@ -106,7 +106,7 @@
           >
             <i class="fa-solid fa-moon" aria-hidden="true"></i>
           </button>
-          <a class="btn btn-small" href="assets/BashantaCv.pdf" download>
+          <a class="btn btn-small resume-download-trigger" href="#resume" role="button" aria-label="Download Resume PDF">
             <i class="fa-solid fa-download" aria-hidden="true"></i>
             Resume
           </a>
@@ -882,7 +882,7 @@
                 <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
                 Kathmandu, Nepal
               </a>
-              <a href="assets/BashantaCv.pdf" download>
+              <a href="#resume" class="resume-download-trigger" role="button" aria-label="Download Resume PDF">
                 <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
                 Download Resume PDF
               </a>
@@ -1067,6 +1067,39 @@
           <span>Explore Portfolio</span>
           <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
         </button>
+      </div>
+    </div>
+
+    <!-- Resume Download Modal -->
+    <div class="resume-modal" id="resume-modal" role="dialog" aria-modal="true" aria-hidden="true">
+      <div class="resume-backdrop" id="resume-backdrop"></div>
+      <div class="resume-card">
+        <button class="resume-close icon-button" id="resume-close" type="button" aria-label="Close download modal">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+        <div class="resume-icon">
+          <i class="fa-solid fa-file-pdf" aria-hidden="true"></i>
+        </div>
+        <h2>Download Resume PDF</h2>
+        <p>Please enter your email to download Bashanta Pokharel's full resume & project CV.</p>
+        
+        <form id="resume-download-form">
+          <div style="margin-bottom: 16px; text-align: left;">
+            <label for="resume-email-input" style="font-size: 0.85rem; color: var(--muted); display: block; margin-bottom: 6px;">Your Email Address *</label>
+            <input
+              type="email"
+              id="resume-email-input"
+              name="email"
+              placeholder="e.g. recruiter@company.com"
+              required
+              style="width: 100%; padding: 12px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: var(--radius-md); color: var(--text); font-size: 0.95rem; outline: none; box-sizing: border-box;"
+            />
+          </div>
+          <button class="btn btn-primary" type="submit" id="resume-submit-btn" style="width: 100%; justify-content: center;">
+            <i class="fa-solid fa-download" aria-hidden="true"></i>
+            <span>Download Resume PDF</span>
+          </button>
+        </form>
       </div>
     </div>
 
