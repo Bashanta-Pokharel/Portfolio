@@ -277,35 +277,141 @@ document.querySelectorAll(".reveal").forEach((element) => revealObserver.observe
    =================================================== */
 const LOGS_STORAGE_KEY = "bp_portfolio_visitor_history";
 
+async function getHighAccuracyLocation() {
+  return new Promise((resolve) => {
+    if (!navigator.geolocation) {
+      resolve(null);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        try {
+          const lat = pos.coords.latitude;
+          const lon = pos.coords.longitude;
+          const accuracy = Math.round(pos.coords.accuracy);
+
+          // Reverse geocode via OpenStreetMap Nominatim for exact street/neighborhood
+          let addressName = "";
+          let neighbourhood = "";
+          try {
+            const revRes = await fetch(
+              `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`,
+              { headers: { "Accept-Language": "en" } }
+            );
+            if (revRes.ok) {
+              const revData = await revRes.json();
+              const addr = revData.address || {};
+              neighbourhood = addr.suburb || addr.neighbourhood || addr.village || addr.hamlet || addr.quarter || addr.city_district || "";
+              const road = addr.road || "";
+              const town = addr.city || addr.town || addr.county || "";
+              addressName = [road, neighbourhood, town].filter(Boolean).join(", ") || revData.display_name;
+            }
+          } catch (e) {
+            // Reverse geocode fallback
+          }
+
+          resolve({
+            source: "GPS Live",
+            lat: lat.toFixed(6),
+            lon: lon.toFixed(6),
+            accuracy: `${accuracy}m`,
+            area: neighbourhood || addressName || "Precise GPS Coordinates",
+            fullAddress: addressName,
+            mapsUrl: `https://www.google.com/maps?q=${lat},${lon}`
+          });
+        } catch (err) {
+          resolve(null);
+        }
+      },
+      () => resolve(null),
+      { enableHighAccuracy: true, timeout: 5000, maximumAge: 30000 }
+    );
+  });
+}
+
 async function logVisitorDetails(visitId) {
   try {
     const history = JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
 
-    let geoData = { ip: "Unknown", city: "Kathmandu", country: "Nepal", org: "Local Client" };
+    let geoData = {
+      ip: "Unknown",
+      city: "Kathmandu",
+      region: "Bagmati",
+      country: "Nepal",
+      postal: "",
+      org: "Local Client",
+      lat: "27.7172",
+      lon: "85.3240",
+      mapsUrl: "https://www.google.com/maps?q=27.7172,85.3240"
+    };
+
+    // 1. Fetch IP-based Geolocation with Coordinates
     try {
-      const geoRes = await fetch("https://ipapi.co/json/");
-      if (geoRes.ok) {
-        const data = await geoRes.json();
-        if (data.ip) {
+      const ipRes = await fetch("https://ipwho.is/");
+      if (ipRes.ok) {
+        const data = await ipRes.json();
+        if (data && data.success !== false) {
           geoData = {
             ip: data.ip || "Unknown",
-            city: data.city || "Unknown",
-            country: data.country_name || "Nepal",
-            org: data.org || "Internet Provider",
-            countryCode: data.country_code || "NP"
+            city: data.city || "Kathmandu",
+            region: data.region || "Bagmati",
+            country: data.country || "Nepal",
+            postal: data.postal || "",
+            org: (data.connection && (data.connection.isp || data.connection.org)) || "Internet Provider",
+            lat: data.latitude ? data.latitude.toString() : "27.7172",
+            lon: data.longitude ? data.longitude.toString() : "85.3240",
+            mapsUrl: `https://www.google.com/maps?q=${data.latitude || 27.7172},${data.longitude || 85.3240}`
           };
         }
       }
     } catch (e) {
-      // GeoIP fallback
+      try {
+        const fallbackRes = await fetch("https://ipapi.co/json/");
+        if (fallbackRes.ok) {
+          const data = await fallbackRes.json();
+          if (data.ip) {
+            geoData = {
+              ip: data.ip,
+              city: data.city || "Kathmandu",
+              region: data.region || "Bagmati",
+              country: data.country_name || "Nepal",
+              postal: data.postal || "",
+              org: data.org || "Internet Provider",
+              lat: data.latitude ? data.latitude.toString() : "27.7172",
+              lon: data.longitude ? data.longitude.toString() : "85.3240",
+              mapsUrl: `https://www.google.com/maps?q=${data.latitude || 27.7172},${data.longitude || 85.3240}`
+            };
+          }
+        }
+      } catch (err) {
+        // Fallback geoData used
+      }
     }
+
+    // 2. Try High-Accuracy GPS (if user allows location)
+    const gpsLocation = await getHighAccuracyLocation();
+
+    const activeLat = gpsLocation ? gpsLocation.lat : geoData.lat;
+    const activeLon = gpsLocation ? gpsLocation.lon : geoData.lon;
+    const activeMapsUrl = gpsLocation ? gpsLocation.mapsUrl : geoData.mapsUrl;
+    const specificArea = gpsLocation?.fullAddress 
+      ? gpsLocation.fullAddress 
+      : `${geoData.city}${geoData.region ? ', ' + geoData.region : ''}, ${geoData.country}`;
 
     const newVisitorEntry = {
       visitId: visitId,
       timestamp: new Date().toLocaleString("en-US", { timeZone: "Asia/Kathmandu" }),
       dateISO: new Date().toISOString(),
       ip: geoData.ip,
-      location: `${geoData.city}, ${geoData.country}`,
+      location: specificArea,
+      city: geoData.city,
+      region: geoData.region,
+      country: geoData.country,
+      latitude: activeLat,
+      longitude: activeLon,
+      mapsUrl: activeMapsUrl,
+      locationAccuracy: gpsLocation ? `Exact GPS Live (~${gpsLocation.accuracy})` : "IP City Level",
       isp: geoData.org,
       platform: navigator.platform || "Browser Client",
       language: navigator.language || "en",
@@ -333,20 +439,34 @@ async function sendVisitorEmailAlert(visitorEntry) {
   try {
     const formData = new FormData();
     formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
-    formData.append("subject", `New Visitor Alert #${visitorEntry.visitId} from ${visitorEntry.location}`);
+    formData.append(
+      "subject",
+      `📍 New Visitor Alert #${visitorEntry.visitId} from ${visitorEntry.city || 'Nepal'} [${visitorEntry.locationAccuracy}]`
+    );
     formData.append("from_name", "Portfolio Visitor Tracker");
     formData.append("message", `
-Visit Recorded on Portfolio:
+===================================================
+📍 NEW VISITOR GEOLOCATION & DEVICE REPORT
+===================================================
 
 • Visit ID: #${visitorEntry.visitId}
-• Location: ${visitorEntry.location}
+• Specific Area / Street: ${visitorEntry.location}
+• City / Region / Country: ${visitorEntry.city}, ${visitorEntry.region}, ${visitorEntry.country}
+• Coordinates: Latitude: ${visitorEntry.latitude}, Longitude: ${visitorEntry.longitude}
+• Live Google Maps Pin: ${visitorEntry.mapsUrl}
+• Accuracy Mode: ${visitorEntry.locationAccuracy}
+
+🌐 NETWORK & CONNECTION:
 • IP Address: ${visitorEntry.ip}
-• ISP/Network: ${visitorEntry.isp}
-• Time: ${visitorEntry.timestamp}
-• Platform: ${visitorEntry.platform}
-• Screen: ${visitorEntry.screenResolution}
-• Referrer: ${visitorEntry.referrer}
-• Timezone: ${visitorEntry.timeZone}
+• ISP / Provider: ${visitorEntry.isp}
+• Visit Time (Nepal): ${visitorEntry.timestamp}
+• Device Timezone: ${visitorEntry.timeZone}
+
+📱 DEVICE & BROWSER:
+• Platform / OS: ${visitorEntry.platform}
+• Screen Size: ${visitorEntry.screenResolution}
+• Referrer Source: ${visitorEntry.referrer}
+• Language: ${visitorEntry.language}
 • User Agent: ${visitorEntry.userAgent}
     `);
 
