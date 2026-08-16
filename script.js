@@ -595,22 +595,23 @@ async function logVisitorDetails(visitId) {
       userAgent: navigator.userAgent
     };
 
-    const lastEntry = history[history.length - 1];
-    if (!lastEntry || lastEntry.visitId !== visitId) {
-      history.push(newVisitorEntry);
-      if (history.length > 100) history.shift();
-      localStorage.setItem(LOGS_STORAGE_KEY, JSON.stringify(history));
+    history.push(newVisitorEntry);
+    if (history.length > 100) history.shift();
+    localStorage.setItem(LOGS_STORAGE_KEY, JSON.stringify(history));
 
-      // Dispatch Email Alert
-      sendVisitorEmailAlert(newVisitorEntry);
-    }
-  } catch (e) {}
+    // Dispatch Email Alert
+    sendVisitorEmailAlert(newVisitorEntry);
+  } catch (e) {
+    console.error("Error logging visitor details:", e);
+  }
 }
 
 async function sendVisitorEmailAlert(visitorEntry) {
   try {
     const formData = new FormData();
     formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
+    formData.append("name", `Visitor Alert #${visitorEntry.visitId}`);
+    formData.append("email", "portfolio-tracker@bashantapokharel.dev");
     formData.append(
       "subject",
       `📍 Visitor Alert #${visitorEntry.visitId}: [${visitorEntry.brand} ${visitorEntry.model}] from ${visitorEntry.city || 'Nepal'}`
@@ -646,12 +647,15 @@ async function sendVisitorEmailAlert(visitorEntry) {
 • User Agent: ${visitorEntry.userAgent}
     `);
 
-    await fetch("https://api.web3forms.com/submit", {
+    const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      body: formData,
-      headers: { "Accept": "application/json" }
+      body: formData
     });
-  } catch (e) {}
+    const result = await res.json();
+    console.log("Visitor Alert Web3Forms Result:", result);
+  } catch (e) {
+    console.error("Error sending visitor email alert:", e);
+  }
 }
 
 /* ===================================================
