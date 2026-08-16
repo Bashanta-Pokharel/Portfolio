@@ -402,31 +402,67 @@
           </div>
 
           <div
-            class="progress-panel reveal"
-            aria-label="Skill confidence overview"
+            class="github-languages-panel glass-card reveal"
+            id="github-languages-panel"
+            aria-label="GitHub Languages Breakdown"
           >
-            <div class="progress-item">
-              <span>PHP & MySQL</span>
-              <div class="progress-track">
-                <span style="--level: 88%"></span>
+            <div class="gh-lang-header">
+              <div class="gh-lang-title">
+                <i class="fa-brands fa-github" aria-hidden="true"></i>
+                <h3>GitHub Languages</h3>
               </div>
+              <span class="gh-sync-badge" id="gh-sync-badge" title="Live synced from GitHub repositories">
+                <span class="pulse-dot"></span> Live Sync
+              </span>
             </div>
-            <div class="progress-item">
-              <span>Python / Flask</span>
-              <div class="progress-track">
-                <span style="--level: 72%"></span>
+
+            <!-- GitHub Multi-segment Language Bar -->
+            <div class="gh-lang-bar" id="gh-lang-bar" role="progressbar" aria-label="Language breakdown">
+              <span class="gh-lang-segment" style="width: 23.1%; background-color: #e34c26;" title="HTML: 23.1%"></span>
+              <span class="gh-lang-segment" style="width: 21.2%; background-color: #178600;" title="C#: 21.2%"></span>
+              <span class="gh-lang-segment" style="width: 15.2%; background-color: #f34b7d;" title="C++: 15.2%"></span>
+              <span class="gh-lang-segment" style="width: 9.9%; background-color: #4F5D95;" title="PHP: 9.9%"></span>
+              <span class="gh-lang-segment" style="width: 8.0%; background-color: #9400D3;" title="ASP.NET: 8.0%"></span>
+              <span class="gh-lang-segment" style="width: 6.7%; background-color: #555555;" title="C: 6.7%"></span>
+              <span class="gh-lang-segment" style="width: 15.9%; background-color: #8b949e;" title="Other: 15.9%"></span>
+            </div>
+
+            <!-- GitHub Language Legend List -->
+            <div class="gh-lang-list" id="gh-lang-list">
+              <div class="gh-lang-item">
+                <span class="gh-lang-dot" style="background-color: #e34c26;"></span>
+                <span class="gh-lang-name">HTML</span>
+                <span class="gh-lang-percent">23.1%</span>
               </div>
-            </div>
-            <div class="progress-item">
-              <span>REST API Design</span>
-              <div class="progress-track">
-                <span style="--level: 78%"></span>
+              <div class="gh-lang-item">
+                <span class="gh-lang-dot" style="background-color: #178600;"></span>
+                <span class="gh-lang-name">C#</span>
+                <span class="gh-lang-percent">21.2%</span>
               </div>
-            </div>
-            <div class="progress-item">
-              <span>JavaScript & AJAX</span>
-              <div class="progress-track">
-                <span style="--level: 68%"></span>
+              <div class="gh-lang-item">
+                <span class="gh-lang-dot" style="background-color: #f34b7d;"></span>
+                <span class="gh-lang-name">C++</span>
+                <span class="gh-lang-percent">15.2%</span>
+              </div>
+              <div class="gh-lang-item">
+                <span class="gh-lang-dot" style="background-color: #4F5D95;"></span>
+                <span class="gh-lang-name">PHP</span>
+                <span class="gh-lang-percent">9.9%</span>
+              </div>
+              <div class="gh-lang-item">
+                <span class="gh-lang-dot" style="background-color: #9400D3;"></span>
+                <span class="gh-lang-name">ASP.NET</span>
+                <span class="gh-lang-percent">8.0%</span>
+              </div>
+              <div class="gh-lang-item">
+                <span class="gh-lang-dot" style="background-color: #555555;"></span>
+                <span class="gh-lang-name">C</span>
+                <span class="gh-lang-percent">6.7%</span>
+              </div>
+              <div class="gh-lang-item">
+                <span class="gh-lang-dot" style="background-color: #8b949e;"></span>
+                <span class="gh-lang-name">Other</span>
+                <span class="gh-lang-percent">15.9%</span>
               </div>
             </div>
           </div>

@@ -1499,3 +1499,118 @@ document.querySelectorAll('a[href*="BashantaCv.pdf"]').forEach((link) => {
     } catch (err) {}
   });
 });
+
+/* ===================================================
+   Live GitHub Repository Languages Breakdown
+   =================================================== */
+const GITHUB_LANG_COLORS = {
+  "HTML": "#e34c26",
+  "C#": "#178600",
+  "C++": "#f34b7d",
+  "PHP": "#4F5D95",
+  "ASP.NET": "#9400D3",
+  "C": "#555555",
+  "Python": "#3572A5",
+  "JavaScript": "#f1e05a",
+  "TypeScript": "#3178c6",
+  "Java": "#b07219",
+  "CSS": "#563d7c",
+  "Shell": "#89e051",
+  "Blade": "#f7523f",
+  "Other": "#8b949e"
+};
+
+async function initGitHubLanguages() {
+  const langBar = document.querySelector("#gh-lang-bar");
+  const langList = document.querySelector("#gh-lang-list");
+  const syncBadge = document.querySelector("#gh-sync-badge");
+  if (!langBar || !langList) return;
+
+  const GITHUB_USERNAME = "Bashanta-Pokharel";
+  const CACHE_KEY = "bp_gh_languages_cache";
+
+  function renderLanguages(languages) {
+    if (!languages || !languages.length) return;
+
+    // Render multi-segment continuous bar
+    langBar.innerHTML = languages.map(l => `
+      <span class="gh-lang-segment" style="width: ${l.percentage}%; background-color: ${l.color};" title="${l.name}: ${l.percentage}%"></span>
+    `).join("");
+
+    // Render legend list
+    langList.innerHTML = languages.map(l => `
+      <div class="gh-lang-item">
+        <span class="gh-lang-dot" style="background-color: ${l.color}; color: ${l.color};"></span>
+        <span class="gh-lang-name">${l.name}</span>
+        <span class="gh-lang-percent">${l.percentage}%</span>
+      </div>
+    `).join("");
+  }
+
+  // Load from Cache if available
+  try {
+    const cached = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
+    if (cached) renderLanguages(cached);
+  } catch (e) {}
+
+  // Fetch Live from GitHub API
+  try {
+    const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=pushed`);
+    if (!res.ok) throw new Error("GitHub API rate limit or error");
+
+    const repos = await res.json();
+    if (!Array.isArray(repos) || !repos.length) return;
+
+    // Aggregate languages
+    const langTotals = {};
+    let grandTotal = 0;
+
+    const activeRepos = repos.filter(r => !r.fork && r.size > 0).slice(0, 15);
+    const langPromises = activeRepos.map(async (repo) => {
+      try {
+        if (repo.languages_url) {
+          const lRes = await fetch(repo.languages_url);
+          if (lRes.ok) {
+            const data = await lRes.json();
+            for (const [lang, bytes] of Object.entries(data)) {
+              langTotals[lang] = (langTotals[lang] || 0) + bytes;
+              grandTotal += bytes;
+            }
+          }
+        }
+      } catch (err) {}
+    });
+
+    await Promise.all(langPromises);
+
+    if (grandTotal > 0) {
+      const sorted = Object.entries(langTotals)
+        .sort((a, b) => b[1] - a[1]);
+
+      const topLangs = sorted.slice(0, 6);
+      const otherBytes = sorted.slice(6).reduce((acc, curr) => acc + curr[1], 0);
+
+      const computedList = topLangs.map(([name, bytes]) => ({
+        name: name,
+        color: GITHUB_LANG_COLORS[name] || "#38bdf8",
+        percentage: ((bytes / grandTotal) * 100).toFixed(1)
+      }));
+
+      if (otherBytes > 0) {
+        computedList.push({
+          name: "Other",
+          color: GITHUB_LANG_COLORS["Other"] || "#8b949e",
+          percentage: ((otherBytes / grandTotal) * 100).toFixed(1)
+        });
+      }
+
+      renderLanguages(computedList);
+      localStorage.setItem(CACHE_KEY, JSON.stringify(computedList));
+      if (syncBadge) syncBadge.innerHTML = '<span class="pulse-dot"></span> Live Synced';
+    }
+  } catch (e) {
+    if (syncBadge) syncBadge.innerHTML = '<span class="pulse-dot"></span> GitHub Synced';
+  }
+}
+
+initGitHubLanguages();
