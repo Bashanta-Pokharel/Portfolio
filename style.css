@@ -2119,73 +2119,55 @@ p { margin: 0; }
 }
 
 /* ======================================
-   Flowing Nepal Flag Animation
+   Nepal Government Style Flag in Navbar
    ====================================== */
-.nepal-flag-wrap {
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nepal-gov-flag-wrap {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  vertical-align: middle;
-  margin-right: 12px;
-  perspective: 600px;
+  line-height: 1;
+  perspective: 400px;
 }
 
-.flowing-nepal-flag {
-  display: inline-block;
-  transform-origin: left center;
-  animation: flowNepalFlag 3s ease-in-out infinite alternate;
+.nepal-gov-flag {
+  width: 24px;
+  height: 28px;
+  display: block;
+  filter: drop-shadow(0 2px 5px rgba(220, 20, 60, 0.45));
+  overflow: visible;
 }
 
-.hero-flag {
-  width: 44px;
-  height: 52px;
-  filter: drop-shadow(0 4px 12px rgba(200, 16, 46, 0.45));
+.nepal-gov-flag .flag-cloth {
+  transform-origin: 5px 24px;
+  animation: waveGovFlag 2s ease-in-out infinite alternate;
 }
 
-.brand .nepal-flag-mini {
-  display: inline-flex;
-  align-items: center;
-  margin-right: 8px;
-  vertical-align: middle;
-}
-
-.brand .nepal-flag-mini .flowing-nepal-flag {
-  width: 22px;
-  height: 26px;
-  filter: drop-shadow(0 2px 6px rgba(200, 16, 46, 0.4));
-  animation: flowNepalFlag 2.6s ease-in-out infinite alternate;
-}
-
-@keyframes flowNepalFlag {
+@keyframes waveGovFlag {
   0% {
-    transform: rotate(0deg) skewY(0deg) scaleX(1);
-    filter: drop-shadow(0 4px 8px rgba(0, 56, 147, 0.45));
+    transform: rotateY(0deg) skewY(0deg) scaleX(1);
+    filter: drop-shadow(0 1px 3px rgba(0, 56, 147, 0.4));
   }
   25% {
-    transform: rotate(-3.5deg) skewY(3.5deg) scaleX(0.96);
-    filter: drop-shadow(3px 6px 14px rgba(200, 16, 46, 0.55));
+    transform: rotateY(-18deg) skewY(3deg) scaleX(0.93);
+    filter: drop-shadow(2px 2px 4px rgba(220, 20, 60, 0.5));
   }
   50% {
-    transform: rotate(2.5deg) skewY(-2.5deg) scaleX(1.02);
-    filter: drop-shadow(-2px 5px 12px rgba(0, 56, 147, 0.5));
+    transform: rotateY(12deg) skewY(-2deg) scaleX(1.02);
+    filter: drop-shadow(-1px 2px 3px rgba(0, 56, 147, 0.4));
   }
   75% {
-    transform: rotate(-2deg) skewY(2deg) scaleX(0.97);
-    filter: drop-shadow(2px 7px 15px rgba(200, 16, 46, 0.6));
+    transform: rotateY(-14deg) skewY(2deg) scaleX(0.96);
+    filter: drop-shadow(1px 2px 5px rgba(220, 20, 60, 0.5));
   }
   100% {
-    transform: rotate(3.5deg) skewY(-3.5deg) scaleX(1);
-    filter: drop-shadow(-2px 6px 14px rgba(0, 56, 147, 0.5));
-  }
-}
-
-@media (max-width: 600px) {
-  .hero-flag {
-    width: 34px;
-    height: 40px;
-  }
-  .nepal-flag-wrap {
-    margin-right: 8px;
+    transform: rotateY(16deg) skewY(-2.5deg) scaleX(0.98);
+    filter: drop-shadow(-1px 2px 4px rgba(0, 56, 147, 0.45));
   }
 }
 
