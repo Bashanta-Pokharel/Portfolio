@@ -364,9 +364,13 @@ window.getVisitorLogs = function() {
   return JSON.parse(localStorage.getItem(LOGS_STORAGE_KEY) || "[]");
 };
 
+let countAnimFrame = null;
+
 function animateVisitorCount(targetNumber) {
   if (!visitorCount) return;
-  const duration = 1600;
+  if (countAnimFrame) cancelAnimationFrame(countAnimFrame);
+
+  const duration = 1200;
   const startTime = performance.now();
 
   function update(currentTime) {
@@ -377,66 +381,64 @@ function animateVisitorCount(targetNumber) {
     visitorCount.textContent = currentVal.toLocaleString();
 
     if (progress < 1) {
-      requestAnimationFrame(update);
+      countAnimFrame = requestAnimationFrame(update);
     } else {
       visitorCount.textContent = targetNumber.toLocaleString();
+      countAnimFrame = null;
     }
   }
 
-  requestAnimationFrame(update);
+  countAnimFrame = requestAnimationFrame(update);
 }
 
 async function setVisitorCount() {
   if (!visitorCount) return;
 
-  const BASELINE_VISITS = 787; // Original baseline from previous state
+  const BASELINE_VISITS = 787;
   const STORAGE_KEY = "bp_portfolio_visitor_count";
   const SESSION_KEY = "bp_visited_session";
 
-  let currentCount = parseInt(localStorage.getItem(STORAGE_KEY) || localStorage.getItem("portfolioVisits"), 10);
-
-  // Auto-correction: if previously set to 1400+ by the hardcode bug, restore back to 787
-  if (currentCount >= 1000) {
-    currentCount = BASELINE_VISITS;
-    localStorage.setItem(STORAGE_KEY, currentCount.toString());
-    localStorage.setItem("portfolioVisits", currentCount.toString());
+  let storedCount = parseInt(localStorage.getItem(STORAGE_KEY) || localStorage.getItem("portfolioVisits"), 10);
+  if (!storedCount || isNaN(storedCount) || storedCount < BASELINE_VISITS || storedCount >= 1000) {
+    storedCount = BASELINE_VISITS;
   }
 
-  if (!currentCount || isNaN(currentCount) || currentCount < BASELINE_VISITS) {
-    currentCount = BASELINE_VISITS;
-    localStorage.setItem(STORAGE_KEY, currentCount.toString());
-    localStorage.setItem("portfolioVisits", currentCount.toString());
-  }
+  let finalCount = storedCount;
 
-  // Display and animate initial stored count immediately
-  animateVisitorCount(currentCount);
-
-  // Sync with your original CountAPI
   try {
     const isNewSession = !sessionStorage.getItem(SESSION_KEY);
     const endpoint = isNewSession
       ? "https://countapi.mileshilliard.com/api/v1/hit/bashanta_pokharel_portfolio_visits"
       : "https://countapi.mileshilliard.com/api/v1/get/bashanta_pokharel_portfolio_visits";
 
-    const response = await fetch(endpoint);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2500);
+
+    const response = await fetch(endpoint, { signal: controller.signal });
+    clearTimeout(timeoutId);
+
     if (response.ok) {
       const data = await response.json();
       const apiValue = Number(data.value || 0);
       if (apiValue > 0) {
-        currentCount = Math.max(apiValue, BASELINE_VISITS);
-        localStorage.setItem(STORAGE_KEY, currentCount.toString());
-        localStorage.setItem("portfolioVisits", currentCount.toString());
-        visitorCount.textContent = currentCount.toLocaleString();
+        finalCount = Math.max(apiValue, BASELINE_VISITS);
       }
     }
   } catch (error) {
-    // Gracefully use local storage count if offline
+    // If offline or network timeout, fallback to stored count
   }
 
-  // Increment session & dispatch background email alert for new visitor
+  // Persist the actual count
+  localStorage.setItem(STORAGE_KEY, finalCount.toString());
+  localStorage.setItem("portfolioVisits", finalCount.toString());
+
+  // Animate directly to the actual current live visits
+  animateVisitorCount(finalCount);
+
+  // Send visitor alert on new session
   if (!sessionStorage.getItem(SESSION_KEY)) {
     sessionStorage.setItem(SESSION_KEY, "true");
-    logVisitorDetails(currentCount);
+    logVisitorDetails(finalCount);
   }
 }
 
