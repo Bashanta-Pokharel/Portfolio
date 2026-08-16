@@ -2118,3 +2118,74 @@ p { margin: 0; }
   margin-bottom: 20px;
 }
 
+/* ======================================
+   Flowing Nepal Flag Animation
+   ====================================== */
+.nepal-flag-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin-right: 12px;
+  perspective: 600px;
+}
+
+.flowing-nepal-flag {
+  display: inline-block;
+  transform-origin: left center;
+  animation: flowNepalFlag 3s ease-in-out infinite alternate;
+}
+
+.hero-flag {
+  width: 44px;
+  height: 52px;
+  filter: drop-shadow(0 4px 12px rgba(200, 16, 46, 0.45));
+}
+
+.brand .nepal-flag-mini {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.brand .nepal-flag-mini .flowing-nepal-flag {
+  width: 22px;
+  height: 26px;
+  filter: drop-shadow(0 2px 6px rgba(200, 16, 46, 0.4));
+  animation: flowNepalFlag 2.6s ease-in-out infinite alternate;
+}
+
+@keyframes flowNepalFlag {
+  0% {
+    transform: rotate(0deg) skewY(0deg) scaleX(1);
+    filter: drop-shadow(0 4px 8px rgba(0, 56, 147, 0.45));
+  }
+  25% {
+    transform: rotate(-3.5deg) skewY(3.5deg) scaleX(0.96);
+    filter: drop-shadow(3px 6px 14px rgba(200, 16, 46, 0.55));
+  }
+  50% {
+    transform: rotate(2.5deg) skewY(-2.5deg) scaleX(1.02);
+    filter: drop-shadow(-2px 5px 12px rgba(0, 56, 147, 0.5));
+  }
+  75% {
+    transform: rotate(-2deg) skewY(2deg) scaleX(0.97);
+    filter: drop-shadow(2px 7px 15px rgba(200, 16, 46, 0.6));
+  }
+  100% {
+    transform: rotate(3.5deg) skewY(-3.5deg) scaleX(1);
+    filter: drop-shadow(-2px 6px 14px rgba(0, 56, 147, 0.5));
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-flag {
+    width: 34px;
+    height: 40px;
+  }
+  .nepal-flag-wrap {
+    margin-right: 8px;
+  }
+}
+
