@@ -1223,46 +1223,72 @@ p { margin: 0; }
 }
 
 .contact-form {
-  display: grid;
-  gap: 16px;
-  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 32px 28px;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
   background: var(--surface);
   backdrop-filter: blur(16px);
   box-shadow: var(--shadow);
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.form-row { display: grid; gap: 7px; }
-.form-row label {
+.form-row, .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-row label, .form-group label {
   font-weight: 600;
   font-size: 0.9rem;
   color: var(--text);
   font-family: var(--font-mono);
+  display: block;
 }
 
+.contact-form input,
+.contact-form textarea,
 .form-row input,
 .form-row textarea {
-  width: 100%;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
   border: 1px solid var(--border);
   border-radius: 10px;
   background: rgba(79, 142, 255, 0.04);
   color: var(--text);
-  padding: 13px 16px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
   outline: none;
   resize: vertical;
-  transition: all 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
   font-family: var(--font-body);
 }
-[data-theme="light"] .form-row input,
-[data-theme="light"] .form-row textarea { background: rgba(255,255,255,0.9); }
 
-.form-row input:focus, .form-row textarea:focus {
-  border-color: var(--border-glow);
-  box-shadow: 0 0 0 3px rgba(79, 142, 255, 0.15), var(--glow-blue);
+[data-theme="light"] .contact-form input,
+[data-theme="light"] .contact-form textarea,
+[data-theme="light"] .form-row input,
+[data-theme="light"] .form-row textarea {
+  background: rgba(255, 255, 255, 0.92);
 }
+
+.contact-form input:focus,
+.contact-form textarea:focus,
+.form-row input:focus,
+.form-row textarea:focus {
+  border-color: var(--border-glow);
+  box-shadow: 0 0 0 3px rgba(79, 142, 255, 0.18), var(--glow-blue);
+  background: rgba(79, 142, 255, 0.08);
+}
+
 .honeypot { position: absolute; left: -9999px; }
-.form-submit { width: 100%; }
+.form-submit { width: 100%; justify-content: center; padding: 14px 20px; }
 .form-status { min-height: 24px; color: var(--muted); font-weight: 600; font-size: 0.9rem; }
 
 /* ======================================
@@ -1964,7 +1990,7 @@ p { margin: 0; }
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .nepal-gov-flag-wrap {
@@ -1972,42 +1998,42 @@ p { margin: 0; }
   align-items: center;
   justify-content: center;
   line-height: 1;
-  perspective: 400px;
+  perspective: 450px;
 }
 
 .nepal-gov-flag {
-  width: 24px;
-  height: 28px;
+  width: 32px;
+  height: 36px;
   display: block;
-  filter: drop-shadow(0 2px 5px rgba(220, 20, 60, 0.45));
+  filter: drop-shadow(0 3px 8px rgba(220, 20, 60, 0.5));
   overflow: visible;
 }
 
 .nepal-gov-flag .flag-cloth {
-  transform-origin: 5px 24px;
-  animation: waveGovFlag 2s ease-in-out infinite alternate;
+  transform-origin: 6px 28px;
+  animation: waveGovFlag 2.4s ease-in-out infinite alternate;
 }
 
 @keyframes waveGovFlag {
   0% {
     transform: rotateY(0deg) skewY(0deg) scaleX(1);
-    filter: drop-shadow(0 1px 3px rgba(0, 56, 147, 0.4));
+    filter: drop-shadow(0 2px 4px rgba(0, 56, 147, 0.4));
   }
   25% {
-    transform: rotateY(-18deg) skewY(3deg) scaleX(0.93);
-    filter: drop-shadow(2px 2px 4px rgba(220, 20, 60, 0.5));
+    transform: rotateY(-18deg) skewY(3.5deg) scaleX(0.92);
+    filter: drop-shadow(3px 3px 6px rgba(220, 20, 60, 0.55));
   }
   50% {
-    transform: rotateY(12deg) skewY(-2deg) scaleX(1.02);
-    filter: drop-shadow(-1px 2px 3px rgba(0, 56, 147, 0.4));
+    transform: rotateY(12deg) skewY(-2.5deg) scaleX(1.02);
+    filter: drop-shadow(-2px 3px 5px rgba(0, 56, 147, 0.45));
   }
   75% {
-    transform: rotateY(-14deg) skewY(2deg) scaleX(0.96);
-    filter: drop-shadow(1px 2px 5px rgba(220, 20, 60, 0.5));
+    transform: rotateY(-14deg) skewY(2.2deg) scaleX(0.95);
+    filter: drop-shadow(2px 3px 7px rgba(220, 20, 60, 0.55));
   }
   100% {
-    transform: rotateY(16deg) skewY(-2.5deg) scaleX(0.98);
-    filter: drop-shadow(-1px 2px 4px rgba(0, 56, 147, 0.45));
+    transform: rotateY(16deg) skewY(-3deg) scaleX(0.98);
+    filter: drop-shadow(-2px 3px 6px rgba(0, 56, 147, 0.5));
   }
 }
 

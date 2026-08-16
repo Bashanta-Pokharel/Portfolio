@@ -66,20 +66,31 @@
       <nav class="nav-shell" aria-label="Primary navigation">
         <a class="brand" href="#home" aria-label="Bashanta Pokharel home">
           <span class="nepal-gov-flag-wrap" title="Nepal">
-            <svg class="nepal-gov-flag" viewBox="0 0 45 50" xmlns="http://www.w3.org/2000/svg" aria-label="Nepal Flag">
-              <circle cx="5" cy="3" r="2.5" fill="#F59E0B" stroke="#D97706" stroke-width="0.5"/>
-              <line x1="5" y1="3" x2="5" y2="48" stroke="#94A3B8" stroke-width="1.8" stroke-linecap="round"/>
-              <circle cx="5" cy="48" r="2" fill="#64748B"/>
+            <svg class="nepal-gov-flag" viewBox="0 0 54 58" xmlns="http://www.w3.org/2000/svg" aria-label="Flag of Nepal">
+              <circle cx="6" cy="4" r="3.2" fill="url(#goldGrad)" stroke="#B45309" stroke-width="0.6"/>
+              <line x1="6" y1="4" x2="6" y2="55" stroke="url(#silverPole)" stroke-width="2.4" stroke-linecap="round"/>
+              <circle cx="6" cy="55" r="2.5" fill="#475569"/>
               <g class="flag-cloth">
-                <polygon points="5,5 40,22 17,22 36,44 5,44" fill="#003893"/>
-                <polygon points="7,8 34,20 14,20 30,41 7,41" fill="#DC143C"/>
-                <path d="M 13,15 A 4,4 0 1,0 19,10 A 3.2,3.2 0 1,1 13,15 Z" fill="#FFFFFF"/>
-                <circle cx="16" cy="12" r="1.2" fill="#FFFFFF"/>
-                <circle cx="15" cy="30" r="2" fill="#FFFFFF"/>
-                <g fill="#FFFFFF" transform="translate(15,30) scale(0.35)">
-                  <polygon points="0,-9 2,-4 6,-7 4,-2 9,-2 5,1 8,5 3,4 4,9 0,5 -4,9 -3,4 -8,5 -5,1 -9,-2 -4,-2 -6,-7 -2,-4"/>
+                <polygon points="6,6 48,26 21,26 44,51 6,51" fill="#003893"/>
+                <polygon points="8.5,9.5 41,23.5 17,23.5 37,47.5 8.5,47.5" fill="#DC143C"/>
+                <path d="M 16,17.5 A 4.8,4.8 0 1,0 23,11.5 A 3.8,3.8 0 1,1 16,17.5 Z" fill="#FFFFFF"/>
+                <circle cx="19.5" cy="14" r="1.4" fill="#FFFFFF"/>
+                <circle cx="18" cy="35" r="2.5" fill="#FFFFFF"/>
+                <g fill="#FFFFFF" transform="translate(18,35) scale(0.42)">
+                  <polygon points="0,-10 2.5,-4.5 7,-8 4.5,-2 10,-2 5.5,1.5 9,6 3.5,4.5 4.5,10 0,5.5 -4.5,10 -3.5,4.5 -9,6 -5.5,1.5 -10,-2 -4.5,-2 -7,-8 -2.5,-4.5"/>
                 </g>
               </g>
+              <defs>
+                <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#FDE047"/>
+                  <stop offset="100%" stop-color="#D97706"/>
+                </linearGradient>
+                <linearGradient id="silverPole" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" stop-color="#CBD5E1"/>
+                  <stop offset="50%" stop-color="#FFFFFF"/>
+                  <stop offset="100%" stop-color="#94A3B8"/>
+                </linearGradient>
+              </defs>
             </svg>
           </span>
           <span class="brand-text">Bashanta</span>
@@ -870,142 +881,130 @@
         </div>
       </section>
 
-      <section
-        class="section contact-band"
-        id="contact"
-        aria-labelledby="contact-title"
-      >
-        <div class="container contact-grid">
-          <div class="contact-copy reveal">
-            <p class="section-label">Contact</p>
-            <h2 id="contact-title">
-              Let's talk about internships, projects, or collaboration.
-            </h2>
-            <p>
-              I am open to junior backend opportunities, internships, academic
-              collaborations, and freelance-friendly student projects.
-            </p>
-            <div class="contact-list">
-              <a href="mailto:bashantapokharel5@gmail.com">
-                <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-                bashantapokharel5@gmail.com
-              </a>
-              <a
-                href="https://maps.google.com/?q=Kathmandu,Nepal"
-                target="_blank"
-                rel="noopener"
-              >
-                <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
-                Kathmandu, Nepal
-              </a>
-              <a href="assets/BashantaCv.pdf" download="Bashanta_Pokharel_Resume.pdf" aria-label="Download Resume PDF">
-                <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
-                Download Resume PDF
-              </a>
-            </div>
-            <div class="social-links" aria-label="Social links">
-              <a
-                href="https://github.com/Bashanta-Pokharel"
-                target="_blank"
-                rel="noopener"
-                aria-label="GitHub"
-              >
-                <i class="fa-brands fa-github" aria-hidden="true"></i>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/bashanta-pokharel-71286b2b2/"
-                target="_blank"
-                rel="noopener"
-                aria-label="LinkedIn"
-              >
-                <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
-              </a>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener"
-                aria-label="Twitter"
-              >
-                <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
-              </a>
-            </div>
+      <!-- Contact Section -->
+      <section class="contact section" id="contact" aria-labelledby="contact-title">
+        <div class="container">
+          <div class="section-heading reveal">
+            <p class="section-kicker">Get In Touch</p>
+            <h2 id="contact-title">Let's Connect</h2>
           </div>
+          <div class="contact-grid">
+            <div class="contact-info glass-card reveal">
+              <h3>Let's talk about backend opportunities</h3>
+              <p>
+                I am currently open to junior backend developer roles, internships, and project collaborations. Feel free to reach out directly.
+              </p>
+              <div class="contact-list">
+                <a href="mailto:bashantapokharel5@gmail.com">
+                  <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                  bashantapokharel5@gmail.com
+                </a>
+                <a
+                  href="https://maps.google.com/?q=Kathmandu,Nepal"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+                  Kathmandu, Nepal
+                </a>
+                <a href="assets/BashantaCv.pdf" download="Bashanta_Pokharel_Resume.pdf" aria-label="Download Resume PDF">
+                  <i class="fa-solid fa-file-arrow-down" aria-hidden="true"></i>
+                  Download Resume PDF
+                </a>
+              </div>
+              <div class="social-links" aria-label="Social links">
+                <a
+                  href="https://github.com/Bashanta-Pokharel"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="GitHub"
+                >
+                  <i class="fa-brands fa-github" aria-hidden="true"></i>
+                </a>
+                <a
+                  href="https://www.linkedin.com/in/bashanta-pokharel-71286b2b2/"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="LinkedIn"
+                >
+                  <i class="fa-brands fa-linkedin-in" aria-hidden="true"></i>
+                </a>
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noopener"
+                  aria-label="Twitter"
+                >
+                  <i class="fa-brands fa-x-twitter" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
 
-          <form
-            class="contact-form glass-card reveal"
-            id="contact-form"
-            action="https://api.web3forms.com/submit"
-            method="POST"
-          >
-            <input
-              type="hidden"
-              name="access_key"
-              value="fb13d3c2-66f4-42e2-bdd8-1caea1205753"
-            />
-            <input
-              type="checkbox"
-              name="botcheck"
-              class="hidden"
-              style="display: none"
-            />
-            <input
-              type="hidden"
-              name="from_name"
-              value="Portfolio Contact Form"
-            />
-            <input
-              type="hidden"
-              name="subject"
-              value="New Message from Portfolio Contact Form"
-            />
-            <div class="form-row">
-              <div class="form-group">
+            <form
+              class="contact-form reveal"
+              id="contact-form"
+              action="https://api.web3forms.com/submit"
+              method="POST"
+            >
+              <input
+                type="hidden"
+                name="access_key"
+                value="fb13d3c2-66f4-42e2-bdd8-1caea1205753"
+              />
+              <input
+                type="hidden"
+                name="from_name"
+                value="Bashanta Pokharel Portfolio"
+              />
+              <div class="form-row">
                 <label for="name">Your Name</label>
                 <input
-                  id="name"
                   type="text"
+                  id="name"
                   name="name"
                   placeholder="Bashanta"
+                  autocomplete="name"
                   required
                 />
               </div>
-              <div class="form-group">
+              <div class="form-row">
                 <label for="email">Your Email</label>
                 <input
-                  id="email"
                   type="email"
+                  id="email"
                   name="email"
                   placeholder="bashanta@example.com"
+                  autocomplete="email"
                   required
                 />
               </div>
-            </div>
-            <div class="form-group">
-              <label for="subject">Subject</label>
-              <input
-                id="subject"
-                type="text"
-                name="subject_custom"
-                placeholder="Project Inquiry / Collaboration"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label for="message">Message</label>
-              <textarea
-                id="message"
-                name="message"
-                rows="5"
-                placeholder="Tell me about your project or inquiry..."
-                required
-              ></textarea>
-            </div>
-            <button class="btn btn-primary" type="submit">
-              <span>Send Message</span>
-              <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
-            </button>
-            <p class="form-status" id="form-status" aria-live="polite"></p>
-          </form>
+              <div class="form-row">
+                <label for="subject">Subject</label>
+                <input
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  placeholder="Project Inquiry / Collaboration"
+                  required
+                />
+              </div>
+              <div class="form-row">
+                <label for="message">Message</label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="5"
+                  placeholder="Tell me about your project or inquiry..."
+                  required
+                ></textarea>
+              </div>
+              <button class="btn btn-primary form-submit" type="submit">
+                <span>Send Message</span>
+                <i class="fa-solid fa-paper-plane" aria-hidden="true"></i>
+              </button>
+              <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+            </form>
+          </div>
         </div>
       </section>
     </main>
