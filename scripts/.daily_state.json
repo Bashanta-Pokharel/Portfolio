@@ -1,0 +1,15 @@
+{
+  "current_day": 2,
+  "lang_index": 1,
+  "history": [
+    {
+      "date": "2026-08-18",
+      "day": 1,
+      "language": "python",
+      "files": [
+        "day01_01_hello_variables.py",
+        "day01_02_basic_calculator.py"
+      ]
+    }
+  ]
+}
