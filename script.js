@@ -82,7 +82,10 @@ class DragonEntity {
     this.isImageOrbit = config.isImageOrbit || false;
     this.targetSelector = config.targetSelector || ".profile-image-wrap";
 
-    this.scaleMul = config.scaleMul || 0.50;
+    this.baseScale = config.scaleMul || 0.50;
+    const isMobile = window.innerWidth <= 768;
+    this.scaleMul = this.baseScale * (isMobile ? 0.58 : 1.0); // Proportionally smaller on mobile view
+
     this.opacity = config.opacity !== undefined ? config.opacity : 1.0;
     this.speed = config.speed || 1.0;
     this.N = config.segments || 34;
@@ -370,6 +373,12 @@ window.addEventListener("pointermove", (e) => {
 window.addEventListener("resize", () => {
   dragonWidth = window.innerWidth;
   dragonHeight = window.innerHeight;
+  const isMobile = dragonWidth <= 768;
+  for (let i = 0; i < dragonFlock.length; i++) {
+    if (dragonFlock[i].baseScale) {
+      dragonFlock[i].scaleMul = dragonFlock[i].baseScale * (isMobile ? 0.58 : 1.0);
+    }
+  }
   if (dragonFlock[0]) {
     dragonFlock[0].radm = Math.min(dragonWidth / 2, dragonHeight / 2) - 20;
   }
