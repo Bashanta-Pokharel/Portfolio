@@ -603,6 +603,64 @@ p { margin: 0; }
   box-shadow: 0 0 8px var(--emerald);
   animation: pulse-glow 2s ease infinite;
 }
+
+/* Nepal Profile Flag Floating Badge */
+.nepal-profile-flag-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px 4px 6px;
+  border-radius: 999px;
+  background: rgba(6, 18, 48, 0.88);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 10px rgba(0, 212, 255, 0.2);
+  backdrop-filter: blur(12px);
+  z-index: 5;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  animation: floatFlagBadge 3s ease-in-out infinite alternate;
+  user-select: none;
+  pointer-events: auto;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.nepal-profile-flag-badge:hover {
+  transform: translateY(-2px) scale(1.05);
+  border-color: #00f0ff;
+  box-shadow: 0 6px 18px rgba(0, 212, 255, 0.4);
+}
+.profile-flag-gif {
+  width: auto;
+  height: 22px;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 4px rgba(220, 20, 60, 0.5));
+}
+
+@keyframes floatFlagBadge {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-4px); }
+}
+
+.eyebrow-flag {
+  width: auto;
+  height: 18px;
+  display: inline-block;
+  vertical-align: -3px;
+  margin-right: 4px;
+  filter: drop-shadow(0 1px 4px rgba(220, 20, 60, 0.4));
+}
+
+[data-theme="light"] .nepal-profile-flag-badge {
+  background: rgba(255, 255, 255, 0.92);
+  border-color: rgba(37, 99, 235, 0.3);
+  color: #0f172a;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+}
 [data-theme="light"] .availability { background: rgba(255,255,255,0.9); color: #059669; }
 
 .profile-card-body {
