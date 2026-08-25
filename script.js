@@ -59,6 +59,66 @@ function playSound(type = "click") {
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.28);
       osc.start(ctx.currentTime);
       osc.stop(ctx.currentTime + 0.28);
+    } else if (type === "dragon_summon") {
+      // Mythical Spirit Dragon Roar & Harmonic Sweep
+      const osc1 = ctx.createOscillator();
+      const osc2 = ctx.createOscillator();
+      const gainNode = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      filter.type = "lowpass";
+      filter.frequency.setValueAtTime(400, ctx.currentTime);
+      filter.frequency.exponentialRampToValueAtTime(1400, ctx.currentTime + 0.22);
+      filter.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + 0.55);
+
+      osc1.type = "sawtooth";
+      osc1.frequency.setValueAtTime(90, ctx.currentTime);
+      osc1.frequency.exponentialRampToValueAtTime(220, ctx.currentTime + 0.18);
+      osc1.frequency.exponentialRampToValueAtTime(60, ctx.currentTime + 0.55);
+
+      osc2.type = "triangle";
+      osc2.frequency.setValueAtTime(180, ctx.currentTime);
+      osc2.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.2);
+      osc2.frequency.exponentialRampToValueAtTime(120, ctx.currentTime + 0.55);
+
+      gainNode.gain.setValueAtTime(0.001, ctx.currentTime);
+      gainNode.gain.linearRampToValueAtTime(0.09, ctx.currentTime + 0.08);
+      gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.58);
+
+      osc1.connect(filter);
+      osc2.connect(filter);
+      filter.connect(gainNode);
+      gainNode.connect(ctx.destination);
+
+      osc1.start(ctx.currentTime);
+      osc2.start(ctx.currentTime);
+      osc1.stop(ctx.currentTime + 0.58);
+      osc2.stop(ctx.currentTime + 0.58);
+    } else if (type === "dragon_swoosh") {
+      // Gentle wind flutter when sweeping quickly
+      const noiseOsc = ctx.createOscillator();
+      const noiseGain = ctx.createGain();
+      const biquad = ctx.createBiquadFilter();
+
+      biquad.type = "bandpass";
+      biquad.frequency.setValueAtTime(280, ctx.currentTime);
+      biquad.frequency.exponentialRampToValueAtTime(520, ctx.currentTime + 0.1);
+      biquad.frequency.exponentialRampToValueAtTime(160, ctx.currentTime + 0.24);
+      biquad.Q.value = 2.5;
+
+      noiseOsc.type = "sine";
+      noiseOsc.frequency.setValueAtTime(120, ctx.currentTime);
+      noiseOsc.frequency.exponentialRampToValueAtTime(260, ctx.currentTime + 0.08);
+
+      noiseGain.gain.setValueAtTime(0.025, ctx.currentTime);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.24);
+
+      noiseOsc.connect(biquad);
+      biquad.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+
+      noiseOsc.start(ctx.currentTime);
+      noiseOsc.stop(ctx.currentTime + 0.25);
     }
   } catch (e) {
     // Audio context fallback safeguard
@@ -359,10 +419,21 @@ function animateDragonFlock() {
 }
 
 // Track mouse movements for both glow follower and dragon creature
+let lastDragonSwooshTime = 0;
 window.addEventListener("pointermove", (e) => {
   if (cyberCursor) {
     cyberCursor.style.left = `${e.clientX}px`;
     cyberCursor.style.top = `${e.clientY}px`;
+  }
+
+  const dx = e.clientX - dragonPointer.x;
+  const dy = e.clientY - dragonPointer.y;
+  const dist = Math.hypot(dx, dy);
+  const now = Date.now();
+
+  if (dragonFollowEnabled && dist > 140 && now - lastDragonSwooshTime > 2200 && !isAudioMuted) {
+    lastDragonSwooshTime = now;
+    playSound("dragon_swoosh");
   }
 
   dragonPointer.x = e.clientX;
@@ -411,6 +482,11 @@ function initDragonToggle() {
     dragonFollowEnabled = !dragonFollowEnabled;
     localStorage.setItem("dragonFollowEnabled", dragonFollowEnabled ? "true" : "false");
     updateToggleUI();
+    if (dragonFollowEnabled) {
+      playSound("dragon_summon");
+    } else {
+      playSound("click");
+    }
     if (typeof showToast === "function") {
       showToast(
         dragonFollowEnabled
