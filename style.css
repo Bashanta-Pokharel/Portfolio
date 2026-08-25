@@ -2070,13 +2070,107 @@ p { margin: 0; }
     rgba(79, 142, 255, 0.06) 40%,
     transparent 70%);
   pointer-events: none;
-  z-index: 9999;
+  z-index: 9998;
   transform: translate(-50%, -50%);
   transition: opacity 0.4s ease;
   opacity: 0.9;
   mix-blend-mode: screen;
 }
 [data-theme="light"] .cyber-cursor { opacity: 0.25; }
+
+/* ======================================
+   Interactive Dragon Creature Cursor
+   ====================================== */
+.dragon-cursor-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  overflow: hidden;
+  filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.6));
+  transition: opacity 0.4s ease, filter 0.3s ease;
+}
+
+/* Dark Theme Dragon Colors (Luminous Cyber Leviathan) */
+.dragon-head-white {
+  fill: #00f0ff;
+  fill-opacity: 1;
+  filter: drop-shadow(0 0 6px #00ffff);
+}
+.dragon-head-black {
+  fill: #04091a;
+  fill-opacity: 1;
+  stroke: #00d4ff;
+  stroke-width: 0.6px;
+}
+.dragon-grad-stop-0 {
+  stop-color: #38bdf8;
+  stop-opacity: 0.95;
+}
+.dragon-grad-stop-1 {
+  stop-color: #04091a;
+  stop-opacity: 1;
+}
+.dragon-grad-spine-0 {
+  stop-color: #2563eb;
+  stop-opacity: 0.95;
+}
+.dragon-grad-spine-1 {
+  stop-color: #050d24;
+  stop-opacity: 1;
+}
+.dragon-spine-path {
+  stroke: rgba(0, 212, 255, 0.35);
+  stroke-width: 0.4px;
+}
+
+/* Light Theme Dragon Colors (Authentic Japanese/Chinese Sumi-e Ink Wash) */
+[data-theme="light"] .dragon-cursor-canvas {
+  filter: drop-shadow(0 4px 14px rgba(15, 23, 42, 0.35));
+}
+[data-theme="light"] .dragon-head-white {
+  fill: #ffffff;
+  fill-opacity: 1;
+}
+[data-theme="light"] .dragon-head-black {
+  fill: #000000;
+  fill-opacity: 1;
+  stroke: none;
+}
+[data-theme="light"] .dragon-grad-stop-0 {
+  stop-color: #cccccc;
+  stop-opacity: 1;
+}
+[data-theme="light"] .dragon-grad-stop-1 {
+  stop-color: #000000;
+  stop-opacity: 1;
+}
+[data-theme="light"] .dragon-grad-spine-0 {
+  stop-color: #cccccc;
+  stop-opacity: 1;
+}
+[data-theme="light"] .dragon-grad-spine-1 {
+  stop-color: #333333;
+  stop-opacity: 1;
+}
+[data-theme="light"] .dragon-spine-path {
+  stroke: none;
+}
+
+/* Responsive & Accessibility */
+@media (hover: none) or (max-width: 768px) {
+  .dragon-cursor-canvas {
+    display: none !important;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dragon-cursor-canvas {
+    display: none !important;
+  }
+}
 
 /* ======================================
    Canvas Background

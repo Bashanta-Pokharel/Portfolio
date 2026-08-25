@@ -65,12 +65,267 @@ function playSound(type = "click") {
   }
 }
 
-// Cyber Cursor Movement
-window.addEventListener("mousemove", (e) => {
-  if (!cyberCursor) return;
-  cyberCursor.style.left = `${e.clientX}px`;
-  cyberCursor.style.top = `${e.clientY}px`;
+// Cyber Cursor & Dragon Creature Swarm (1 Primary Cursor Dragon + 3 Ambient Free-Swimming Dragons)
+const dragonScreen = document.querySelector("#dragon-screen");
+const xmlns = "http://www.w3.org/2000/svg";
+const xlinkns = "http://www.w3.org/1999/xlink";
+
+let dragonInitialized = false;
+let dragonWidth = window.innerWidth;
+let dragonHeight = window.innerHeight;
+const dragonPointer = { x: dragonWidth / 2, y: dragonHeight / 2 };
+const dragonFlock = [];
+
+class DragonEntity {
+  constructor(config) {
+    this.isCursor = config.isCursor || false;
+    this.scaleMul = config.scaleMul || 0.50;
+    this.opacity = config.opacity !== undefined ? config.opacity : 1.0;
+    this.speed = config.speed || 1.0;
+    this.N = config.segments || 34;
+    this.wing1 = config.wing1 || 7;
+    this.wing2 = config.wing2 || 13;
+
+    // Spawn corner position
+    this.spawnXRatio = config.spawnXRatio !== undefined ? config.spawnXRatio : 0.5;
+    this.spawnYRatio = config.spawnYRatio !== undefined ? config.spawnYRatio : 0.5;
+
+    // Full-screen roaming harmonic frequencies & phase offsets
+    this.freqX = config.freqX || 1.0;
+    this.freqY = config.freqY || 1.0;
+    this.phaseX = config.phaseX || Math.random() * Math.PI * 2;
+    this.phaseY = config.phaseY || Math.random() * Math.PI * 2;
+
+    this.frm = Math.random() * 100;
+    this.rad = 0;
+    this.radm = Math.min(dragonWidth / 2, dragonHeight / 2) - 20;
+
+    this.elems = [];
+    this.group = document.createElementNS(xmlns, "g");
+    if (this.opacity < 1.0) {
+      this.group.setAttributeNS(null, "opacity", this.opacity.toFixed(2));
+    }
+    dragonScreen.appendChild(this.group);
+
+    this.init();
+  }
+
+  init() {
+    const startX = this.isCursor ? dragonPointer.x : dragonWidth * this.spawnXRatio;
+    const startY = this.isCursor ? dragonPointer.y : dragonHeight * this.spawnYRatio;
+
+    for (let i = 0; i < this.N; i++) {
+      this.elems[i] = { use: null, x: startX, y: startY };
+    }
+
+    const prependPart = (useId, i) => {
+      const elem = document.createElementNS(xmlns, "use");
+      this.elems[i].use = elem;
+      elem.setAttributeNS(xlinkns, "xlink:href", "#" + useId);
+      this.group.prepend(elem);
+    };
+
+    for (let i = 1; i < this.N; i++) {
+      if (i === 1) prependPart("Cabeza", i);
+      else if (i === this.wing1 || i === this.wing2) prependPart("Aletas", i);
+      else prependPart("Espina", i);
+    }
+  }
+
+  update() {
+    let e = this.elems[0];
+
+    if (this.isCursor) {
+      // Main Cursor Dragon follows mouse with natural orbit
+      const ax = (Math.cos(3 * this.frm) * this.rad * dragonWidth) / dragonHeight;
+      const ay = (Math.sin(4 * this.frm) * this.rad * dragonHeight) / dragonWidth;
+      e.x += (ax + dragonPointer.x - e.x) / 10;
+      e.y += (ay + dragonPointer.y - e.y) / 10;
+
+      if (this.rad < this.radm) this.rad++;
+      this.frm += 0.003;
+      if (this.rad > 60) {
+        dragonPointer.x += (dragonWidth / 2 - dragonPointer.x) * 0.05;
+        dragonPointer.y += (dragonHeight / 2 - dragonPointer.y) * 0.05;
+      }
+    } else {
+      // Ambient Dragons: Roam smoothly across the ENTIRE viewport
+      this.frm += 0.0022 * this.speed;
+      const targetX =
+        dragonWidth * 0.5 +
+        Math.sin(this.frm * this.freqX + this.phaseX) * (dragonWidth * 0.44) +
+        Math.cos(this.frm * 0.63 + this.phaseX * 1.5) * (dragonWidth * 0.12);
+
+      const targetY =
+        dragonHeight * 0.5 +
+        Math.cos(this.frm * this.freqY + this.phaseY) * (dragonHeight * 0.44) +
+        Math.sin(this.frm * 0.57 + this.phaseY * 1.5) * (dragonHeight * 0.12);
+
+      e.x += (targetX - e.x) * (0.04 * this.speed);
+      e.y += (targetY - e.y) * (0.04 * this.speed);
+    }
+
+    // Inverse kinematics physics across vertebrae
+    for (let i = 1; i < this.N; i++) {
+      let curr = this.elems[i];
+      let prev = this.elems[i - 1];
+      const a = Math.atan2(curr.y - prev.y, curr.x - prev.x);
+      curr.x += (prev.x - curr.x + (Math.cos(a) * (100 - i)) / 5) / 4;
+      curr.y += (prev.y - curr.y + (Math.sin(a) * (100 - i)) / 5) / 4;
+      const s = ((162 + 4 * (1 - i)) / 50) * this.scaleMul;
+
+      if (curr.use) {
+        curr.use.setAttributeNS(
+          null,
+          "transform",
+          `translate(${(prev.x + curr.x) / 2},${(prev.y + curr.y) / 2}) rotate(${
+            (180 / Math.PI) * a
+          }) translate(0,0) scale(${s.toFixed(3)},${s.toFixed(3)})`
+        );
+      }
+    }
+  }
+}
+
+function initDragonCursor() {
+  if (
+    !dragonScreen ||
+    window.matchMedia("(hover: none)").matches ||
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    return;
+  }
+
+  // 1. Primary Dragon (Follows Cursor, compact, sleek size, fully visible)
+  dragonFlock.push(
+    new DragonEntity({
+      isCursor: true,
+      scaleMul: 0.50,
+      opacity: 1.0,
+      segments: 34,
+      wing1: 7,
+      wing2: 13,
+    })
+  );
+
+  // 2. Ambient Dragon 1 (Spawns Top-Left Corner -> Roams full screen - Size ~14%)
+  dragonFlock.push(
+    new DragonEntity({
+      isCursor: false,
+      scaleMul: 0.14,
+      opacity: 0.40,
+      speed: 0.95,
+      segments: 20,
+      wing1: 4,
+      wing2: 8,
+      spawnXRatio: 0.10, // Spawn Top-Left
+      spawnYRatio: 0.12,
+      freqX: 0.95,
+      freqY: 0.75,
+      phaseX: 0.6,
+      phaseY: 1.4,
+    })
+  );
+
+  // 3. Ambient Dragon 2 (Spawns Top-Right Corner -> Roams full screen - Size ~11%)
+  dragonFlock.push(
+    new DragonEntity({
+      isCursor: false,
+      scaleMul: 0.11,
+      opacity: 0.36,
+      speed: 1.05,
+      segments: 17,
+      wing1: 3,
+      wing2: 6,
+      spawnXRatio: 0.90, // Spawn Top-Right
+      spawnYRatio: 0.15,
+      freqX: 0.72,
+      freqY: 1.15,
+      phaseX: 2.2,
+      phaseY: 0.9,
+    })
+  );
+
+  // 4. Ambient Dragon 3 (Spawns Bottom-Left Corner -> Roams full screen - Size ~8%)
+  dragonFlock.push(
+    new DragonEntity({
+      isCursor: false,
+      scaleMul: 0.08,
+      opacity: 0.32,
+      speed: 0.90,
+      segments: 14,
+      wing1: 3,
+      wing2: 5,
+      spawnXRatio: 0.12, // Spawn Bottom-Left
+      spawnYRatio: 0.88,
+      freqX: 1.25,
+      freqY: 0.85,
+      phaseX: 3.8,
+      phaseY: 2.7,
+    })
+  );
+
+  // 5. Ambient Dragon 4 (Spawns Bottom-Right Corner -> Roams full screen - Size ~6%)
+  dragonFlock.push(
+    new DragonEntity({
+      isCursor: false,
+      scaleMul: 0.06,
+      opacity: 0.26,
+      speed: 1.15,
+      segments: 12,
+      wing1: 2,
+      wing2: 4,
+      spawnXRatio: 0.88, // Spawn Bottom-Right
+      spawnYRatio: 0.85,
+      freqX: 0.85,
+      freqY: 0.95,
+      phaseX: 5.3,
+      phaseY: 4.1,
+    })
+  );
+
+  dragonInitialized = true;
+  requestAnimationFrame(animateDragonFlock);
+}
+
+function animateDragonFlock() {
+  if (!dragonInitialized) return;
+
+  for (let i = 0; i < dragonFlock.length; i++) {
+    dragonFlock[i].update();
+  }
+
+  requestAnimationFrame(animateDragonFlock);
+}
+
+// Track mouse movements for both glow follower and dragon creature
+window.addEventListener("pointermove", (e) => {
+  if (cyberCursor) {
+    cyberCursor.style.left = `${e.clientX}px`;
+    cyberCursor.style.top = `${e.clientY}px`;
+  }
+
+  dragonPointer.x = e.clientX;
+  dragonPointer.y = e.clientY;
+  if (dragonFlock[0]) {
+    dragonFlock[0].rad = 0;
+  }
 });
+
+window.addEventListener("resize", () => {
+  dragonWidth = window.innerWidth;
+  dragonHeight = window.innerHeight;
+  if (dragonFlock[0]) {
+    dragonFlock[0].radm = Math.min(dragonWidth / 2, dragonHeight / 2) - 20;
+  }
+});
+
+// Initialize dragon cursor
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initDragonCursor);
+} else {
+  initDragonCursor();
+}
 
 // Projects Data for 3D Showcase Modal
 const projectsData = {
