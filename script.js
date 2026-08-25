@@ -164,7 +164,7 @@ class DragonEntity {
         dragonPointer.y += (dragonHeight / 2 - dragonPointer.y) * 0.05;
       }
     } else if (this.isImageOrbit) {
-      // Image Orbit Dragon: Smoothly patrols in SQUARE mode along the profile picture perimeter
+      // Image Orbit Dragon: Smoothly patrols in SQUARE mode along the profile picture perimeter at a calm, serene pace
       const targetElem = document.querySelector(this.targetSelector);
       if (targetElem) {
         const rect = targetElem.getBoundingClientRect();
@@ -174,7 +174,7 @@ class DragonEntity {
         const halfW = rect.width * 0.5 + margin;
         const halfH = rect.height * 0.5 + margin;
 
-        this.frm += 0.016 * this.speed;
+        this.frm += 0.007 * this.speed; // Calmer, slower cruising pace
         const cosT = Math.cos(this.frm);
         const sinT = Math.sin(this.frm);
         const n = 5.0; // Squircle / Square perimeter curvature
@@ -182,8 +182,8 @@ class DragonEntity {
         const targetX = cx + Math.sign(cosT) * Math.pow(Math.abs(cosT), 2 / n) * halfW;
         const targetY = cy + Math.sign(sinT) * Math.pow(Math.abs(sinT), 2 / n) * halfH;
 
-        e.x += (targetX - e.x) * 0.24;
-        e.y += (targetY - e.y) * 0.24;
+        e.x += (targetX - e.x) * 0.14;
+        e.y += (targetY - e.y) * 0.14;
       }
     } else {
       // Ambient Dragons: Roam smoothly across the ENTIRE viewport
