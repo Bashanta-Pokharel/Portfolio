@@ -271,6 +271,27 @@ button { cursor: pointer; border: none; background: none; }
   box-shadow: 0 0 16px rgba(0, 212, 255, 0.2);
 }
 
+.dragon-toggle {
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.dragon-toggle.is-active {
+  color: var(--accent-cyan, #00f0ff);
+  border-color: rgba(0, 212, 255, 0.55);
+  box-shadow: 0 0 14px rgba(0, 212, 255, 0.4), inset 0 0 8px rgba(0, 212, 255, 0.15);
+  background: rgba(0, 212, 255, 0.12);
+}
+.dragon-toggle:not(.is-active) {
+  opacity: 0.55;
+  filter: grayscale(0.7);
+}
+[data-theme="light"] .dragon-toggle.is-active {
+  color: #2563eb;
+  border-color: rgba(37, 99, 235, 0.55);
+  box-shadow: 0 0 12px rgba(37, 99, 235, 0.35);
+  background: rgba(37, 99, 235, 0.1);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;

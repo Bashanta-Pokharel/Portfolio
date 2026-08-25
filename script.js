@@ -153,7 +153,9 @@ class DragonEntity {
   update() {
     let e = this.elems[0];
 
-    if (this.isCursor) {
+    const shouldFollowCursor = this.isCursor && dragonFollowEnabled;
+
+    if (shouldFollowCursor) {
       // Main Cursor Dragon follows mouse with slightly calmer, smoother pace
       const ax = (Math.cos(3 * this.frm) * this.rad * dragonWidth) / dragonHeight;
       const ay = (Math.sin(4 * this.frm) * this.rad * dragonHeight) / dragonWidth;
@@ -384,11 +386,50 @@ window.addEventListener("resize", () => {
   }
 });
 
-// Initialize dragon cursor
+// Dragon Cursor Follow Toggle (ON / OFF)
+let dragonFollowEnabled = localStorage.getItem("dragonFollowEnabled") !== "false";
+
+function initDragonToggle() {
+  const dragonToggle = document.querySelector("#dragon-toggle");
+  if (!dragonToggle) return;
+
+  const updateToggleUI = () => {
+    if (dragonFollowEnabled) {
+      dragonToggle.classList.add("is-active");
+      dragonToggle.setAttribute("aria-pressed", "true");
+      dragonToggle.setAttribute("title", "Dragon Cursor Follow: ON (Click to disable)");
+    } else {
+      dragonToggle.classList.remove("is-active");
+      dragonToggle.setAttribute("aria-pressed", "false");
+      dragonToggle.setAttribute("title", "Dragon Cursor Follow: OFF (Free Roam Mode - Click to enable)");
+    }
+  };
+
+  updateToggleUI();
+
+  dragonToggle.addEventListener("click", () => {
+    dragonFollowEnabled = !dragonFollowEnabled;
+    localStorage.setItem("dragonFollowEnabled", dragonFollowEnabled ? "true" : "false");
+    updateToggleUI();
+    if (typeof showToast === "function") {
+      showToast(
+        dragonFollowEnabled
+          ? "🐉 Dragon Cursor Follow: ON"
+          : "🐉 Dragon Cursor Follow: OFF (Free Roam Mode)"
+      );
+    }
+  });
+}
+
+// Initialize dragon cursor & toggle
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initDragonCursor);
+  document.addEventListener("DOMContentLoaded", () => {
+    initDragonCursor();
+    initDragonToggle();
+  });
 } else {
   initDragonCursor();
+  initDragonToggle();
 }
 
 // Projects Data for 3D Showcase Modal
