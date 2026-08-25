@@ -2161,11 +2161,6 @@ p { margin: 0; }
 }
 
 /* Responsive & Accessibility */
-@media (hover: none) or (max-width: 768px) {
-  .dragon-cursor-canvas {
-    display: none !important;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
   .dragon-cursor-canvas {
     display: none !important;

@@ -227,25 +227,29 @@ class DragonEntity {
 function initDragonCursor() {
   if (
     !dragonScreen ||
-    window.matchMedia("(hover: none)").matches ||
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   ) {
     return;
   }
 
-  // 1. Primary Dragon (Follows Cursor, compact, sleek size, fully visible)
-  dragonFlock.push(
-    new DragonEntity({
-      isCursor: true,
-      scaleMul: 0.50,
-      opacity: 1.0,
-      segments: 34,
-      wing1: 7,
-      wing2: 13,
-    })
-  );
+  const isTouchDevice =
+    window.matchMedia("(hover: none)").matches || window.innerWidth <= 768;
 
-  // 2. Profile Picture Guardian Dragon (Square perimeter traversal, translucent, long tail)
+  // 1. Primary Dragon (Follows Cursor on Desktop only)
+  if (!isTouchDevice) {
+    dragonFlock.push(
+      new DragonEntity({
+        isCursor: true,
+        scaleMul: 0.50,
+        opacity: 1.0,
+        segments: 34,
+        wing1: 7,
+        wing2: 13,
+      })
+    );
+  }
+
+  // 2. Profile Picture Guardian Dragon (Square perimeter traversal on Desktop & Mobile)
   dragonFlock.push(
     new DragonEntity({
       isImageOrbit: true,
