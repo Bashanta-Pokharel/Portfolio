@@ -164,21 +164,26 @@ class DragonEntity {
         dragonPointer.y += (dragonHeight / 2 - dragonPointer.y) * 0.05;
       }
     } else if (this.isImageOrbit) {
-      // Image Orbit Dragon: Smoothly circles around the profile picture
+      // Image Orbit Dragon: Smoothly patrols in SQUARE mode along the profile picture perimeter
       const targetElem = document.querySelector(this.targetSelector);
       if (targetElem) {
         const rect = targetElem.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
-        const rx = rect.width * 0.58 + Math.sin(this.frm * 1.5) * 10;
-        const ry = rect.height * 0.58 + Math.cos(this.frm * 1.5) * 10;
+        const margin = 12;
+        const halfW = rect.width * 0.5 + margin;
+        const halfH = rect.height * 0.5 + margin;
 
         this.frm += 0.016 * this.speed;
-        const targetX = cx + Math.cos(this.frm) * rx;
-        const targetY = cy + Math.sin(this.frm) * ry;
+        const cosT = Math.cos(this.frm);
+        const sinT = Math.sin(this.frm);
+        const n = 5.0; // Squircle / Square perimeter curvature
 
-        e.x += (targetX - e.x) * 0.22;
-        e.y += (targetY - e.y) * 0.22;
+        const targetX = cx + Math.sign(cosT) * Math.pow(Math.abs(cosT), 2 / n) * halfW;
+        const targetY = cy + Math.sign(sinT) * Math.pow(Math.abs(sinT), 2 / n) * halfH;
+
+        e.x += (targetX - e.x) * 0.24;
+        e.y += (targetY - e.y) * 0.24;
       }
     } else {
       // Ambient Dragons: Roam smoothly across the ENTIRE viewport
@@ -240,17 +245,17 @@ function initDragonCursor() {
     })
   );
 
-  // 2. Profile Picture Guardian Dragon (Continuously circles around the profile image)
+  // 2. Profile Picture Guardian Dragon (Square perimeter traversal, translucent, long tail)
   dragonFlock.push(
     new DragonEntity({
       isImageOrbit: true,
       targetSelector: ".profile-image-wrap",
-      scaleMul: 0.28, // Svelte guardian dragon circling photo
-      opacity: 0.85,
+      scaleMul: 0.22, // Compact size
+      opacity: 0.55, // Translucent ethereal look
       speed: 1.0,
-      segments: 26,
-      wing1: 5,
-      wing2: 10,
+      segments: 40, // Long flowing tail around square
+      wing1: 7,
+      wing2: 14,
     })
   );
 
