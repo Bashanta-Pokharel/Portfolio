@@ -79,6 +79,9 @@ const dragonFlock = [];
 class DragonEntity {
   constructor(config) {
     this.isCursor = config.isCursor || false;
+    this.isImageOrbit = config.isImageOrbit || false;
+    this.targetSelector = config.targetSelector || ".profile-image-wrap";
+
     this.scaleMul = config.scaleMul || 0.50;
     this.opacity = config.opacity !== undefined ? config.opacity : 1.0;
     this.speed = config.speed || 1.0;
@@ -86,7 +89,7 @@ class DragonEntity {
     this.wing1 = config.wing1 || 7;
     this.wing2 = config.wing2 || 13;
 
-    // Spawn corner position
+    // Spawn position
     this.spawnXRatio = config.spawnXRatio !== undefined ? config.spawnXRatio : 0.5;
     this.spawnYRatio = config.spawnYRatio !== undefined ? config.spawnYRatio : 0.5;
 
@@ -111,8 +114,20 @@ class DragonEntity {
   }
 
   init() {
-    const startX = this.isCursor ? dragonPointer.x : dragonWidth * this.spawnXRatio;
-    const startY = this.isCursor ? dragonPointer.y : dragonHeight * this.spawnYRatio;
+    let startX = dragonWidth * this.spawnXRatio;
+    let startY = dragonHeight * this.spawnYRatio;
+
+    if (this.isCursor) {
+      startX = dragonPointer.x;
+      startY = dragonPointer.y;
+    } else if (this.isImageOrbit) {
+      const targetElem = document.querySelector(this.targetSelector);
+      if (targetElem) {
+        const rect = targetElem.getBoundingClientRect();
+        startX = rect.left + rect.width / 2;
+        startY = rect.top + rect.height / 2;
+      }
+    }
 
     for (let i = 0; i < this.N; i++) {
       this.elems[i] = { use: null, x: startX, y: startY };
@@ -147,6 +162,23 @@ class DragonEntity {
       if (this.rad > 60) {
         dragonPointer.x += (dragonWidth / 2 - dragonPointer.x) * 0.05;
         dragonPointer.y += (dragonHeight / 2 - dragonPointer.y) * 0.05;
+      }
+    } else if (this.isImageOrbit) {
+      // Image Orbit Dragon: Smoothly circles around the profile picture
+      const targetElem = document.querySelector(this.targetSelector);
+      if (targetElem) {
+        const rect = targetElem.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const rx = rect.width * 0.58 + Math.sin(this.frm * 1.5) * 10;
+        const ry = rect.height * 0.58 + Math.cos(this.frm * 1.5) * 10;
+
+        this.frm += 0.016 * this.speed;
+        const targetX = cx + Math.cos(this.frm) * rx;
+        const targetY = cy + Math.sin(this.frm) * ry;
+
+        e.x += (targetX - e.x) * 0.22;
+        e.y += (targetY - e.y) * 0.22;
       }
     } else {
       // Ambient Dragons: Roam smoothly across the ENTIRE viewport
@@ -208,7 +240,21 @@ function initDragonCursor() {
     })
   );
 
-  // 2. Ambient Dragon 1 (Spawns Top-Left Corner -> Roams full screen - Size ~14%)
+  // 2. Profile Picture Guardian Dragon (Continuously circles around the profile image)
+  dragonFlock.push(
+    new DragonEntity({
+      isImageOrbit: true,
+      targetSelector: ".profile-image-wrap",
+      scaleMul: 0.28, // Svelte guardian dragon circling photo
+      opacity: 0.85,
+      speed: 1.0,
+      segments: 26,
+      wing1: 5,
+      wing2: 10,
+    })
+  );
+
+  // 3. Ambient Dragon 1 (Spawns Top-Left Corner -> Roams full screen - Size ~14%)
   dragonFlock.push(
     new DragonEntity({
       isCursor: false,
@@ -227,7 +273,7 @@ function initDragonCursor() {
     })
   );
 
-  // 3. Ambient Dragon 2 (Spawns Top-Right Corner -> Roams full screen - Size ~11%)
+  // 4. Ambient Dragon 2 (Spawns Top-Right Corner -> Roams full screen - Size ~11%)
   dragonFlock.push(
     new DragonEntity({
       isCursor: false,
@@ -246,7 +292,7 @@ function initDragonCursor() {
     })
   );
 
-  // 4. Ambient Dragon 3 (Spawns Bottom-Left Corner -> Roams full screen - Size ~8%)
+  // 5. Ambient Dragon 3 (Spawns Bottom-Left Corner -> Roams full screen - Size ~8%)
   dragonFlock.push(
     new DragonEntity({
       isCursor: false,
@@ -265,7 +311,7 @@ function initDragonCursor() {
     })
   );
 
-  // 5. Ambient Dragon 4 (Spawns Bottom-Right Corner -> Roams full screen - Size ~6%)
+  // 6. Ambient Dragon 4 (Spawns Bottom-Right Corner -> Roams full screen - Size ~6%)
   dragonFlock.push(
     new DragonEntity({
       isCursor: false,
