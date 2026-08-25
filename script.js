@@ -151,17 +151,17 @@ class DragonEntity {
     let e = this.elems[0];
 
     if (this.isCursor) {
-      // Main Cursor Dragon follows mouse with natural orbit
+      // Main Cursor Dragon follows mouse with slightly calmer, smoother pace
       const ax = (Math.cos(3 * this.frm) * this.rad * dragonWidth) / dragonHeight;
       const ay = (Math.sin(4 * this.frm) * this.rad * dragonHeight) / dragonWidth;
-      e.x += (ax + dragonPointer.x - e.x) / 10;
-      e.y += (ay + dragonPointer.y - e.y) / 10;
+      e.x += (ax + dragonPointer.x - e.x) / 14;
+      e.y += (ay + dragonPointer.y - e.y) / 14;
 
       if (this.rad < this.radm) this.rad++;
-      this.frm += 0.003;
+      this.frm += 0.0022;
       if (this.rad > 60) {
-        dragonPointer.x += (dragonWidth / 2 - dragonPointer.x) * 0.05;
-        dragonPointer.y += (dragonHeight / 2 - dragonPointer.y) * 0.05;
+        dragonPointer.x += (dragonWidth / 2 - dragonPointer.x) * 0.035;
+        dragonPointer.y += (dragonHeight / 2 - dragonPointer.y) * 0.035;
       }
     } else if (this.isImageOrbit) {
       // Image Orbit Dragon: Smoothly patrols in SQUARE mode along the profile picture perimeter at a calm, serene pace
