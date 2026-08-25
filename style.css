@@ -1495,6 +1495,13 @@ p { margin: 0; }
   max-width: 420px;
 }
 
+.footer-logo-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
 .footer-logo {
   font-family: var(--font-mono, monospace);
   font-size: 1.35rem;
@@ -1502,11 +1509,32 @@ p { margin: 0; }
   color: var(--text);
   text-decoration: none;
   display: inline-block;
-  margin-bottom: 8px;
   letter-spacing: 1px;
 }
 .footer-logo .logo-bracket {
   color: var(--accent-cyan, #00f0ff);
+}
+
+.footer-flag-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 9px 3px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: var(--text);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+.footer-flag-img {
+  width: auto;
+  height: 18px;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 1px 3px rgba(220, 20, 60, 0.5));
 }
 
 .footer-tagline {
@@ -1571,9 +1599,19 @@ p { margin: 0; }
   margin: 0;
   font-size: 0.9rem;
   color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
 }
 .footer-copyright strong {
   color: var(--accent-cyan, #00f0ff);
+}
+.footer-copyright-flag {
+  width: auto;
+  height: 18px;
+  display: inline-block;
+  vertical-align: middle;
+  filter: drop-shadow(0 1px 3px rgba(220, 20, 60, 0.45));
 }
 
 .footer-subtext {
