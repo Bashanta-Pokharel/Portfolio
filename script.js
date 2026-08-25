@@ -170,7 +170,7 @@ class DragonEntity {
         const rect = targetElem.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
-        const margin = 12;
+        const margin = 28; // Expanded square perimeter
         const halfW = rect.width * 0.5 + margin;
         const halfH = rect.height * 0.5 + margin;
 
