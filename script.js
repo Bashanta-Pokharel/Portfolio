@@ -1852,6 +1852,18 @@ document.querySelectorAll(".modal-trigger").forEach((button) => {
   });
 });
 
+document.querySelectorAll(".demo-link").forEach((link) => {
+  link.addEventListener("click", (e) => {
+    e.stopPropagation();
+    playSound("click");
+    const href = link.getAttribute("href");
+    if (href && href !== "#") {
+      window.open(href, "_blank");
+      e.preventDefault();
+    }
+  });
+});
+
 modalBackdrop?.addEventListener("click", closeProjectModal);
 modalClose?.addEventListener("click", closeProjectModal);
 

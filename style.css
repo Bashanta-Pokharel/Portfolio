@@ -320,6 +320,7 @@ button { cursor: pointer; border: none; background: none; }
   background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
   opacity: 0;
   transition: opacity 0.25s ease;
+  pointer-events: none !important;
 }
 .btn:hover::before { opacity: 1; }
 .btn:hover {
@@ -1127,6 +1128,7 @@ p { margin: 0; }
   background: linear-gradient(135deg, rgba(79,142,255,0.08) 0%, transparent 60%, rgba(168,85,247,0.06) 100%);
   opacity: 0;
   transition: opacity 0.35s;
+  pointer-events: none !important;
 }
 .project-card:hover {
   border-color: var(--border-glow);
@@ -1169,8 +1171,22 @@ p { margin: 0; }
 }
 
 .project-links {
+  display: flex;
+  align-items: center;
   gap: 12px;
   margin-top: 18px;
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
+}
+.project-links a,
+.project-links button,
+.demo-link,
+.modal-trigger {
+  position: relative;
+  z-index: 25;
+  pointer-events: auto !important;
+  cursor: pointer !important;
 }
 .project-links a {
   display: inline-flex;
