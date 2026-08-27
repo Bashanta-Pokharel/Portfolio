@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cyber Password Vault & Generator | Bashanta Pokharel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="app-header">
+    <a href="../index.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Portfolio</span>
+    </a>
+    <div class="app-title">
+      <i class="fa-solid fa-shield-halved text-cyan"></i>
+      <span>PassGuard</span>
+    </div>
+  </header>
+
+  <main class="vault-wrapper">
+    <div class="vault-card">
+      <!-- Output Field -->
+      <div class="password-output-box">
+        <input type="text" id="password-display" readonly value="P@ssw0rd123!#" aria-label="Generated Password" />
+        <div class="output-actions">
+          <button class="icon-btn" id="regenerate-btn" title="Generate New (Space)">
+            <i class="fa-solid fa-arrows-rotate"></i>
+          </button>
+          <button class="icon-btn copy-btn" id="copy-btn" title="Copy to Clipboard">
+            <i class="fa-regular fa-copy"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Strength & Entropy Meter -->
+      <div class="strength-meter-section">
+        <div class="strength-labels">
+          <span class="entropy-score" id="entropy-text">Strength: <strong>Strong</strong></span>
+          <span class="crack-time" id="crack-time">Crack Time: ~800 Years</span>
+        </div>
+        <div class="strength-bar-bg">
+          <div class="strength-bar-fill" id="strength-fill"></div>
+        </div>
+      </div>
+
+      <!-- Customization Controls -->
+      <div class="controls-section">
+        <!-- Length Slider -->
+        <div class="slider-group">
+          <div class="slider-header">
+            <label for="length-slider">Password Length</label>
+            <span class="length-badge" id="length-display">16</span>
+          </div>
+          <input type="range" id="length-slider" min="6" max="64" value="16" />
+        </div>
+
+        <!-- Options Checkboxes -->
+        <div class="options-grid">
+          <label class="toggle-option">
+            <input type="checkbox" id="chk-upper" checked />
+            <span class="toggle-indicator"></span>
+            <span>Uppercase (A-Z)</span>
+          </label>
+          <label class="toggle-option">
+            <input type="checkbox" id="chk-lower" checked />
+            <span class="toggle-indicator"></span>
+            <span>Lowercase (a-z)</span>
+          </label>
+          <label class="toggle-option">
+            <input type="checkbox" id="chk-numbers" checked />
+            <span class="toggle-indicator"></span>
+            <span>Numbers (0-9)</span>
+          </label>
+          <label class="toggle-option">
+            <input type="checkbox" id="chk-symbols" checked />
+            <span class="toggle-indicator"></span>
+            <span>Symbols (!@#$%)</span>
+          </label>
+          <label class="toggle-option full-width">
+            <input type="checkbox" id="chk-exclude-similar" />
+            <span class="toggle-indicator"></span>
+            <span>Exclude Ambiguous (e.g. i, l, 1, L, o, 0, O)</span>
+          </label>
+        </div>
+
+        <button class="generate-btn" id="main-generate-btn">
+          <i class="fa-solid fa-bolt"></i> Generate Secure Password
+        </button>
+      </div>
+
+      <!-- Toast Notification -->
+      <div class="toast" id="copy-toast">
+        <i class="fa-solid fa-circle-check"></i> Copied password to clipboard!
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

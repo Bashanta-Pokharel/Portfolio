@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Weather Dashboard | Bashanta Pokharel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="app-header">
+    <a href="../index.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Portfolio</span>
+    </a>
+    <div class="app-title">
+      <i class="fa-solid fa-cloud-sun text-cyan"></i>
+      <span>WeatherCast</span>
+    </div>
+    <div class="unit-toggle" id="unit-toggle" title="Switch Celsius / Fahrenheit">
+      <button class="unit-btn active" id="btn-c">&deg;C</button>
+      <button class="unit-btn" id="btn-f">&deg;F</button>
+    </div>
+  </header>
+
+  <main class="app-wrapper">
+    <!-- Search Bar -->
+    <form class="search-box" id="search-form">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="city-input" placeholder="Search city (e.g. Kathmandu, Tokyo, London, New York)..." autocomplete="off" />
+      <button type="submit" class="search-submit-btn">Search</button>
+    </form>
+
+    <!-- Quick City Pills -->
+    <div class="quick-cities">
+      <button type="button" class="city-pill active" data-city="Kathmandu">Kathmandu, NP</button>
+      <button type="button" class="city-pill" data-city="Pokhara">Pokhara, NP</button>
+      <button type="button" class="city-pill" data-city="Tokyo">Tokyo, JP</button>
+      <button type="button" class="city-pill" data-city="London">London, UK</button>
+      <button type="button" class="city-pill" data-city="New York">New York, US</button>
+      <button type="button" class="city-pill" data-city="Sydney">Sydney, AU</button>
+    </div>
+
+    <!-- Main Weather Card -->
+    <div class="weather-card" id="weather-card">
+      <div class="weather-top">
+        <div class="location-info">
+          <h2 id="city-name"><i class="fa-solid fa-location-dot text-cyan"></i> Kathmandu</h2>
+          <p id="local-time">Local Time: --:--</p>
+          <span class="weather-badge" id="condition-badge">Sunny & Clear</span>
+        </div>
+        <div class="weather-icon-wrap" id="weather-icon-wrap">
+          <i class="fa-solid fa-sun" id="weather-icon"></i>
+        </div>
+      </div>
+
+      <div class="temp-display">
+        <span class="temp-num" id="temp-val">24</span>
+        <span class="temp-unit" id="temp-unit-symbol">&deg;C</span>
+      </div>
+      <p class="feels-like">Feels like <span id="feels-val">25</span>&deg; &bull; High <span id="high-val">26</span>&deg; / Low <span id="low-val">16</span>&deg;</p>
+
+      <!-- Key Weather Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="metric-box">
+          <i class="fa-solid fa-wind metric-icon"></i>
+          <div>
+            <span class="metric-label">Wind Speed</span>
+            <strong class="metric-val" id="wind-val">12 km/h</strong>
+          </div>
+        </div>
+        <div class="metric-box">
+          <i class="fa-solid fa-droplet metric-icon"></i>
+          <div>
+            <span class="metric-label">Humidity</span>
+            <strong class="metric-val" id="humidity-val">58%</strong>
+          </div>
+        </div>
+        <div class="metric-box">
+          <i class="fa-solid fa-eye metric-icon"></i>
+          <div>
+            <span class="metric-label">Visibility</span>
+            <strong class="metric-val" id="vis-val">10 km</strong>
+          </div>
+        </div>
+        <div class="metric-box">
+          <i class="fa-solid fa-gauge metric-icon"></i>
+          <div>
+            <span class="metric-label">Air Pressure</span>
+            <strong class="metric-val" id="pressure-val">1014 hPa</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5-Day Forecast Strip -->
+      <div class="forecast-section">
+        <h3><i class="fa-solid fa-calendar-days"></i> 5-Day Outlook</h3>
+        <div class="forecast-grid" id="forecast-grid">
+          <!-- Dynamic Days Injected by JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

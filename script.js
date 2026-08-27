@@ -594,6 +594,86 @@ const projectsData = {
     github: "https://github.com/Bashanta-Pokharel",
     demoUrl: "clock/index.html"
   },
+  "stopwatch": {
+    title: "Precision Stopwatch & Timer",
+    subtitle: "High-Precision Split Timing & Countdown Utility",
+    icon: "fa-solid fa-stopwatch",
+    summary: "A modular, dual-mode time tracking system offering millisecond stopwatch tracking with dynamic lap analysis alongside a configurable countdown timer.",
+    features: [
+      "Millisecond precision timing powered by high-resolution performance.now()",
+      "Dynamic lap history tape with fastest and slowest lap indicators",
+      "Configurable countdown timer with quick preset buttons & completion chime",
+      "Synthesized audio feedback via Web Audio API and keyboard hotkeys"
+    ],
+    architecture: "HTML5 | CSS3 Custom Properties & SVG Progress Ring | JavaScript (ES6+) Web Audio API",
+    localSetup: "Open `stopwatch/index.html` directly in any web browser or view the live demo.",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: "stopwatch/index.html"
+  },
+  "calculator": {
+    title: "Interactive Neo Calculator",
+    subtitle: "Glassmorphic Expression & Math Engine",
+    icon: "fa-solid fa-calculator",
+    summary: "A sleek, responsive web calculator featuring mathematical expression parsing, memory functions, keyboard shortcuts, and a persistent calculation history tape.",
+    features: [
+      "Real-time expression display and immediate result rendering",
+      "Scientific quick functions: square root, power (x²), percentage, and signs (±)",
+      "Interactive history tape allowing one-click reuse of past calculation answers",
+      "Full keyboard support for rapid calculations without mouse input"
+    ],
+    architecture: "HTML5 Grid Layout | Glassmorphic CSS3 Effects | Pure Vanilla JavaScript Engine",
+    localSetup: "Open `calculator/index.html` directly in any web browser or view the live demo.",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: "calculator/index.html"
+  },
+  "weather": {
+    title: "Interactive WeatherCast Dashboard",
+    subtitle: "Real-Time Global Weather & 5-Day Forecast Simulator",
+    icon: "fa-solid fa-cloud-sun",
+    summary: "A glassmorphic atmospheric dashboard providing instant worldwide weather metrics, 5-day predictive forecasts, temperature unit conversions, and intuitive city searching.",
+    features: [
+      "Dynamic weather metrics: humidity, wind speed, barometric pressure, visibility",
+      "Interactive 5-day weather outlook strip with visual conditions",
+      "Seamless °C (Celsius) and °F (Fahrenheit) unit switching",
+      "Worldwide search engine with intelligent dynamic data simulation fallback"
+    ],
+    architecture: "HTML5 Semantic UI | CSS3 Glassmorphism & Animations | Pure Vanilla JavaScript (ES6+)",
+    localSetup: "Open `weather/index.html` directly in any web browser or view the live demo.",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: "weather/index.html"
+  },
+  "password-generator": {
+    title: "Cyber PassGuard Generator",
+    subtitle: "Cryptographic Password Vault & Entropy Security Analyzer",
+    icon: "fa-solid fa-shield-halved",
+    summary: "A cybersecurity utility that generates high-entropy cryptographic passwords with custom character pool toggles, real-time brute-force crack time estimates, and one-click clipboard copying.",
+    features: [
+      "Cryptographically secure randomness via window.crypto.getRandomValues",
+      "Real-time Shannon entropy calculation and estimated crack-time display",
+      "Granular character pool controls (uppercase, lowercase, numbers, symbols, ambiguous filtering)",
+      "Instant clipboard copy with animated visual confirmation"
+    ],
+    architecture: "HTML5 Custom Inputs | Web Crypto API | JavaScript Entropy Calculation Algorithms",
+    localSetup: "Open `password-generator/index.html` directly in any web browser or view the live demo.",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: "password-generator/index.html"
+  },
+  "tictactoe": {
+    title: "Neon Cyber Tic-Tac-Toe",
+    subtitle: "Strategic Game with Unbeatable Minimax AI Engine",
+    icon: "fa-solid fa-gamepad",
+    summary: "A futuristic neon board game featuring an optimal decision Minimax algorithm AI alongside local two-player pass-and-play, win-streak tracking, and synthesized audio.",
+    features: [
+      "Unbeatable AI opponent powered by recursion-based Minimax decision trees",
+      "Dual mode gameplay: Solo vs AI and 2-Player local battle",
+      "Persistent session score keeping (Wins, Losses, Ties)",
+      "Web Audio API real-time sound effects and neon victory highlighting"
+    ],
+    architecture: "HTML5 CSS Grid | Minimax Game Theory Algorithm | Web Audio API Oscillator",
+    localSetup: "Open `tictactoe/index.html` directly in any web browser or view the live demo.",
+    github: "https://github.com/Bashanta-Pokharel",
+    demoUrl: "tictactoe/index.html"
+  },
   "future-systems": {
     title: "Future Systems & Microservices",
     subtitle: "High-Performance Distributed Systems Roadmap",
@@ -1396,14 +1476,19 @@ const apiData = {
     headers: "HTTP/1.1 200 OK | Content-Type: application/json | X-Cache: HIT (Redis)",
     body: {
       status: "success",
-      totalProjects: 6,
+      totalProjects: 11,
       featured: [
         { id: 1, name: "Laravel E-Commerce System", stack: ["Laravel", "PHP", "MySQL", "Tailwind"] },
         { id: 2, name: "PHP Job Portal System", stack: ["PHP", "MySQL", "jQuery", "AJAX"] },
         { id: 3, name: "PHP E-Commerce Website", stack: ["PHP", "MySQL", "CSS3"] },
         { id: 4, name: "PHP Carpooling System", stack: ["PHP", "MySQL", "CSS3"] },
         { id: 5, name: "JavaScript Analog Clock", stack: ["HTML5", "CSS3", "JavaScript"] },
-        { id: 6, name: "Future Microservices", stack: ["Docker", "Redis", "Microservices"] }
+        { id: 6, name: "Precision Stopwatch & Timer", stack: ["HTML5", "CSS3", "JavaScript"] },
+        { id: 7, name: "Interactive Neo Calculator", stack: ["HTML5", "CSS3", "JavaScript"] },
+        { id: 8, name: "Interactive WeatherCast", stack: ["HTML5", "CSS3", "JavaScript"] },
+        { id: 9, name: "Cyber PassGuard Generator", stack: ["HTML5", "CSS3", "Web Crypto"] },
+        { id: 10, name: "Neon Cyber Tic-Tac-Toe", stack: ["HTML5", "CSS3", "Minimax AI"] },
+        { id: 11, name: "Future Microservices", stack: ["Docker", "Redis", "Microservices"] }
       ]
     }
   },

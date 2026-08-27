@@ -1,1 +1,4 @@
 submissions/
+.vscode/
+scripts/
+*.log

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neon Tic-Tac-Toe | Bashanta Pokharel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="app-header">
+    <a href="../index.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Portfolio</span>
+    </a>
+    <div class="app-title">
+      <i class="fa-solid fa-gamepad text-cyan"></i>
+      <span>Neon Tic-Tac-Toe</span>
+    </div>
+    <div class="mode-pills">
+      <button class="mode-pill active" id="mode-ai" title="Play vs Unbeatable AI">vs AI</button>
+      <button class="mode-pill" id="mode-pvp" title="Play 2 Players Locally">2 Players</button>
+    </div>
+  </header>
+
+  <main class="game-wrapper">
+    <!-- Scoreboard -->
+    <div class="score-card">
+      <div class="score-item x-score">
+        <span class="player-label">Player X</span>
+        <strong class="score-num" id="score-x">0</strong>
+      </div>
+      <div class="score-item ties-score">
+        <span class="player-label">Ties</span>
+        <strong class="score-num" id="score-ties">0</strong>
+      </div>
+      <div class="score-item o-score">
+        <span class="player-label" id="o-player-label">AI (O)</span>
+        <strong class="score-num" id="score-o">0</strong>
+      </div>
+    </div>
+
+    <!-- Status Banner -->
+    <div class="turn-status" id="turn-status">
+      Player <span class="highlight-x">X</span>'s Turn
+    </div>
+
+    <!-- Game Board -->
+    <div class="board-card">
+      <div class="game-board" id="game-board">
+        <button class="cell" data-index="0" aria-label="Cell 1"></button>
+        <button class="cell" data-index="1" aria-label="Cell 2"></button>
+        <button class="cell" data-index="2" aria-label="Cell 3"></button>
+        <button class="cell" data-index="3" aria-label="Cell 4"></button>
+        <button class="cell" data-index="4" aria-label="Cell 5"></button>
+        <button class="cell" data-index="5" aria-label="Cell 6"></button>
+        <button class="cell" data-index="6" aria-label="Cell 7"></button>
+        <button class="cell" data-index="7" aria-label="Cell 8"></button>
+        <button class="cell" data-index="8" aria-label="Cell 9"></button>
+      </div>
+    </div>
+
+    <!-- Game Actions -->
+    <div class="actions-row">
+      <button class="btn btn-restart" id="restart-btn">
+        <i class="fa-solid fa-rotate-right"></i> Restart Round
+      </button>
+      <button class="btn btn-reset-scores" id="reset-scores-btn">
+        <i class="fa-solid fa-trash-can"></i> Reset Scores
+      </button>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

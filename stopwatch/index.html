@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Precision Stopwatch & Timer | Bashanta Pokharel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="background-glow"></div>
+
+  <header class="app-header">
+    <a href="../index.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Portfolio</span>
+    </a>
+    <div class="app-title">
+      <i class="fa-solid fa-stopwatch text-cyan"></i>
+      <span>Precision Timer</span>
+    </div>
+    <button class="sound-chip" id="sound-toggle" title="Toggle Audio Ticks" aria-label="Toggle Sound">
+      <i class="fa-solid fa-volume-high"></i>
+    </button>
+  </header>
+
+  <main class="app-container">
+    <!-- Mode Switcher -->
+    <div class="mode-switcher">
+      <button class="mode-btn active" id="tab-stopwatch" data-mode="stopwatch">
+        <i class="fa-solid fa-stopwatch"></i> Stopwatch
+      </button>
+      <button class="mode-btn" id="tab-timer" data-mode="timer">
+        <i class="fa-solid fa-hourglass-half"></i> Countdown
+      </button>
+    </div>
+
+    <!-- Stopwatch View -->
+    <div class="timer-card" id="stopwatch-view">
+      <div class="display-ring">
+        <svg class="progress-ring" width="280" height="280" viewBox="0 0 280 280">
+          <circle class="progress-ring-bg" cx="140" cy="140" r="126" />
+          <circle class="progress-ring-circle" id="stopwatch-circle" cx="140" cy="140" r="126" />
+        </svg>
+        <div class="time-display-content">
+          <div class="time-main">
+            <span id="sw-min">00</span>:<span id="sw-sec">00</span>
+          </div>
+          <div class="time-millis">.<span id="sw-ms">00</span></div>
+          <div class="status-badge" id="sw-status">READY</div>
+        </div>
+      </div>
+
+      <div class="control-actions">
+        <button class="action-btn btn-secondary" id="sw-reset-btn" disabled>
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+        <button class="action-btn btn-primary" id="sw-start-btn">
+          <i class="fa-solid fa-play"></i> Start
+        </button>
+        <button class="action-btn btn-accent" id="sw-lap-btn" disabled>
+          <i class="fa-solid fa-flag"></i> Lap
+        </button>
+      </div>
+
+      <!-- Lap Records -->
+      <div class="laps-container" id="laps-container">
+        <div class="laps-header">
+          <span>Lap #</span>
+          <span>Lap Split</span>
+          <span>Overall Time</span>
+        </div>
+        <ul class="laps-list" id="laps-list">
+          <li class="empty-laps">No laps recorded yet. Press "Lap" while running.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Countdown Timer View -->
+    <div class="timer-card hidden" id="timer-view">
+      <div class="timer-input-group" id="timer-inputs">
+        <div class="input-block">
+          <input type="number" id="input-hours" min="0" max="99" value="0" placeholder="00" />
+          <label>Hours</label>
+        </div>
+        <span class="colon">:</span>
+        <div class="input-block">
+          <input type="number" id="input-minutes" min="0" max="59" value="5" placeholder="05" />
+          <label>Minutes</label>
+        </div>
+        <span class="colon">:</span>
+        <div class="input-block">
+          <input type="number" id="input-seconds" min="0" max="59" value="0" placeholder="00" />
+          <label>Seconds</label>
+        </div>
+      </div>
+
+      <!-- Quick Preset Buttons -->
+      <div class="timer-presets">
+        <button class="preset-btn" data-sec="60">+1m</button>
+        <button class="preset-btn" data-sec="300">+5m</button>
+        <button class="preset-btn" data-sec="600">+10m</button>
+        <button class="preset-btn" data-sec="1500">+25m (Pomodoro)</button>
+      </div>
+
+      <div class="display-ring" id="cd-display-ring">
+        <svg class="progress-ring" width="280" height="280" viewBox="0 0 280 280">
+          <circle class="progress-ring-bg" cx="140" cy="140" r="126" />
+          <circle class="progress-ring-circle timer-circle" id="timer-circle" cx="140" cy="140" r="126" />
+        </svg>
+        <div class="time-display-content">
+          <div class="time-main timer-digits">
+            <span id="cd-hrs">00</span>:<span id="cd-min">05</span>:<span id="cd-sec">00</span>
+          </div>
+          <div class="status-badge" id="cd-status">SET TIME</div>
+        </div>
+      </div>
+
+      <div class="control-actions">
+        <button class="action-btn btn-secondary" id="cd-reset-btn">
+          <i class="fa-solid fa-rotate-left"></i> Reset
+        </button>
+        <button class="action-btn btn-primary" id="cd-start-btn">
+          <i class="fa-solid fa-play"></i> Start
+        </button>
+      </div>
+    </div>
+
+    <!-- Keyboard Shortcuts Legend -->
+    <div class="shortcuts-legend">
+      <span><kbd>Space</kbd> Start / Pause</span>
+      <span><kbd>L</kbd> Lap</span>
+      <span><kbd>R</kbd> Reset</span>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
