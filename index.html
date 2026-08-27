@@ -41,6 +41,12 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
     />
     <link rel="stylesheet" href="style.css?v=5.0" />
+    <script>
+      (function () {
+        var t = localStorage.getItem("theme") || "dark";
+        document.documentElement.setAttribute("data-theme", t);
+      })();
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
@@ -117,12 +123,23 @@
             <i class="fa-solid fa-volume-high" aria-hidden="true"></i>
           </button>
           <button
-            class="theme-toggle icon-button"
+            class="theme-switch-toggle"
+            id="theme-toggle"
             type="button"
-            aria-label="Switch color theme"
-            title="Switch color theme"
+            role="switch"
+            aria-checked="false"
+            aria-label="Theme mode switch: Left Night, Right Day"
+            title="Theme Toggle: Left Night, Right Day"
           >
-            <i class="fa-solid fa-moon" aria-hidden="true"></i>
+            <span class="theme-switch-track">
+              <span class="theme-switch-icon icon-night" aria-hidden="true" title="Night Mode">
+                <i class="fa-solid fa-moon"></i>
+              </span>
+              <span class="theme-switch-icon icon-day" aria-hidden="true" title="Day Mode">
+                <i class="fa-solid fa-sun"></i>
+              </span>
+              <span class="theme-switch-thumb"></span>
+            </span>
           </button>
           <a class="btn btn-small" href="assets/BashantaCv.pdf" download="Bashanta_Pokharel_Resume.pdf" aria-label="Download Resume PDF">
             <i class="fa-solid fa-download" aria-hidden="true"></i>

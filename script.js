@@ -1,6 +1,6 @@
 const root = document.documentElement;
 const loader = document.querySelector(".page-loader");
-const themeToggle = document.querySelector(".theme-toggle");
+const themeToggle = document.querySelector(".theme-switch-toggle") || document.querySelector("#theme-toggle") || document.querySelector(".theme-toggle");
 const soundToggle = document.querySelector("#sound-toggle");
 const navToggle = document.querySelector(".nav-toggle");
 const navLinks = document.querySelector(".nav-links");
@@ -712,20 +712,37 @@ document.querySelector("#year").textContent = new Date().getFullYear();
 
 const savedTheme = localStorage.getItem("theme") || "dark";
 root.setAttribute("data-theme", savedTheme);
-updateThemeIcon(savedTheme);
+updateThemeIcon(savedTheme, false);
 
 themeToggle?.addEventListener("click", () => {
   playSound("click");
-  const nextTheme = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+  const currentTheme = root.getAttribute("data-theme") || "dark";
+  const nextTheme = currentTheme === "dark" ? "light" : "dark";
   root.setAttribute("data-theme", nextTheme);
   localStorage.setItem("theme", nextTheme);
-  updateThemeIcon(nextTheme);
+  updateThemeIcon(nextTheme, true);
 });
 
-function updateThemeIcon(theme) {
-  const icon = themeToggle?.querySelector("i");
-  if (!icon) return;
-  icon.className = theme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
+function updateThemeIcon(theme, shouldAnimate = false) {
+  const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+  if (metaThemeColor) {
+    metaThemeColor.setAttribute("content", theme === "dark" ? "#0F172A" : "#F8FAFC");
+  }
+  if (!themeToggle) return;
+
+  const isLight = theme === "light";
+  themeToggle.setAttribute("role", "switch");
+  themeToggle.setAttribute("aria-checked", String(isLight));
+
+  if (!isLight) {
+    // Night Mode (Left Active)
+    themeToggle.setAttribute("aria-label", "Theme mode: Night (Left) active. Click to toggle Day mode.");
+    themeToggle.setAttribute("title", "Night (Left) Active • Click to switch to Day");
+  } else {
+    // Day Mode (Right Active)
+    themeToggle.setAttribute("aria-label", "Theme mode: Day (Right) active. Click to toggle Night mode.");
+    themeToggle.setAttribute("title", "Day (Right) Active • Click to switch to Night");
+  }
 }
 
 navToggle?.addEventListener("click", () => {
