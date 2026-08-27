@@ -101,6 +101,32 @@ body {
   letter-spacing: 0.5px;
 }
 
+.nepal-flag-badge {
+  height: 24px;
+  width: auto;
+  display: block;
+  filter: drop-shadow(0 2px 6px rgba(220, 20, 60, 0.6));
+}
+
+.crafted-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: rgba(220, 20, 60, 0.08);
+  border: 1px solid rgba(220, 20, 60, 0.25);
+  padding: 6px 14px;
+  border-radius: 20px;
+}
+
+.footer-flag-icon {
+  height: 18px;
+  width: auto;
+  display: block;
+}
+
 .history-toggle-btn {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);

@@ -1844,23 +1844,30 @@ function closeProjectModal() {
   document.body.style.overflow = "";
 }
 
+// Modal Triggers
 document.querySelectorAll(".modal-trigger").forEach((button) => {
   button.addEventListener("click", (e) => {
+    e.preventDefault();
     e.stopPropagation();
     const projectId = button.getAttribute("data-project");
     if (projectId) openProjectModal(projectId);
   });
 });
 
+// Demo Links - sound feedback and natural browser navigation
 document.querySelectorAll(".demo-link").forEach((link) => {
   link.addEventListener("click", (e) => {
     e.stopPropagation();
     playSound("click");
-    const href = link.getAttribute("href");
-    if (href && href !== "#") {
-      window.open(href, "_blank");
-      e.preventDefault();
-    }
+  });
+});
+
+// Card click opens project details unless a specific button/link was clicked
+document.querySelectorAll(".project-card").forEach((card) => {
+  card.addEventListener("click", (e) => {
+    if (e.target.closest("a, button, .btn, .demo-link, .modal-trigger")) return;
+    const projectId = card.getAttribute("data-project");
+    if (projectId) openProjectModal(projectId);
   });
 });
 

@@ -1,43 +1,99 @@
 <!DOCTYPE html>
-<html lang="ar">
-  <head>
-    <meta charset="UTF-8"/>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-    <title>Bashantapokharel</title>
-
-    <link rel="stylesheet" href="style.css"/>
-    <script src="script.js" defer></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@100;200;300;400;500;600;700&display=swap" rel="stylesheet">
-    
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nepal Standard Time Clock | Bashanta Pokharel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&family=Mukta:wght@500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <div class="container">
-      <div class="clock">
-        <label style="--i: 1"><span>1</span></label>
-        <label style="--i: 2"><span>2</span></label>
-        <label style="--i: 3"><span>3</span></label>
-        <label style="--i: 4"><span>4</span></label>
-        <label style="--i: 5"><span>5</span></label>
-        <label style="--i: 6"><span>6</span></label>
-        <label style="--i: 7"><span>7</span></label>
-        <label style="--i: 8"><span>8</span></label>
-        <label style="--i: 9"><span>9</span></label>
-        <label style="--i: 10"><span>10</span></label>
-        <label style="--i: 11"><span>11</span></label>
-        <label style="--i: 12"><span>12</span></label>
+  <div class="bg-glow"></div>
 
-        <div class="indicator">
-          <span class="hand hour"></span>
-          <span class="hand minute"></span>
-          <span class="hand second"></span></div>
-          
+  <header class="app-header">
+    <a href="../index.html" class="back-link">
+      <i class="fa-solid fa-arrow-left"></i>
+      <span>Portfolio</span>
+    </a>
+    
+    <div class="app-title">
+      <span class="flag-icon-wrap">
+        <img src="../assets/nepal-flag.gif" alt="Nepal Flag" class="nepal-flag-img" />
+      </span>
+      <span>नेपाली घडी &bull; Nepal Clock</span>
+    </div>
+
+    <!-- Numeral Toggle (Nepali Devanagari vs English Roman) -->
+    <div class="toggle-pill-group">
+      <button class="toggle-pill active" id="btn-num-nep" title="Devanagari Numerals">नेपाली</button>
+      <button class="toggle-pill" id="btn-num-eng" title="English Numbers">EN</button>
+    </div>
+  </header>
+
+  <main class="clock-wrapper">
+    <!-- Analog Clock Dial -->
+    <div class="clock-housing">
+      <div class="clock-dial" id="clock-dial">
+        <!-- Center Emblem / Nepal Crest Accent -->
+        <div class="dial-emblem">
+          <img src="../assets/nepal-flag.gif" alt="Nepal" class="dial-flag-mini" />
+          <span class="dial-tz-label">KATHMANDU</span>
+        </div>
+
+        <!-- Numerals (Injected / Styled) -->
+        <label style="--i: 1"><span class="numeral">१</span></label>
+        <label style="--i: 2"><span class="numeral">२</span></label>
+        <label style="--i: 3"><span class="numeral">३</span></label>
+        <label style="--i: 4"><span class="numeral">४</span></label>
+        <label style="--i: 5"><span class="numeral">५</span></label>
+        <label style="--i: 6"><span class="numeral">६</span></label>
+        <label style="--i: 7"><span class="numeral">७</span></label>
+        <label style="--i: 8"><span class="numeral">८</span></label>
+        <label style="--i: 9"><span class="numeral">९</span></label>
+        <label style="--i: 10"><span class="numeral">१०</span></label>
+        <label style="--i: 11"><span class="numeral">११</span></label>
+        <label style="--i: 12"><span class="numeral">१२</span></label>
+
+        <!-- Analog Hands -->
+        <div class="clock-center-dot"></div>
+        <div class="hand hour" id="hour-hand"></div>
+        <div class="hand minute" id="minute-hand"></div>
+        <div class="hand second" id="second-hand"></div>
       </div>
     </div>
-    
+
+    <!-- Digital & Timezone Info Card -->
+    <div class="time-info-card">
+      <div class="tz-mode-selector">
+        <button class="tz-tab active" id="tab-npt" data-tz="npt">
+          <i class="fa-solid fa-mountain"></i> Nepal Time (GMT+5:45)
+        </button>
+        <button class="tz-tab" id="tab-local" data-tz="local">
+          <i class="fa-solid fa-laptop"></i> Local Device Time
+        </button>
+      </div>
+
+      <div class="digital-time-display">
+        <div class="digital-main" id="digital-clock">00:00:00</div>
+        <div class="digital-ampm" id="digital-ampm">AM</div>
+      </div>
+
+      <div class="nepali-date-strip" id="nepali-date">
+        <i class="fa-regular fa-calendar-check text-cyan"></i>
+        <span id="date-string">Loading Nepal Standard Time...</span>
+      </div>
+    </div>
+
+    <!-- Crafted in Nepal Badge -->
+    <div class="crafted-badge">
+      <img src="../assets/nepal-flag.gif" alt="Nepal" class="footer-flag-icon" />
+      <span>Proudly Built in Kathmandu, Nepal by <strong>Bashanta Pokharel</strong></span>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
 </body>
 </html>

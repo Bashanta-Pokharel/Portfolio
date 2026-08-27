@@ -1115,11 +1115,9 @@ p { margin: 0; }
   background: var(--surface);
   backdrop-filter: blur(16px);
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  cursor: pointer;
   position: relative;
   overflow: hidden;
-  transform-style: preserve-3d;
-  transform-origin: center bottom;
+  cursor: pointer;
 }
 .project-card::after {
   content: '';
@@ -1132,7 +1130,7 @@ p { margin: 0; }
 }
 .project-card:hover {
   border-color: var(--border-glow);
-  transform: translateY(-10px) rotateX(2deg);
+  transform: translateY(-8px);
   box-shadow: 0 30px 80px rgba(0,0,0,0.5), var(--glow-blue);
 }
 .project-card:hover::after { opacity: 1; }
@@ -1176,7 +1174,7 @@ p { margin: 0; }
   gap: 12px;
   margin-top: 18px;
   position: relative;
-  z-index: 20;
+  z-index: 50;
   pointer-events: auto;
 }
 .project-links a,
@@ -1184,7 +1182,7 @@ p { margin: 0; }
 .demo-link,
 .modal-trigger {
   position: relative;
-  z-index: 25;
+  z-index: 60;
   pointer-events: auto !important;
   cursor: pointer !important;
 }
