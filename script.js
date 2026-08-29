@@ -169,9 +169,12 @@ class DragonEntity {
     this.elems = [];
     this.group = document.createElementNS(xmlns, "g");
     if (this.opacity < 1.0) {
-      this.group.setAttributeNS(null, "opacity", this.opacity.toFixed(2));
+      this.group.setAttribute("opacity", this.opacity.toFixed(2));
     }
-    dragonScreen.appendChild(this.group);
+    const screen = document.querySelector("#dragon-screen") || dragonScreen;
+    if (screen) {
+      screen.appendChild(this.group);
+    }
 
     this.init();
   }
@@ -278,13 +281,10 @@ class DragonEntity {
       const s = ((162 + 4 * (1 - i)) / 50) * this.scaleMul;
 
       if (curr.use) {
-        curr.use.setAttributeNS(
-          null,
-          "transform",
-          `translate(${(prev.x + curr.x) / 2},${(prev.y + curr.y) / 2}) rotate(${
-            (180 / Math.PI) * a
-          }) translate(0,0) scale(${s.toFixed(3)},${s.toFixed(3)})`
-        );
+        const transStr = `translate(${(prev.x + curr.x) / 2},${(prev.y + curr.y) / 2}) rotate(${
+          (180 / Math.PI) * a
+        }) translate(0,0) scale(${s.toFixed(3)},${s.toFixed(3)})`;
+        curr.use.setAttribute("transform", transStr);
       }
     }
   }
