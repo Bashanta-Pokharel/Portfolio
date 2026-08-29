@@ -214,49 +214,50 @@ class DragonEntity {
     }
   }
 
-  update() {
+  update(dt = 1.0) {
     let e = this.elems[0];
 
     const shouldFollowCursor = this.isCursor && dragonFollowEnabled;
 
     if (shouldFollowCursor) {
-      // Main Cursor Dragon follows mouse with slightly calmer, smoother pace
-      const ax = (Math.cos(3 * this.frm) * this.rad * dragonWidth) / dragonHeight;
-      const ay = (Math.sin(4 * this.frm) * this.rad * dragonHeight) / dragonWidth;
-      e.x += (ax + dragonPointer.x - e.x) / 14;
-      e.y += (ay + dragonPointer.y - e.y) / 14;
+      // Main Cursor Dragon follows mouse with fast, responsive, smooth tracking
+      const ax = (Math.cos(3 * this.frm) * this.rad * dragonWidth) / (dragonHeight || 1);
+      const ay = (Math.sin(4 * this.frm) * this.rad * dragonHeight) / (dragonWidth || 1);
+      const speedFactor = Math.min(0.24 * dt, 0.95);
+      e.x += (ax + dragonPointer.x - e.x) * speedFactor;
+      e.y += (ay + dragonPointer.y - e.y) * speedFactor;
 
-      if (this.rad < this.radm) this.rad++;
-      this.frm += 0.0022;
+      if (this.rad < this.radm) this.rad += 1.5 * dt;
+      this.frm += 0.004 * dt;
       if (this.rad > 60) {
-        dragonPointer.x += (dragonWidth / 2 - dragonPointer.x) * 0.035;
-        dragonPointer.y += (dragonHeight / 2 - dragonPointer.y) * 0.035;
+        dragonPointer.x += (dragonWidth / 2 - dragonPointer.x) * (0.045 * dt);
+        dragonPointer.y += (dragonHeight / 2 - dragonPointer.y) * (0.045 * dt);
       }
     } else if (this.isImageOrbit) {
-      // Image Orbit Dragon: Smoothly patrols in SQUARE mode along the profile picture perimeter at a calm, serene pace
+      // Image Orbit Dragon: Smoothly patrols along profile picture perimeter
       const targetElem = document.querySelector(this.targetSelector);
       if (targetElem) {
         const rect = targetElem.getBoundingClientRect();
         const cx = rect.left + rect.width / 2;
         const cy = rect.top + rect.height / 2;
-        const margin = 28; // Expanded square perimeter
+        const margin = 28;
         const halfW = rect.width * 0.5 + margin;
         const halfH = rect.height * 0.5 + margin;
 
-        this.frm += 0.007 * this.speed; // Calmer, slower cruising pace
+        this.frm += 0.012 * this.speed * dt;
         const cosT = Math.cos(this.frm);
         const sinT = Math.sin(this.frm);
-        const n = 5.0; // Squircle / Square perimeter curvature
+        const n = 5.0;
 
         const targetX = cx + Math.sign(cosT) * Math.pow(Math.abs(cosT), 2 / n) * halfW;
         const targetY = cy + Math.sign(sinT) * Math.pow(Math.abs(sinT), 2 / n) * halfH;
 
-        e.x += (targetX - e.x) * 0.14;
-        e.y += (targetY - e.y) * 0.14;
+        e.x += (targetX - e.x) * Math.min(0.24 * dt, 0.95);
+        e.y += (targetY - e.y) * Math.min(0.24 * dt, 0.95);
       }
     } else {
       // Ambient Dragons: Roam smoothly across the ENTIRE viewport
-      this.frm += 0.0022 * this.speed;
+      this.frm += 0.0035 * this.speed * dt;
       const targetX =
         dragonWidth * 0.5 +
         Math.sin(this.frm * this.freqX + this.phaseX) * (dragonWidth * 0.44) +
@@ -267,17 +268,18 @@ class DragonEntity {
         Math.cos(this.frm * this.freqY + this.phaseY) * (dragonHeight * 0.44) +
         Math.sin(this.frm * 0.57 + this.phaseY * 1.5) * (dragonHeight * 0.12);
 
-      e.x += (targetX - e.x) * (0.04 * this.speed);
-      e.y += (targetY - e.y) * (0.04 * this.speed);
+      e.x += (targetX - e.x) * Math.min(0.065 * this.speed * dt, 0.95);
+      e.y += (targetY - e.y) * Math.min(0.065 * this.speed * dt, 0.95);
     }
 
-    // Inverse kinematics physics across vertebrae
+    // Inverse kinematics physics across vertebrae - snappy, fluid tail whip
+    const ikSpeed = Math.min(0.38 * dt, 0.95);
     for (let i = 1; i < this.N; i++) {
       let curr = this.elems[i];
       let prev = this.elems[i - 1];
       const a = Math.atan2(curr.y - prev.y, curr.x - prev.x);
-      curr.x += (prev.x - curr.x + (Math.cos(a) * (100 - i)) / 5) / 4;
-      curr.y += (prev.y - curr.y + (Math.sin(a) * (100 - i)) / 5) / 4;
+      curr.x += (prev.x - curr.x + (Math.cos(a) * (100 - i)) / 5) * ikSpeed;
+      curr.y += (prev.y - curr.y + (Math.sin(a) * (100 - i)) / 5) * ikSpeed;
       const s = ((162 + 4 * (1 - i)) / 50) * this.scaleMul;
 
       if (curr.use) {
@@ -401,11 +403,16 @@ function initDragonCursor() {
   requestAnimationFrame(animateDragonFlock);
 }
 
-function animateDragonFlock() {
+let lastFlockFrameTime = performance.now();
+
+function animateDragonFlock(now = performance.now()) {
   if (!dragonInitialized) return;
 
+  const dt = Math.min((now - lastFlockFrameTime) / 16.667, 2.5) || 1.0;
+  lastFlockFrameTime = now;
+
   for (let i = 0; i < dragonFlock.length; i++) {
-    dragonFlock[i].update();
+    dragonFlock[i].update(dt);
   }
 
   requestAnimationFrame(animateDragonFlock);
