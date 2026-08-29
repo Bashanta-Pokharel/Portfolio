@@ -199,6 +199,7 @@ class DragonEntity {
     const prependPart = (useId, i) => {
       const elem = document.createElementNS(xmlns, "use");
       this.elems[i].use = elem;
+      elem.setAttribute("href", "#" + useId);
       elem.setAttributeNS(xlinkns, "xlink:href", "#" + useId);
       this.group.prepend(elem);
     };
@@ -290,29 +291,21 @@ class DragonEntity {
 }
 
 function initDragonCursor() {
-  if (
-    !dragonScreen ||
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  ) {
-    return;
-  }
+  if (dragonInitialized) return;
+  const screen = document.querySelector("#dragon-screen");
+  if (!screen) return;
 
-  const isTouchDevice =
-    window.matchMedia("(hover: none)").matches || window.innerWidth <= 768;
-
-  // 1. Primary Dragon (Follows Cursor on Desktop only)
-  if (!isTouchDevice) {
-    dragonFlock.push(
-      new DragonEntity({
-        isCursor: true,
-        scaleMul: 0.50,
-        opacity: 1.0,
-        segments: 34,
-        wing1: 7,
-        wing2: 13,
-      })
-    );
-  }
+  // 1. Primary Dragon (Follows Mouse Cursor / Pointer)
+  dragonFlock.push(
+    new DragonEntity({
+      isCursor: true,
+      scaleMul: 0.50,
+      opacity: 1.0,
+      segments: 34,
+      wing1: 7,
+      wing2: 13,
+    })
+  );
 
   // 2. Profile Picture Guardian Dragon (Square perimeter traversal on Desktop & Mobile)
   dragonFlock.push(
@@ -418,16 +411,16 @@ function animateDragonFlock() {
   requestAnimationFrame(animateDragonFlock);
 }
 
-// Track mouse movements for both glow follower and dragon creature
+// Track pointer & mouse movements for both glow follower and dragon creature
 let lastDragonSwooshTime = 0;
-window.addEventListener("pointermove", (e) => {
+function handlePointerMovement(clientX, clientY) {
   if (cyberCursor) {
-    cyberCursor.style.left = `${e.clientX}px`;
-    cyberCursor.style.top = `${e.clientY}px`;
+    cyberCursor.style.left = `${clientX}px`;
+    cyberCursor.style.top = `${clientY}px`;
   }
 
-  const dx = e.clientX - dragonPointer.x;
-  const dy = e.clientY - dragonPointer.y;
+  const dx = clientX - dragonPointer.x;
+  const dy = clientY - dragonPointer.y;
   const dist = Math.hypot(dx, dy);
   const now = Date.now();
 
@@ -436,12 +429,20 @@ window.addEventListener("pointermove", (e) => {
     playSound("dragon_swoosh");
   }
 
-  dragonPointer.x = e.clientX;
-  dragonPointer.y = e.clientY;
+  dragonPointer.x = clientX;
+  dragonPointer.y = clientY;
   if (dragonFlock[0]) {
     dragonFlock[0].rad = 0;
   }
-});
+}
+
+window.addEventListener("pointermove", (e) => handlePointerMovement(e.clientX, e.clientY), { passive: true });
+window.addEventListener("mousemove", (e) => handlePointerMovement(e.clientX, e.clientY), { passive: true });
+window.addEventListener("touchmove", (e) => {
+  if (e.touches && e.touches[0]) {
+    handlePointerMovement(e.touches[0].clientX, e.touches[0].clientY);
+  }
+}, { passive: true });
 
 window.addEventListener("resize", () => {
   dragonWidth = window.innerWidth;

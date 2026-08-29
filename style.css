@@ -2533,11 +2533,14 @@ p { margin: 0; }
   left: 0;
   width: 100vw;
   height: 100vh;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 9999;
   overflow: hidden;
   filter: drop-shadow(0 0 12px rgba(0, 212, 255, 0.6));
   transition: opacity 0.4s ease, filter 0.3s ease;
+  display: block;
 }
 
 /* Dark Theme Dragon Colors (Luminous Cyber Leviathan) */
@@ -2604,13 +2607,6 @@ p { margin: 0; }
 }
 [data-theme="light"] .dragon-spine-path {
   stroke: none;
-}
-
-/* Responsive & Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .dragon-cursor-canvas {
-    display: none !important;
-  }
 }
 
 /* ======================================
