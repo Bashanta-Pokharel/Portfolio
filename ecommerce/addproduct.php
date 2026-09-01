@@ -1,3 +1,4 @@
+<?php 
 
 $product_sql = "SELECT * FROM products ORDER BY id DESC";
 $product_result = mysqli_query($con, $product_sql);
